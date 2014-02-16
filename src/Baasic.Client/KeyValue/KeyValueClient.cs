@@ -12,43 +12,14 @@ namespace Baasic.Client
     /// <summary>
     /// Key Value Module Client.
     /// </summary>
-    public class KeyValueClient
+    public class KeyValueClient : ClientBase
     {
-        #region Fields
-        protected const string ClientRelativePath = "KeyValue";
-        #endregion
-
         #region Properties
-        /// <summary>
-        /// Gets or sets the application identifier.
-        /// </summary>
-        public string ApplicationIdentifier { get; protected set; }
-
-        private string _baseAddress;
-
-        public string BaseAddress
+        protected override string ModuleRelativePath
         {
-            get
-            {
-                return _baseAddress;
-            }
-            set
-            {
-                _baseAddress = value;
-            }
+            get { return "KeyValue"; }
         }
 
-        private string _defaultMediaType;
-
-        public string DefaultMediaType
-        {
-            get
-            {
-                return _defaultMediaType;
-            }
-            set { _defaultMediaType = value; }
-        }
-        
         #endregion
 
         #region Constructor
@@ -57,8 +28,8 @@ namespace Baasic.Client
         /// </summary>
         /// <param name="applicationIdentifier">Application identifier.</param>
         public KeyValueClient(string applicationIdentifier)
+            : base(applicationIdentifier)
         {
-            ApplicationIdentifier = applicationIdentifier;
         }
 
         /// <summary>
@@ -66,11 +37,10 @@ namespace Baasic.Client
         /// </summary>
         /// <param name="baseAddress">Baasic API address.</param>
         /// <param name="applicationIdentifier">Application identifier.</param>
-        public KeyValueClient(string baseAddress, string applicationIdentifier)
+        public KeyValueClient(string baseAddress, string applicationIdentifier) :
+            base(baseAddress, applicationIdentifier)
         {
-            ApplicationIdentifier = applicationIdentifier;
-            BaseAddress = baseAddress;
-        } 
+        }
         #endregion
 
         #region Methods
@@ -78,7 +48,7 @@ namespace Baasic.Client
         {
             using (BaasicClient client = new BaasicClient(BaseAddress, ApplicationIdentifier))
             {
-                var response = await client.GetAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ClientRelativePath), key));
+                var response = await client.GetAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
                 if (response.IsSuccessStatusCode && response.StatusCode.Equals(HttpStatusCode.OK))
                 {
                     //TODO: Add HAL deserialization, is this OK place ?
@@ -87,6 +57,26 @@ namespace Baasic.Client
                 return default(KeyValue);
             }
         }
+
+        public virtual async Task<CollectionModelBase<KeyValue>> GetAsync(string searchQuery = "",
+            int page = DefaultPage, int rpp = MaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed)
+        {
+            using (BaasicClient client = new BaasicClient(BaseAddress, ApplicationIdentifier))
+            {
+                UriBuilder uriBuilder = new UriBuilder(client.GetApiUrl(ModuleRelativePath));
+                //TODO: Build full query
+                var response = await client.GetAsync(uriBuilder.Uri);
+                if (response.IsSuccessStatusCode && response.StatusCode.Equals(HttpStatusCode.OK))
+                {
+                    //TODO: Add HAL deserialization, is this OK place ?
+                    return JsonConvert.DeserializeObject<CollectionModelBase<KeyValue>>(await response.Content.ReadAsStringAsync());
+                }
+                return new CollectionModelBase<KeyValue>();
+            }
+        }
+
         #endregion
+
     }
 }
