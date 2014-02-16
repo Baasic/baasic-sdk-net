@@ -12,7 +12,7 @@ namespace Baasic.Client
     /// <summary>
     /// Baasic.com client.
     /// </summary>
-    public class BaasicClient
+    public class BaasicClient : IDisposable
     {
         #region Fields
         /// <summary>
@@ -124,7 +124,12 @@ namespace Baasic.Client
         }
         
         public Task<HttpResponseMessage> GetAsync(Uri requestUri)
-        { return null; }
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                return client.SendAsync(CreateRequest(requestUri.ToString(), DefaultMediaType, HttpMethod.Get));
+            }
+        }
         
         public Task<HttpResponseMessage> GetAsync(string requestUri, CancellationToken cancellationToken)
         { return null; }
@@ -214,6 +219,11 @@ namespace Baasic.Client
             return String.Format("{0}/{1}", ssl ? SecureBaseAddress.TrimEnd('/') : BaseAddress.TrimEnd('/'), String.Format(relativeUrl, parameters));
         }
 
+        public void Dispose()
+        {
+
+        }
         #endregion
+
     }
 }
