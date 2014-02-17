@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Baasic.Client.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,61 +54,42 @@ namespace Baasic.Client
         public const string DefaultSearchQuery = "";
         #endregion
 
-
         #region Properties
         /// <summary>
-        /// Gets or sets the application identifier.
+        /// Gets or sets client configuration.
         /// </summary>
-        public string ApplicationIdentifier { get; protected set; }
+        public IClientConfiguration Configuration { get; set; }
 
         protected abstract string ModuleRelativePath { get; }
-
-        private string _baseAddress;
-
-        public string BaseAddress
-        {
-            get
-            {
-                return _baseAddress;
-            }
-            set
-            {
-                _baseAddress = value;
-            }
-        }
-
-        private string _defaultMediaType;
-
-        public string DefaultMediaType
-        {
-            get
-            {
-                return _defaultMediaType;
-            }
-            set { _defaultMediaType = value; }
-        }
-
         #endregion
 
         #region Constructor
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="applicationIdentifier">Application identifier.</param>
-        public ClientBase(string applicationIdentifier)
+        /// <param name="configuration">Client configuration.</param>
+        public ClientBase(IClientConfiguration configuration)
         {
-            ApplicationIdentifier = applicationIdentifier;
+            Configuration = configuration;
         }
+        #endregion
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="baseAddress">Baasic API address.</param>
-        /// <param name="applicationIdentifier">Application identifier.</param>
-        public ClientBase(string baseAddress, string applicationIdentifier)
+        #region Methods
+        protected virtual void InitializeQueryString(UrlBuilder uriBuilder, 
+            string searchQuery,
+            int page, int rpp,
+            string sort, string embed)
         {
-            ApplicationIdentifier = applicationIdentifier;
-            BaseAddress = baseAddress;
+            if (!String.IsNullOrWhiteSpace(searchQuery))
+                uriBuilder.QueryString.Add("searchQuery", searchQuery);
+            if (!DefaultPage.Equals(page))
+                uriBuilder.QueryString.Add("page", page.ToString());
+            if (!MaxNumberOfResults.Equals(rpp))
+                uriBuilder.QueryString.Add("rpp", rpp.ToString());
+            if (!String.IsNullOrWhiteSpace(sort))
+                uriBuilder.QueryString.Add("sort", sort);
+            if (!String.IsNullOrWhiteSpace(embed))
+                uriBuilder.QueryString.Add("embed", embed);
         }
         #endregion
     }

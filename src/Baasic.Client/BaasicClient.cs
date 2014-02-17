@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Baasic.Client.Configuration;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -14,181 +16,80 @@ namespace Baasic.Client
     /// </summary>
     public class BaasicClient : IDisposable
     {
-        #region Fields
-        /// <summary>
-        /// JSON media type.
-        /// </summary>
-        public const string JsonMediaType = "application/json";
-        /// <summary>
-        /// HAL+JSON media type.
-        /// </summary>
-        public const string HalJsonMediaType = "application/hal+json";
-        
-        public const string BaasicBaseAddress = "http://api.baasic.com/v1";
-        public TimeSpan BaasicrDefaultTimeout = TimeSpan.FromSeconds(10);
-        #endregion
-
         #region Properties
         /// <summary>
-        /// Gets or sets the application identifier.
+        /// Gets or sets client configuration.
         /// </summary>
-        public string ApplicationIdentifier { get; protected set; }
-
-        private string _baseAddress;
-
-        public string BaseAddress
-        {
-            get 
-            {
-                if (String.IsNullOrWhiteSpace(_baseAddress))
-                    _baseAddress = BaasicBaseAddress;
-                return _baseAddress; 
-            }
-            set 
-            { 
-                _baseAddress = value;
-                _secureBaseAddress = null;
-            }
-        }
-
-        private string _secureBaseAddress;
-
-        public string SecureBaseAddress
-        {
-            get
-            {
-                if (String.IsNullOrWhiteSpace(_secureBaseAddress))
-                    _secureBaseAddress = BaseAddress.Replace("http://", "https://");
-                return _secureBaseAddress;
-            }
-            set { _secureBaseAddress = value; }
-        }
-
-        private string _defaultMediaType;
-
-        public string DefaultMediaType
-        {
-            get
-            {
-                if (String.IsNullOrWhiteSpace(_defaultMediaType))
-                    return HalJsonMediaType;
-                return _defaultMediaType;
-            }
-            set { _defaultMediaType = value; }
-        }
+        public IClientConfiguration Configuration { get; set; }
         #endregion
 
         #region Constructor
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="applicationIdentifier">Application identifier.</param>
-        public BaasicClient(string applicationIdentifier)
+        /// <param name="configuration">Client configuration.</param>
+        public BaasicClient(IClientConfiguration configuration)
         {
-            ApplicationIdentifier = applicationIdentifier;
+            Configuration = configuration;
         }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="baseAddress">Baasic API address.</param>
-        /// <param name="applicationIdentifier">Application identifier.</param>
-        public BaasicClient(string baseAddress, string applicationIdentifier)
-        {
-            ApplicationIdentifier = applicationIdentifier;
-            BaseAddress = baseAddress;
-        } 
         #endregion
 
         #region Methods
-        public Task<HttpResponseMessage> DeleteAsync(string requestUri)
+        public virtual Task<bool> DeleteAsync(string requestUri)
         {
             return null;
         }
 
-        public Task<HttpResponseMessage> DeleteAsync(Uri requestUri)
-        { return null; }
-        
-        public Task<HttpResponseMessage> DeleteAsync(string requestUri, CancellationToken cancellationToken)
-        { return null; }
-        
-        public Task<HttpResponseMessage> DeleteAsync(Uri requestUri, CancellationToken cancellationToken)
+        public virtual Task<bool> DeleteAsync(string requestUri, CancellationToken cancellationToken)
         { return null; }
 
-        public Task<HttpResponseMessage> GetAsync(string requestUri)
+        public virtual async Task<T> GetAsync<T>(string requestUri)
         {
             using (HttpClient client = new HttpClient())
             {
-                return client.SendAsync(CreateRequest(requestUri, DefaultMediaType, HttpMethod.Get));
+                InitializeClient(client, Configuration.DefaultMediaType);
+
+                var response = await client.GetAsync(requestUri);
+                response.EnsureSuccessStatusCode();
+                //TODO: Add HAL Converter
+                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
             }
         }
         
-        public Task<HttpResponseMessage> GetAsync(Uri requestUri)
+        public virtual async Task<T> GetAsync<T>(string requestUri, CancellationToken cancellationToken)
         {
             using (HttpClient client = new HttpClient())
             {
-                return client.SendAsync(CreateRequest(requestUri.ToString(), DefaultMediaType, HttpMethod.Get));
+                InitializeClient(client, Configuration.DefaultMediaType);
+
+                var response = await client.GetAsync(requestUri, cancellationToken);
+                response.EnsureSuccessStatusCode();
+                //TODO: Add HAL Converter
+                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
             }
         }
-        
-        public Task<HttpResponseMessage> GetAsync(string requestUri, CancellationToken cancellationToken)
-        { return null; }
-        
-        public Task<HttpResponseMessage> GetAsync(string requestUri, HttpCompletionOption completionOption)
-        { return null; }
-        
-        public Task<HttpResponseMessage> GetAsync(Uri requestUri, CancellationToken cancellationToken)
-        { return null; }
-        
-        public Task<HttpResponseMessage> GetAsync(Uri requestUri, HttpCompletionOption completionOption)
+
+        public Task<T> PostAsync<T>(string requestUri, HttpContent content)
         { return null; }
 
-        public Task<HttpResponseMessage> GetAsync(string requestUri, HttpCompletionOption completionOption, CancellationToken cancellationToken)
-        { return null; }
-        
-        public Task<HttpResponseMessage> GetAsync(Uri requestUri, HttpCompletionOption completionOption, CancellationToken cancellationToken)
+
+        public Task<T> PostAsync<T>(string requestUri, HttpContent content, CancellationToken cancellationToken)
         { return null; }
 
-        public Task<HttpResponseMessage> PostAsync(string requestUri, HttpContent content)
+        public Task<T> PutAsync<T>(string requestUri, HttpContent content)
         { return null; }
-        
-        public Task<HttpResponseMessage> PostAsync(Uri requestUri, HttpContent content)
-        { return null; }
-        
-        public Task<HttpResponseMessage> PostAsync(string requestUri, HttpContent content, CancellationToken cancellationToken)
-        { return null; }
-        
-        public Task<HttpResponseMessage> PostAsync(Uri requestUri, HttpContent content, CancellationToken cancellationToken)
-        { return null; }
-        
-        public Task<HttpResponseMessage> PutAsync(string requestUri, HttpContent content)
-        { return null; }
-        
-        public Task<HttpResponseMessage> PutAsync(Uri requestUri, HttpContent content)
-        { return null; }
-        
-        public Task<HttpResponseMessage> PutAsync(string requestUri, HttpContent content, CancellationToken cancellationToken)
-        {
-            return null;
-        }
-        
-        public Task<HttpResponseMessage> PutAsync(Uri requestUri, HttpContent content, CancellationToken cancellationToken)
+
+
+        public Task<T> PutAsync<T>(string requestUri, HttpContent content, CancellationToken cancellationToken)
         {
             return null;
         }
 
-        public HttpRequestMessage CreateRequest(string url, string mthv, HttpMethod method)
+        protected virtual void InitializeClient(HttpClient client, string mthv)
         {
-            var request = new HttpRequestMessage
-            {
-                RequestUri = new Uri(url)
-            };
-
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mthv));
+            client.Timeout = Configuration.DefaultTimeout;
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mthv));
             //TODO: Add authentication header
-            request.Method = method;
-
-            return request;
         }
 
         public StringContent CreateStringContent(string data, string mthv)
@@ -201,12 +102,12 @@ namespace Baasic.Client
 
         public string GetApiUrl(string relativeUrl, params object[] parameters)
         {
-            return GetApiUrl(false, ApplicationIdentifier, relativeUrl, parameters);
+            return GetApiUrl(false, Configuration.ApplicationIdentifier, relativeUrl, parameters);
         }
 
         public string GetSecureApiUrl(string relativeUrl, params object[] parameters)
         {
-            return GetApiUrl(true, ApplicationIdentifier, relativeUrl, parameters);
+            return GetApiUrl(true, Configuration.ApplicationIdentifier, relativeUrl, parameters);
         }
 
         private string GetApiUrl(bool ssl, string applicationIdentifier, string relativeUrl, params object[] parameters)
@@ -216,7 +117,7 @@ namespace Baasic.Client
 
         public string GetApiUrl(bool ssl, string relativeUrl, params object[] parameters)
         {
-            return String.Format("{0}/{1}", ssl ? SecureBaseAddress.TrimEnd('/') : BaseAddress.TrimEnd('/'), String.Format(relativeUrl, parameters));
+            return String.Format("{0}/{1}", ssl ? Configuration.SecureBaseAddress.TrimEnd('/') : Configuration.BaseAddress.TrimEnd('/'), String.Format(relativeUrl, parameters));
         }
 
         public void Dispose()
