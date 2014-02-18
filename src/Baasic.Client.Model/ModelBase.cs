@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -21,13 +20,11 @@ namespace Baasic.Client.Model
         /// <summary>
         /// Gets or sets the Date created.
         /// </summary>
-        [DataType(DataType.DateTime)]
         public System.DateTime DateCreated { get; set; }
 
         /// <summary>
         /// Gets or sets the Date updated.
         /// </summary>
-        [DataType(DataType.DateTime)]
         public System.DateTime DateUpdated { get; set; }        
     }
 }

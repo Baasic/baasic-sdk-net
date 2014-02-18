@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +14,6 @@ namespace Baasic.Client.Model
         /// <summary>
         /// Gets or sets the key.
         /// </summary>
-        [Required(ErrorMessage = "Key is required")]
-        [StringLength(250)]
         public virtual string Key
         {
             get;
@@ -26,7 +23,6 @@ namespace Baasic.Client.Model
         /// <summary>
         /// Gets or sets the KeyValue item store value.
         /// </summary>
-        [Required(ErrorMessage = "Value is required")]
         public virtual string Value
         {
             get;

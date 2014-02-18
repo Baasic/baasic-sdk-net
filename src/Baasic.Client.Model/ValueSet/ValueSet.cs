@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +14,6 @@ namespace Baasic.Client.Model
         /// <summary>
         /// Gets or sets the set name.
         /// </summary>
-        [Required(ErrorMessage = "Name is required")]
-        [StringLength(100)]
         public virtual string Name
         {
             get;
@@ -26,7 +23,6 @@ namespace Baasic.Client.Model
         /// <summary>
         /// Gets or sets the value set description.
         /// </summary>
-        [StringLength(500)]
         public virtual string Description
         {
             get;

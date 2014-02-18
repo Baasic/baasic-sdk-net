@@ -1,30 +1,29 @@
 using System;
-using System.Web;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Baasic.Client
 {
     /// <summary>
-    /// Url builder utility class used for URL manipulations.
+    /// URL builder utility class used for URL manipulations.
     /// </summary>
     public class UrlBuilder : UriBuilder
     {
         #region Fields
-        StringDictionary _queryString = null; 
+        Dictionary<string, string> _queryString = null; 
         #endregion
 
         #region Properties
         /// <summary>
         /// Gets query string.
         /// </summary>
-        public StringDictionary QueryString
+        public Dictionary<string, string> QueryString
         {
             get
             {
                 if (_queryString == null)
                 {
-                    _queryString = new StringDictionary();                    
+                    _queryString = new Dictionary<string, string>();                    
                 }
 
                 return _queryString;
@@ -68,7 +67,7 @@ namespace Baasic.Client
 
         #region Constructor overloads
         /// <summary>
-        /// Url builder constructor.
+        /// URL builder constructor.
         /// </summary>
         public UrlBuilder()
             : base()
@@ -76,7 +75,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Url builder constructor.
+        /// URL builder constructor.
         /// </summary>
         /// <param name="uri">Absolute Uri</param>
         public UrlBuilder(string uri)
@@ -86,7 +85,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Url builder constructor.
+        /// URL builder constructor.
         /// </summary>
         /// <param name="uri">Uri object</param>
         public UrlBuilder(Uri uri)
@@ -96,7 +95,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Url builder constructor.
+        /// URL builder constructor.
         /// </summary>
         /// <param name="schemeName">Scheme name</param>
         /// <param name="hostName">Host name</param>
@@ -106,7 +105,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Url builder constructor.
+        /// URL builder constructor.
         /// </summary>
         /// <param name="scheme">Scheme</param>
         /// <param name="host">Host</param>
@@ -117,7 +116,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Url builder constructor.
+        /// URL builder constructor.
         /// </summary>
         /// <param name="scheme">Scheme</param>
         /// <param name="host">Host</param>
@@ -129,7 +128,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Url builder constructor.
+        /// URL builder constructor.
         /// </summary>
         /// <param name="scheme">Scheme</param>
         /// <param name="host">Host</param>
@@ -169,7 +168,7 @@ namespace Baasic.Client
 
             if (_queryString == null)
             {
-                _queryString = new StringDictionary();
+                _queryString = new Dictionary<string, string>();
             }
 
             _queryString.Clear();
