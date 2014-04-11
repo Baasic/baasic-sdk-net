@@ -13,29 +13,6 @@ namespace Baasic.Client
     public abstract class ClientBase
     {
         #region Fields
-        /// <summary>
-        /// Maximum number of results.
-        /// <para>
-        /// Default value is 100.
-        /// </para>
-        /// </summary>
-        public const int MaxNumberOfResults = 10;
-
-        /// <summary>
-        /// Default page.
-        /// <para>
-        /// Default value is 1.
-        /// </para>
-        /// </summary>
-        public const int DefaultPage = 1;
-
-        /// <summary>
-        /// Default sorting.
-        /// <para>
-        /// Default value is <see cref="String.Empty"/>.
-        /// </para>
-        /// </summary>
-        public const string DefaultSorting = "";
 
         /// <summary>
         /// Default embed.
@@ -46,24 +23,55 @@ namespace Baasic.Client
         public const string DefaultEmbed = "";
 
         /// <summary>
+        /// Default page.
+        /// <para>
+        /// Default value is 1.
+        /// </para>
+        /// </summary>
+        public const int DefaultPage = 1;
+
+        /// <summary>
         /// Default search query.
         /// <para>
         /// Default value is <see cref="String.Empty"/>.
         /// </para>
         /// </summary>
         public const string DefaultSearchQuery = "";
-        #endregion
+
+        /// <summary>
+        /// Default sorting.
+        /// <para>
+        /// Default value is <see cref="String.Empty"/>.
+        /// </para>
+        /// </summary>
+        public const string DefaultSorting = "";
+
+        /// <summary>
+        /// Maximum number of results.
+        /// <para>
+        /// Default value is 100.
+        /// </para>
+        /// </summary>
+        public const int MaxNumberOfResults = 10;
+
+        #endregion Fields
 
         #region Properties
+
         /// <summary>
         /// Gets or sets client configuration.
         /// </summary>
         public IClientConfiguration Configuration { get; set; }
 
+        /// <summary>
+        /// Gets the module relative path.
+        /// </summary>
         protected abstract string ModuleRelativePath { get; }
-        #endregion
+
+        #endregion Properties
 
         #region Constructor
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -72,10 +80,21 @@ namespace Baasic.Client
         {
             Configuration = configuration;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region Methods
-        protected virtual void InitializeQueryString(UrlBuilder uriBuilder, 
+
+        /// <summary>
+        /// Initialize query string.
+        /// </summary>
+        /// <param name="uriBuilder">Uri builder.</param>
+        /// <param name="searchQuery">Search query.</param>
+        /// <param name="page">Page index.</param>
+        /// <param name="rpp">Records per page.</param>
+        /// <param name="sort">Sort expression.</param>
+        /// <param name="embed">Embedded items.</param>
+        protected virtual void InitializeQueryString(UrlBuilder uriBuilder,
             string searchQuery,
             int page, int rpp,
             string sort, string embed)
@@ -91,6 +110,7 @@ namespace Baasic.Client
             if (!String.IsNullOrWhiteSpace(embed))
                 uriBuilder.QueryString.Add("embed", embed);
         }
-        #endregion
+
+        #endregion Methods
     }
 }

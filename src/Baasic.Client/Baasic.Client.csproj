@@ -60,6 +60,7 @@
     <Compile Include="ClientBase.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
     <Compile Include="Configuration\IClientConfiguration.cs" />
+    <Compile Include="Internals\IFactory.cs" />
     <Compile Include="KeyValue\KeyValueClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenHandler\DefaultTokenHandler.cs" />
