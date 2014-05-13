@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Baasic.Client.Model
 {
@@ -30,7 +26,7 @@ namespace Baasic.Client.Model
         }
 
         /// <summary>
-        /// Gets or sets the KeyValueItem value. 
+        /// Gets or sets the KeyValueItem value.
         /// </summary>
         public virtual string Value
         {

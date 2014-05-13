@@ -1,9 +1,5 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Internals;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Baasic.Client
 {
@@ -15,42 +11,27 @@ namespace Baasic.Client
         #region Fields
 
         /// <summary>
-        /// Default embed.
-        /// <para>
-        /// Default value is <see cref="String.Empty"/>.
-        /// </para>
+        /// Default embed. <para> Default value is <see cref="String.Empty" />. </para>
         /// </summary>
         public const string DefaultEmbed = "";
 
         /// <summary>
-        /// Default page.
-        /// <para>
-        /// Default value is 1.
-        /// </para>
+        /// Default page. <para> Default value is 1. </para>
         /// </summary>
         public const int DefaultPage = 1;
 
         /// <summary>
-        /// Default search query.
-        /// <para>
-        /// Default value is <see cref="String.Empty"/>.
-        /// </para>
+        /// Default search query. <para> Default value is <see cref="String.Empty" />. </para>
         /// </summary>
         public const string DefaultSearchQuery = "";
 
         /// <summary>
-        /// Default sorting.
-        /// <para>
-        /// Default value is <see cref="String.Empty"/>.
-        /// </para>
+        /// Default sorting. <para> Default value is <see cref="String.Empty" />. </para>
         /// </summary>
         public const string DefaultSorting = "";
 
         /// <summary>
-        /// Maximum number of results.
-        /// <para>
-        /// Default value is 100.
-        /// </para>
+        /// Maximum number of results. <para> Default value is 100. </para>
         /// </summary>
         public const int MaxNumberOfResults = 10;
 
@@ -59,9 +40,10 @@ namespace Baasic.Client
         #region Properties
 
         /// <summary>
-        /// Gets or sets client configuration.
+        /// Gets the factory.
         /// </summary>
-        public IClientConfiguration Configuration { get; set; }
+        /// <value>The factory.</value>
+        protected IFactory Factory { get; private set; }
 
         /// <summary>
         /// Gets the module relative path.
@@ -73,12 +55,12 @@ namespace Baasic.Client
         #region Constructor
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="ClientBase" /> class.
         /// </summary>
-        /// <param name="configuration">Client configuration.</param>
-        public ClientBase(IClientConfiguration configuration)
+        /// <param name="factory">The factory.</param>
+        public ClientBase(IFactory factory)
         {
-            Configuration = configuration;
+            Factory = factory;
         }
 
         #endregion Constructor

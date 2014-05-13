@@ -1,40 +1,58 @@
 ﻿using Baasic.Client.Configuration;
+using Baasic.Client.Internals;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Baasic.Client
 {
     /// <summary>
-    /// Baasic.com client.
+    /// Baasic client.
     /// </summary>
-    public class BaasicClient : IDisposable
+    public class BaasicClient : IBaasicClient
     {
         #region Properties
+
+        private IClientConfiguration _configuration = null;
 
         /// <summary>
         /// Gets or sets client configuration.
         /// </summary>
-        public IClientConfiguration Configuration { get; set; }
+        public IClientConfiguration Configuration
+        {
+            get
+            {
+                if (_configuration == null)
+                    _configuration = Factory.CreateClientConfiguration();
+                return _configuration;
+            }
+            set
+            {
+                _configuration = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the factory.
+        /// </summary>
+        /// <value>The factory.</value>
+        protected IFactory Factory { get; private set; }
 
         #endregion Properties
 
         #region Constructor
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="BaasicClient" /> class.
         /// </summary>
-        /// <param name="configuration">Client configuration.</param>
-        public BaasicClient(IClientConfiguration configuration)
+        /// <param name="factory">The factory.</param>
+        public BaasicClient(IFactory factory)
         {
-            Configuration = configuration;
+            Factory = factory;
         }
 
         #endregion Constructor
@@ -90,34 +108,47 @@ namespace Baasic.Client
         {
         }
 
+        /// <summary>
+        /// Gets the API URL.
+        /// </summary>
+        /// <param name="relativeUrl">The relative URL.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
         public string GetApiUrl(string relativeUrl, params object[] parameters)
         {
             return GetApiUrl(false, Configuration.ApplicationIdentifier, relativeUrl, parameters);
         }
 
+        /// <summary>
+        /// Gets the API URL.
+        /// </summary>
+        /// <param name="ssl">if set to <c>true</c> [SSL].</param>
+        /// <param name="relativeUrl">The relative URL.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
         public string GetApiUrl(bool ssl, string relativeUrl, params object[] parameters)
         {
             return String.Format("{0}/{1}", ssl ? Configuration.SecureBaseAddress.TrimEnd('/') : Configuration.BaseAddress.TrimEnd('/'), String.Format(relativeUrl, parameters));
         }
 
         /// <summary>
-        /// Asynchronously gets the <typeparamref name="T"/> from the system.
+        /// Asynchronously gets the <typeparamref name="T" /> from the system.
         /// </summary>
         /// <typeparam name="T">Object type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
-        /// <returns><typeparamref name="T"/>.</returns>
+        /// <returns><typeparamref name="T" />.</returns>
         public virtual Task<T> GetAsync<T>(string requestUri)
         {
             return GetAsync<T>(requestUri, new CancellationToken());
         }
 
         /// <summary>
-        /// Asynchronously gets the <typeparamref name="T"/> from the system.
+        /// Asynchronously gets the <typeparamref name="T" /> from the system.
         /// </summary>
         /// <typeparam name="T">Object type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns><typeparamref name="T"/>.</returns>
+        /// <returns><typeparamref name="T" />.</returns>
         public virtual async Task<T> GetAsync<T>(string requestUri, CancellationToken cancellationToken)
         {
             using (HttpClient client = new HttpClient())
@@ -131,31 +162,37 @@ namespace Baasic.Client
             }
         }
 
+        /// <summary>
+        /// Gets the secure API URL.
+        /// </summary>
+        /// <param name="relativeUrl">The relative URL.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
         public string GetSecureApiUrl(string relativeUrl, params object[] parameters)
         {
             return GetApiUrl(true, Configuration.ApplicationIdentifier, relativeUrl, parameters);
         }
 
         /// <summary>
-        /// Asynchronously insert the <typeparamref name="T"/> into the system.
+        /// Asynchronously insert the <typeparamref name="T" /> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Newly created <typeparamref name="T"/>.</returns>
+        /// <returns>Newly created <typeparamref name="T" />.</returns>
         public virtual Task<T> PostAsync<T>(string requestUri, T content)
         {
             return PostAsync<T>(requestUri, content, new CancellationToken());
         }
 
         /// <summary>
-        /// Asynchronously insert the <typeparamref name="T"/> into the system.
+        /// Asynchronously insert the <typeparamref name="T" /> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Newly created <typeparamref name="T"/>.</returns>
+        /// <returns>Newly created <typeparamref name="T" />.</returns>
         public virtual async Task<T> PostAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
         {
             using (HttpClient client = new HttpClient())
@@ -170,25 +207,25 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Asynchronously update the <typeparamref name="T"/> in the system.
+        /// Asynchronously update the <typeparamref name="T" /> in the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Updated <typeparamref name="T"/>.</returns>
+        /// <returns>Updated <typeparamref name="T" />.</returns>
         public virtual Task<T> PutAsync<T>(string requestUri, T content)
         {
             return PutAsync<T>(requestUri, content, new CancellationToken());
         }
 
         /// <summary>
-        /// Asynchronously update the <typeparamref name="T"/> in the system.
+        /// Asynchronously update the <typeparamref name="T" /> in the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Updated <typeparamref name="T"/>.</returns>
+        /// <returns>Updated <typeparamref name="T" />.</returns>
         public virtual async Task<T> PutAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
         {
             using (HttpClient client = new HttpClient())

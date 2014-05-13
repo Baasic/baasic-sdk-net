@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Baasic.Client.Model
 {
@@ -12,19 +9,24 @@ namespace Baasic.Client.Model
     public interface ICollectionModel<T> where T : IModel
     {
         /// <summary>
-        /// Gets or sets the total number of records.
+        /// Gets or sets the embed list.
         /// </summary>
-        int TotalRecords { get; set; }
+        string Embed { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of records per page.
+        /// Gets or sets the REST model items.
         /// </summary>
-        int RecordsPerPage { get; set; }
+        List<T> Item { get; set; }
 
         /// <summary>
         /// Gets or sets the number of current page.
         /// </summary>
         int Page { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of records per page.
+        /// </summary>
+        int RecordsPerPage { get; set; }
 
         /// <summary>
         /// Gets or sets the search query.
@@ -37,13 +39,8 @@ namespace Baasic.Client.Model
         string Sort { get; set; }
 
         /// <summary>
-        /// Gets or sets the embed list.
+        /// Gets or sets the total number of records.
         /// </summary>
-        string Embed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the REST model items.
-        /// </summary>
-        List<T> Item { get; set; }
+        int TotalRecords { get; set; }
     }
 }

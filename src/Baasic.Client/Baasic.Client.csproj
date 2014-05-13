@@ -56,10 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBaasicClient.cs" />
     <Compile Include="BaasicClient.cs" />
     <Compile Include="ClientBase.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
     <Compile Include="Configuration\IClientConfiguration.cs" />
+    <Compile Include="Internals\StandardFactory.cs" />
     <Compile Include="Internals\IFactory.cs" />
     <Compile Include="KeyValue\KeyValueClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

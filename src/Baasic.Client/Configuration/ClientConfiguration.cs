@@ -2,14 +2,13 @@
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Baasic.Client.Configuration
 {
+    /// <summary>
+    /// Client configuration.
+    /// </summary>
     public class ClientConfiguration : IClientConfiguration
     {
         #region Fields
@@ -17,7 +16,12 @@ namespace Baasic.Client.Configuration
         /// <summary>
         /// Baasic base address.
         /// </summary>
-        public const string BaasicBaseAddress = "http://api.baasic.com/v1";
+        public const string BaasicBaseAddress = "http://api.baasic.com/";
+
+        /// <summary>
+        /// The baasic version.
+        /// </summary>
+        public const string BaasicVersion = "v1";
 
         /// <summary>
         /// HAL+JSON media type.
@@ -54,7 +58,7 @@ namespace Baasic.Client.Configuration
             get
             {
                 if (String.IsNullOrWhiteSpace(_baseAddress))
-                    _baseAddress = BaasicBaseAddress;
+                    _baseAddress = BaasicBaseAddress + BaasicVersion;
                 return _baseAddress;
             }
             set
@@ -84,7 +88,10 @@ namespace Baasic.Client.Configuration
                     return HalJsonMediaType;
                 return _defaultMediaType;
             }
-            set { _defaultMediaType = value; }
+            set
+            {
+                _defaultMediaType = value;
+            }
         }
 
         /// <summary>
@@ -113,7 +120,10 @@ namespace Baasic.Client.Configuration
                     _secureBaseAddress = BaseAddress.Replace("http://", "https://");
                 return _secureBaseAddress;
             }
-            set { _secureBaseAddress = value; }
+            set
+            {
+                _secureBaseAddress = value;
+            }
         }
 
         /// <summary>
@@ -125,14 +135,20 @@ namespace Baasic.Client.Configuration
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the version.
+        /// </summary>
+        /// <value>The version.</value>
+        public string Version { get; set; }
+
         #endregion Properties
 
         #region Constructor
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
         /// </summary>
-        /// <param name="applicationIdentifier">Application identifier.</param>
+        /// <param name="applicationIdentifier">The application identifier.</param>
         public ClientConfiguration(string applicationIdentifier)
         {
             ApplicationIdentifier = applicationIdentifier;
@@ -140,10 +156,10 @@ namespace Baasic.Client.Configuration
         }
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
         /// </summary>
-        /// <param name="baseAddress">Baasic API address.</param>
-        /// <param name="applicationIdentifier">Application identifier.</param>
+        /// <param name="baseAddress">The base address.</param>
+        /// <param name="applicationIdentifier">The application identifier.</param>
         public ClientConfiguration(string baseAddress, string applicationIdentifier)
         {
             ApplicationIdentifier = applicationIdentifier;

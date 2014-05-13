@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Baasic.Client.Model
 {
@@ -13,20 +10,26 @@ namespace Baasic.Client.Model
         where T : IModel
     {
         #region Properties
-        /// <summary>
-        /// Gets or sets the total number of records.
-        /// </summary>
-        public int TotalRecords { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of records per page.
+        /// Gets or sets the embed list.
         /// </summary>
-        public int RecordsPerPage { get; set; }
+        public string Embed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the REST model items.
+        /// </summary>
+        public List<T> Item { get; set; }
 
         /// <summary>
         /// Gets or sets the number of current page.
         /// </summary>
         public int Page { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of records per page.
+        /// </summary>
+        public int RecordsPerPage { get; set; }
 
         /// <summary>
         /// Gets or sets the search query.
@@ -39,33 +42,31 @@ namespace Baasic.Client.Model
         public string Sort { get; set; }
 
         /// <summary>
-        /// Gets or sets the embed list.
+        /// Gets or sets the total number of records.
         /// </summary>
-        public string Embed { get; set; }
+        public int TotalRecords { get; set; }
 
-        /// <summary>
-        /// Gets or sets the REST model items.
-        /// </summary>
-        public List<T> Item { get; set; } 
-        #endregion
+        #endregion Properties
 
         #region Constructor
+
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="CollectionModelBase{T}" /> class.
         /// </summary>
         public CollectionModelBase()
         {
             Item = new List<T>();
-        } 
-        
+        }
+
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="CollectionModelBase{T}" /> class.
         /// </summary>
-        /// <param name="items">Collection of REST items.</param>
+        /// <param name="items">The items.</param>
         public CollectionModelBase(IEnumerable<T> items)
         {
             Item = new List<T>(items);
-        }        
-        #endregion
+        }
+
+        #endregion Constructor
     }
 }

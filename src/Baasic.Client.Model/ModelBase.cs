@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Baasic.Client.Model
 {
@@ -13,11 +8,6 @@ namespace Baasic.Client.Model
     public abstract class ModelBase : IModel
     {
         /// <summary>
-        /// Gets or sets the primary key.
-        /// </summary>
-        public object Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the Date created.
         /// </summary>
         public System.DateTime DateCreated { get; set; }
@@ -25,6 +15,11 @@ namespace Baasic.Client.Model
         /// <summary>
         /// Gets or sets the Date updated.
         /// </summary>
-        public System.DateTime DateUpdated { get; set; }        
+        public System.DateTime DateUpdated { get; set; }
+
+        /// <summary>
+        /// Gets or sets the primary key.
+        /// </summary>
+        public object Id { get; set; }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Baasic.Client.Model
 {
@@ -11,15 +7,6 @@ namespace Baasic.Client.Model
     /// </summary>
     public class ValueSet : ModelBase
     {
-        /// <summary>
-        /// Gets or sets the set name.
-        /// </summary>
-        public virtual string Name
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Gets or sets the value set description.
         /// </summary>
@@ -30,8 +17,17 @@ namespace Baasic.Client.Model
         }
 
         /// <summary>
+        /// Gets or sets the set name.
+        /// </summary>
+        public virtual string Name
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the value set items associated with the set.
-        /// </summary>            
+        /// </summary>
         public ValueSetItem[] Values { get; set; }
     }
 }
