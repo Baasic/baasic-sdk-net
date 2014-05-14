@@ -1,15 +1,18 @@
-﻿using System;
+﻿using Baasic.Client.Configuration;
+using Baasic.Client.KeyValueModule;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Net.Http;
 
 namespace Baasic.Client
 {
+    /// <summary>
+    /// Default implementation of <see cref="IDependencyResolver" />.
+    /// </summary>
     public class DefaultDependencyResolver : IDependencyResolver
     {
         private readonly Dictionary<Type, IList<Func<object>>> _resolvers = new Dictionary<Type, IList<Func<object>>>();
-        private readonly HashSet<IDisposable> _trackedDisposables = new HashSet<IDisposable>();
-        private int _disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDependencyResolver" /> class.
@@ -19,6 +22,10 @@ namespace Baasic.Client
             RegisterDefaultServices();
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting
+        /// unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
@@ -47,13 +54,18 @@ namespace Baasic.Client
                 }
                 if (activators.Count > 1)
                 {
-                    throw new InvalidOperationException(String.Format("Multiple Activators Area Registered Call Get Services - {0}", serviceType.FullName));
+                    throw new InvalidOperationException(String.Format("Multiple activators are registered for this call to get service for service type: '{0}'", serviceType.FullName));
                 }
-                return Track(activators[0]);
+                return activators[0].Invoke();
             }
             return null;
         }
 
+        /// <summary>
+        /// Gets the services.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>List of services.</returns>
         public virtual IEnumerable<object> GetServices(Type serviceType)
         {
             IList<Func<object>> activators;
@@ -63,11 +75,16 @@ namespace Baasic.Client
                 {
                     return null;
                 }
-                return activators.Select(Track).ToList();
+                return activators.Select(p => p.Invoke()).ToList();
             }
             return null;
         }
 
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="activator">The activator.</param>
         public virtual void Register(Type serviceType, Func<object> activator)
         {
             IList<Func<object>> activators;
@@ -83,6 +100,12 @@ namespace Baasic.Client
             activators.Add(activator);
         }
 
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="activators">The activators.</param>
+        /// <exception cref="System.ArgumentNullException">activators</exception>
         public virtual void Register(Type serviceType, IEnumerable<Func<object>> activators)
         {
             if (activators == null)
@@ -106,22 +129,17 @@ namespace Baasic.Client
             }
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
+        /// only unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (Interlocked.Exchange(ref _disposed, 1) == 0)
-                {
-                    lock (_trackedDisposables)
-                    {
-                        foreach (var d in _trackedDisposables)
-                        {
-                            d.Dispose();
-                        }
-
-                        _trackedDisposables.Clear();
-                    }
-                }
             }
         }
 
@@ -130,66 +148,10 @@ namespace Baasic.Client
         /// </summary>
         private void RegisterDefaultServices()
         {
-            //var traceManager = new Lazy<TraceManager>(() => new TraceManager());
-            //Register(typeof(ITraceManager), () => traceManager.Value);
-
-            //var serverIdManager = new ServerIdManager();
-            //Register(typeof(IServerIdManager), () => serverIdManager);
-
-            //var serverMessageHandler = new Lazy<IServerCommandHandler>(() => new ServerCommandHandler(this));
-            //Register(typeof(IServerCommandHandler), () => serverMessageHandler.Value);
-
-            //var newMessageBus = new Lazy<IMessageBus>(() => new MessageBus(this));
-            //Register(typeof(IMessageBus), () => newMessageBus.Value);
-
-            //var stringMinifier = new Lazy<IStringMinifier>(() => new StringMinifier());
-            //Register(typeof(IStringMinifier), () => stringMinifier.Value);
-
-            //var jsonSerializer = new Lazy<JsonSerializer>();
-            //Register(typeof(JsonSerializer), () => jsonSerializer.Value);
-
-            //var transportManager = new Lazy<TransportManager>(() => new TransportManager(this));
-            //Register(typeof(ITransportManager), () => transportManager.Value);
-
-            //var configurationManager = new DefaultConfigurationManager();
-            //Register(typeof(IConfigurationManager), () => configurationManager);
-
-            //var transportHeartbeat = new Lazy<TransportHeartbeat>(() => new TransportHeartbeat(this));
-            //Register(typeof(ITransportHeartbeat), () => transportHeartbeat.Value);
-
-            //var connectionManager = new Lazy<ConnectionManager>(() => new ConnectionManager(this));
-            //Register(typeof(IConnectionManager), () => connectionManager.Value);
-
-            //var ackHandler = new Lazy<AckHandler>();
-            //Register(typeof(IAckHandler), () => ackHandler.Value);
-
-            //var perfCounterWriter = new Lazy<PerformanceCounterManager>(() => new PerformanceCounterManager(this));
-            //Register(typeof(IPerformanceCounterManager), () => perfCounterWriter.Value);
-
-            //var userIdProvider = new PrincipalUserIdProvider();
-            //Register(typeof(IUserIdProvider), () => userIdProvider);
-        }
-
-        private object Track(Func<object> creator)
-        {
-            object obj = creator();
-
-            if (_disposed == 0)
-            {
-                var disposable = obj as IDisposable;
-                if (disposable != null)
-                {
-                    lock (_trackedDisposables)
-                    {
-                        if (_disposed == 0)
-                        {
-                            _trackedDisposables.Add(disposable);
-                        }
-                    }
-                }
-            }
-
-            return obj;
+            this.Register<HttpClient>(() => new HttpClient());
+            this.Register<IHttpClientFactory>(() => new HttpClientFactory(this));
+            this.Register<IBaasicClientFactory>(() => new BaasicClientFactory(this));
+            this.Register<IKeyValueClient>(() => new KeyValueClient(this.GetService<IClientConfiguration>(), this.GetService<IBaasicClientFactory>()));
         }
     }
 }

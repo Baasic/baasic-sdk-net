@@ -1,4 +1,4 @@
-﻿using Baasic.Client.Internals;
+﻿using Baasic.Client.Configuration;
 using System;
 
 namespace Baasic.Client
@@ -40,10 +40,13 @@ namespace Baasic.Client
         #region Properties
 
         /// <summary>
-        /// Gets the factory.
+        /// Gets or sets client configuration.
         /// </summary>
-        /// <value>The factory.</value>
-        protected IFactory Factory { get; private set; }
+        public IClientConfiguration Configuration
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets the module relative path.
@@ -57,10 +60,10 @@ namespace Baasic.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientBase" /> class.
         /// </summary>
-        /// <param name="factory">The factory.</param>
-        public ClientBase(IFactory factory)
+        /// <param name="configuration">The configuration.</param>
+        public ClientBase(IClientConfiguration configuration)
         {
-            Factory = factory;
+            Configuration = configuration;
         }
 
         #endregion Constructor

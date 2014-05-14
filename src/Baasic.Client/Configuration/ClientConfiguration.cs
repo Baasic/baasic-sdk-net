@@ -7,47 +7,6 @@ using System.Text;
 namespace Baasic.Client.Configuration
 {
     /// <summary>
-    /// OWIN application start.
-    /// </summary>
-    public class AppStart
-    {
-        /// <summary>
-        /// Application configuration.
-        /// </summary>
-        /// <param name="app">Application builder instance.</param>
-        public void Configuration(IAppBuilder app)
-        {
-            GlobalHost.DependencyResolver = new NinjectSignalRDependencyResolver(System.Net.Http.GlobalConfiguration.Configuration.DependencyResolver);
-
-            // Any connection or hub wire up and configuration should go here
-            app.MapSignalR();
-        }
-
-        /// <summary>
-        /// Ninject SignalR dependency resolver.
-        /// </summary>
-        private class NinjectSignalRDependencyResolver : DefaultDependencyResolver
-        {
-            private readonly System.Web.Http.Dependencies.IDependencyResolver _resolver;
-
-            public NinjectSignalRDependencyResolver(System.Web.Http.Dependencies.IDependencyResolver resolver)
-            {
-                _resolver = resolver;
-            }
-
-            public override object GetService(Type serviceType)
-            {
-                return _resolver.GetService(serviceType) ?? base.GetService(serviceType);
-            }
-
-            public override IEnumerable<object> GetServices(Type serviceType)
-            {
-                return _resolver.GetServices(serviceType).Concat(base.GetServices(serviceType));
-            }
-        }
-    }
-
-    /// <summary>
     /// Client configuration.
     /// </summary>
     public class ClientConfiguration : IClientConfiguration

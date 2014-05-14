@@ -1,5 +1,4 @@
 ﻿using Baasic.Client.Configuration;
-using Baasic.Client.Internals;
 using Newtonsoft.Json;
 using System;
 using System.Net;
@@ -17,30 +16,24 @@ namespace Baasic.Client
     {
         #region Properties
 
-        private IClientConfiguration _configuration = null;
-
         /// <summary>
         /// Gets or sets client configuration.
         /// </summary>
         public IClientConfiguration Configuration
         {
-            get
-            {
-                if (_configuration == null)
-                    _configuration = Factory.CreateClientConfiguration();
-                return _configuration;
-            }
-            set
-            {
-                _configuration = value;
-            }
+            get;
+            set;
         }
 
         /// <summary>
-        /// Gets the factory.
+        /// Gets the HTTP client factory.
         /// </summary>
-        /// <value>The factory.</value>
-        protected IFactory Factory { get; private set; }
+        /// <value>The HTTP client factory.</value>
+        protected IHttpClientFactory HttpClientFactory
+        {
+            get;
+            private set;
+        }
 
         #endregion Properties
 
@@ -49,10 +42,13 @@ namespace Baasic.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="BaasicClient" /> class.
         /// </summary>
-        /// <param name="factory">The factory.</param>
-        public BaasicClient(IFactory factory)
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="httpClientFactory">The HTTP client factory.</param>
+        public BaasicClient(IClientConfiguration configuration,
+            IHttpClientFactory httpClientFactory)
         {
-            Factory = factory;
+            Configuration = configuration;
+            HttpClientFactory = httpClientFactory;
         }
 
         #endregion Constructor
@@ -91,12 +87,11 @@ namespace Baasic.Client
         /// <returns>True if object is deleted, false otherwise.</returns>
         public virtual async Task<bool> DeleteAsync(string requestUri, CancellationToken cancellationToken)
         {
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = HttpClientFactory.Create())
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
                 var response = await client.DeleteAsync(requestUri, cancellationToken);
-                response.EnsureSuccessStatusCode();
                 return response.StatusCode.Equals(HttpStatusCode.OK);
             }
         }
@@ -151,7 +146,7 @@ namespace Baasic.Client
         /// <returns><typeparamref name="T" />.</returns>
         public virtual async Task<T> GetAsync<T>(string requestUri, CancellationToken cancellationToken)
         {
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = HttpClientFactory.Create())
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
@@ -195,7 +190,7 @@ namespace Baasic.Client
         /// <returns>Newly created <typeparamref name="T" />.</returns>
         public virtual async Task<T> PostAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
         {
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = HttpClientFactory.Create())
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
@@ -228,7 +223,7 @@ namespace Baasic.Client
         /// <returns>Updated <typeparamref name="T" />.</returns>
         public virtual async Task<T> PutAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
         {
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = HttpClientFactory.Create())
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
@@ -257,5 +252,68 @@ namespace Baasic.Client
         }
 
         #endregion Methods
+    }
+
+    /// <summary>
+    /// <see cref="IBaasicClient" /> factory.
+    /// </summary>
+    public class BaasicClientFactory : IBaasicClientFactory
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaasicClientFactory" /> class.
+        /// </summary>
+        /// <param name="dependencyResolver">The dependency resolver.</param>
+        public BaasicClientFactory(IDependencyResolver dependencyResolver)
+        {
+            DependencyResolver = dependencyResolver;
+        }
+
+        /// <summary>
+        /// Gets or sets the dependency resolver.
+        /// </summary>
+        /// <value>The dependency resolver.</value>
+        private IDependencyResolver DependencyResolver { get; set; }
+
+        /// <summary>
+        /// Creates the specified Baasic client.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns><see cref="IBaasicClient" /> instance.</returns>
+        public virtual IBaasicClient Create(IClientConfiguration configuration)
+        {
+            IBaasicClient client = DependencyResolver.GetService<IBaasicClient>();
+            client.Configuration = configuration;
+            return client;
+        }
+    }
+
+    /// <summary>
+    /// <see cref="HttpClient" /> factory.
+    /// </summary>
+    public class HttpClientFactory : IHttpClientFactory
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaasicClientFactory" /> class.
+        /// </summary>
+        /// <param name="dependencyResolver">The dependency resolver.</param>
+        public HttpClientFactory(IDependencyResolver dependencyResolver)
+        {
+            DependencyResolver = dependencyResolver;
+        }
+
+        /// <summary>
+        /// Gets or sets the dependency resolver.
+        /// </summary>
+        /// <value>The dependency resolver.</value>
+        private IDependencyResolver DependencyResolver { get; set; }
+
+        /// <summary>
+        /// Creates <see cref="HttpClient" /> instance.
+        /// </summary>
+        /// <returns><see cref="HttpClient" /> instance.</returns>
+        public virtual HttpClient Create()
+        {
+            return DependencyResolver.GetService<HttpClient>();
+        }
     }
 }

@@ -127,4 +127,29 @@ namespace Baasic.Client
 
         #endregion Methods
     }
+
+    /// <summary>
+    /// <see cref="IBaasicClient" /> factory.
+    /// </summary>
+    public interface IBaasicClientFactory
+    {
+        /// <summary>
+        /// Creates the specified Baasic client.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns><see cref="IBaasicClient" /> instance.</returns>
+        IBaasicClient Create(IClientConfiguration configuration);
+    }
+
+    /// <summary>
+    /// <see cref="HttpClient" /> factory.
+    /// </summary>
+    public interface IHttpClientFactory
+    {
+        /// <summary>
+        /// Creates <see cref="HttpClient" /> instance.
+        /// </summary>
+        /// <returns><see cref="HttpClient" /> instance.</returns>
+        HttpClient Create();
+    }
 }
