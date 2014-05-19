@@ -125,6 +125,21 @@ namespace Baasic.Client
         /// <returns>Updated <typeparamref name="T" />.</returns>
         Task<T> PutAsync<T>(string requestUri, T content, CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Asynchronously sends http request.
+        /// </summary>
+        /// <typeparam name="request">Http request.</typeparam>
+        /// <returns>Http respnse message.</returns>
+        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
+
+        /// <summary>
+        /// Asynchronously sends http request.
+        /// </summary>
+        /// <typeparam name="request">Http request.</typeparam>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Http respnse message.</returns>
+        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken);
+
         #endregion Methods
     }
 

@@ -17,13 +17,13 @@ namespace Baasic.Client.TokenHandler
         /// Gets the token from a storage.
         /// </summary>
         /// <returns>Token.</returns>
-        string Get();
+        IAuthenticationToken Get();
 
         /// <summary>
         /// Saves token to storage.
         /// </summary>
         /// <param name="token">Token to save.</param>
         /// <returns>True if token has been saved, false otherwise.</returns>
-        bool Save(string token);
+        bool Save(IAuthenticationToken token);
     }
 }

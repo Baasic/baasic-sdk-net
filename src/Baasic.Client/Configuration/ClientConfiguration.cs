@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Baasic.Client.TokenHandler;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -136,6 +137,15 @@ namespace Baasic.Client.Configuration
         }
 
         /// <summary>
+        /// Token handler.
+        /// </summary>
+        public ITokenHandler TokenHandler
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the version.
         /// </summary>
         /// <value>The version.</value>
@@ -176,15 +186,17 @@ namespace Baasic.Client.Configuration
         /// </summary>
         protected virtual void Initialize()
         {
-            SerializerSettings = new JsonSerializerSettings();
-            SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            SerializerSettings.Converters.Add(new IsoDateTimeConverter());
-            SerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
-            SerializerSettings.NullValueHandling = NullValueHandling.Include;
-            SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
-            SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            this.SerializerSettings = new JsonSerializerSettings();
+            this.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            this.SerializerSettings.Converters.Add(new IsoDateTimeConverter());
+            this.SerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+            this.SerializerSettings.NullValueHandling = NullValueHandling.Include;
+            this.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+            this.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
-            DefaultEncoding = Encoding.UTF8;
+            this.DefaultEncoding = Encoding.UTF8;
+
+            this.TokenHandler = new TokenHandler.DefaultTokenHandler();
         }
 
         #endregion Methods

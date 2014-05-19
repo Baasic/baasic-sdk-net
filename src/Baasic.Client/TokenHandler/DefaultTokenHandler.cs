@@ -9,7 +9,7 @@ namespace Baasic.Client.TokenHandler
     public class DefaultTokenHandler : ITokenHandler
     {
         private static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
-        private static string token = null;
+        private static IAuthenticationToken token = null;
 
         /// <summary>
         /// Clear token storage.
@@ -36,7 +36,7 @@ namespace Baasic.Client.TokenHandler
         /// Gets the token from a storage.
         /// </summary>
         /// <returns>Token.</returns>
-        public virtual string Get()
+        public virtual IAuthenticationToken Get()
         {
             if (rwl.TryEnterReadLock(Timeout.Infinite))
             {
@@ -57,7 +57,7 @@ namespace Baasic.Client.TokenHandler
         /// </summary>
         /// <param name="token">Token to save.</param>
         /// <returns>True if token has been saved, false otherwise.</returns>
-        public virtual bool Save(string token)
+        public virtual bool Save(IAuthenticationToken token)
         {
             if (rwl.TryEnterWriteLock(Timeout.Infinite))
             {

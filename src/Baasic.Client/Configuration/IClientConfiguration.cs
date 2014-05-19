@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Baasic.Client.TokenHandler;
+using Newtonsoft.Json;
 using System;
 using System.Text;
 
@@ -15,7 +16,6 @@ namespace Baasic.Client.Configuration
         string ApplicationIdentifier
         {
             get;
-            set;
         }
 
         /// <summary>
@@ -24,7 +24,6 @@ namespace Baasic.Client.Configuration
         string BaseAddress
         {
             get;
-            set;
         }
 
         /// <summary>
@@ -33,7 +32,6 @@ namespace Baasic.Client.Configuration
         Encoding DefaultEncoding
         {
             get;
-            set;
         }
 
         /// <summary>
@@ -42,7 +40,6 @@ namespace Baasic.Client.Configuration
         string DefaultMediaType
         {
             get;
-            set;
         }
 
         /// <summary>
@@ -51,7 +48,6 @@ namespace Baasic.Client.Configuration
         TimeSpan DefaultTimeout
         {
             get;
-            set;
         }
 
         /// <summary>
@@ -60,7 +56,6 @@ namespace Baasic.Client.Configuration
         string SecureBaseAddress
         {
             get;
-            set;
         }
 
         /// <summary>
@@ -69,7 +64,14 @@ namespace Baasic.Client.Configuration
         JsonSerializerSettings SerializerSettings
         {
             get;
-            set;
+        }
+
+        /// <summary>
+        /// Token handler.
+        /// </summary>
+        ITokenHandler TokenHandler
+        {
+            get;
         }
     }
 }

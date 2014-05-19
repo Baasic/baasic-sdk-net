@@ -35,6 +35,16 @@ namespace Baasic.Client
             private set;
         }
 
+        /// <summary>
+        /// Gets the default serializer.
+        /// </summary>
+        /// <value>Default serializer.</value>
+        protected virtual JsonSerializer Serializer
+        {
+            get;
+            private set;
+        }
+
         #endregion Properties
 
         #region Constructor
@@ -45,10 +55,13 @@ namespace Baasic.Client
         /// <param name="configuration">The configuration.</param>
         /// <param name="httpClientFactory">The HTTP client factory.</param>
         public BaasicClient(IClientConfiguration configuration,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory
+            )
         {
             Configuration = configuration;
             HttpClientFactory = httpClientFactory;
+
+            this.Serializer = JsonSerializer.Create(this.Configuration.SerializerSettings);
         }
 
         #endregion Constructor
@@ -194,10 +207,12 @@ namespace Baasic.Client
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
-                var response = await client.PostAsync(requestUri, CreateStringContent(await JsonConvert.SerializeObjectAsync(content), Configuration.DefaultMediaType), cancellationToken);
+                var response = await client.PostAsync(requestUri, CreateStringContent(await Task.Factory.StartNew(() => JsonConvert.SerializeObject(content)), Configuration.DefaultMediaType), cancellationToken);
                 response.EnsureSuccessStatusCode();
+
                 //TODO: Add HAL Converter
-                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), Configuration.SerializerSettings);
+                var stringContent = await response.Content.ReadAsStringAsync();
+                return await Task.Factory.StartNew<T>(() => JsonConvert.DeserializeObject<T>(stringContent, Configuration.SerializerSettings));
             }
         }
 
@@ -227,10 +242,43 @@ namespace Baasic.Client
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
-                var response = await client.PutAsync(requestUri, CreateStringContent(await JsonConvert.SerializeObjectAsync(content), Configuration.DefaultMediaType), cancellationToken);
+                var response = await client.PutAsync(requestUri, CreateStringContent(await Task.Factory.StartNew(() => JsonConvert.SerializeObject(content)), Configuration.DefaultMediaType), cancellationToken);
+                response.EnsureSuccessStatusCode();
+
+                var reader = new JsonTextReader(new System.IO.StreamReader(await response.Content.ReadAsStreamAsync()));
+
+                return await Task.Factory.StartNew(() => this.Serializer.Deserialize<T>(reader));
+                //TODO: Add HAL Converter
+                //return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), Configuration.SerializerSettings);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously sends http request.
+        /// </summary>
+        /// <typeparam name="request">Http request.</typeparam>
+        /// <returns>Http respnse message.</returns>
+        public virtual Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
+        {
+            return this.SendAsync(request, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Asynchronously sends http request.
+        /// </summary>
+        /// <typeparam name="request">Http request.</typeparam>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Http respnse message.</returns>
+        public virtual async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            using (HttpClient client = HttpClientFactory.Create())
+            {
+                InitializeClient(client, Configuration.DefaultMediaType);
+
+                var response = await client.SendAsync(request, cancellationToken);
                 response.EnsureSuccessStatusCode();
                 //TODO: Add HAL Converter
-                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), Configuration.SerializerSettings);
+                return response;
             }
         }
 
@@ -243,7 +291,13 @@ namespace Baasic.Client
         {
             client.Timeout = Configuration.DefaultTimeout;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mthv));
+
             //TODO: Add authentication header
+            var token = Configuration.TokenHandler.Get();
+            if (token != null && token.IsValid)
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.Scheme, token.Token);
+            }
         }
 
         private string GetApiUrl(bool ssl, string applicationIdentifier, string relativeUrl, params object[] parameters)
