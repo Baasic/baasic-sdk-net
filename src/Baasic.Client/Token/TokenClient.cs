@@ -137,10 +137,10 @@ namespace Baasic.Client.Token
             {
                 var oldToken = this.Configuration.TokenHandler.Get();
 
-                var newToken = await client.PutAsync<Newtonsoft.Json.Linq.JObject>(client.GetApiUrl(true, this.ModuleRelativePath), new Newtonsoft.Json.Linq.JObject(new
+                var newToken = await client.PutAsync<Newtonsoft.Json.Linq.JObject>(client.GetApiUrl(true, this.ModuleRelativePath), Newtonsoft.Json.Linq.JObject.FromObject(new
                 {
-                    Token = oldToken.Token,
-                    Type = oldToken.Scheme
+                    token = oldToken.Token,
+                    type = oldToken.Scheme
                 }));
 
                 var token = this.ReadToken(newToken);

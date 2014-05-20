@@ -1,7 +1,4 @@
 ﻿using Baasic.Client.TokenHandler;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Text;
 
@@ -128,15 +125,6 @@ namespace Baasic.Client.Configuration
         }
 
         /// <summary>
-        /// Gets or sets the serializer settings.
-        /// </summary>
-        public JsonSerializerSettings SerializerSettings
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Token handler.
         /// </summary>
         public ITokenHandler TokenHandler
@@ -186,14 +174,6 @@ namespace Baasic.Client.Configuration
         /// </summary>
         protected virtual void Initialize()
         {
-            this.SerializerSettings = new JsonSerializerSettings();
-            this.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            this.SerializerSettings.Converters.Add(new IsoDateTimeConverter());
-            this.SerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
-            this.SerializerSettings.NullValueHandling = NullValueHandling.Include;
-            this.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
-            this.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-
             this.DefaultEncoding = Encoding.UTF8;
 
             this.TokenHandler = new TokenHandler.DefaultTokenHandler();

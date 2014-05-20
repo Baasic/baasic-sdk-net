@@ -1,5 +1,4 @@
 ﻿using Baasic.Client.TokenHandler;
-using Newtonsoft.Json;
 using System;
 using System.Text;
 
@@ -54,14 +53,6 @@ namespace Baasic.Client.Configuration
         /// Gets or sets server secure base address.
         /// </summary>
         string SecureBaseAddress
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets or sets the serializer settings.
-        /// </summary>
-        JsonSerializerSettings SerializerSettings
         {
             get;
         }
