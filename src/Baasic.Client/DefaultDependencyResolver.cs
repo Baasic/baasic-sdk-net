@@ -1,4 +1,5 @@
 ﻿using Baasic.Client.Configuration;
+using Baasic.Client.Formatters;
 using Baasic.Client.KeyValueModule;
 using System;
 using System.Collections.Generic;
@@ -151,6 +152,7 @@ namespace Baasic.Client
             this.Register<HttpClient>(() => new HttpClient());
             this.Register<IHttpClientFactory>(() => new HttpClientFactory(this));
             this.Register<IBaasicClientFactory>(() => new BaasicClientFactory(this));
+            this.Register<IJsonFormatter>(() => new JsonFormatter());
             this.Register<IKeyValueClient>(() => new KeyValueClient(this.GetService<IClientConfiguration>(), this.GetService<IBaasicClientFactory>()));
         }
     }

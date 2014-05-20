@@ -1,4 +1,5 @@
 ﻿using Baasic.Client.Configuration;
+using Baasic.Client.Formatters;
 using Baasic.Client.TokenHandler;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,12 @@ namespace Baasic.Client.Token
         protected virtual IBaasicClientFactory BaasicClientFactory { get; set; }
 
         /// <summary>
+        /// Gets or sets json formatter.
+        /// </summary>
+        /// <value>Json formatter.</value>
+        protected virtual IJsonFormatter JsonFormatter { get; set; }
+
+        /// <summary>
         /// Gets the module relative path.
         /// </summary>
         protected override string ModuleRelativePath
@@ -37,13 +44,16 @@ namespace Baasic.Client.Token
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="baasicClientFactory">The baasic client factory.</param>
+        /// <param name="jsonFormatter">Json formatter.</param>
         public TokenClient(
             IClientConfiguration configuration,
-            IBaasicClientFactory baasicClientFactory
+            IBaasicClientFactory baasicClientFactory,
+            IJsonFormatter jsonFormatter
             )
             : base(configuration)
         {
             this.BaasicClientFactory = baasicClientFactory;
+            this.JsonFormatter = jsonFormatter;
         }
 
         #endregion Constructor
@@ -60,27 +70,23 @@ namespace Baasic.Client.Token
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(this.ModuleRelativePath))
+                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, this.ModuleRelativePath))
                 {
                     Content = new FormUrlEncodedContent(new KeyValuePair<string, string>[] {
                         new KeyValuePair<string, string>("grant_type", "password"),
                         new KeyValuePair<string, string>("username", username),
-                        new KeyValuePair<string, string>("username", password)
+                        new KeyValuePair<string, string>("password", password)
                     })
                 };
 
                 var response = await client.SendAsync(request);
+                var token = this.ReadToken(await JsonFormatter.DeserializeAsync<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync()));
 
-                var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync());
-
-                var token = new AuthenticationToken()
+                var tokenHandler = this.Configuration.TokenHandler;
+                if (tokenHandler != null)
                 {
-                    ExpirationDate = DateTime.UtcNow.AddSeconds(obj.Property("expires_in").ToObject<long>()),
-                    Scheme = obj.Property("token_type").ToObject<string>(),
-                    Token = obj.Property("access_token").ToObject<string>(),
-                };
-
-                this.Configuration.TokenHandler.Save(token);
+                    tokenHandler.Save(token);
+                }
 
                 return token;
             }
@@ -99,10 +105,25 @@ namespace Baasic.Client.Token
             {
                 var token = this.Configuration.TokenHandler.Get();
 
-                await client.DeleteAsync(client.GetApiUrl(this.ModuleRelativePath));
+                if (token != null)
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Delete, client.GetApiUrl(true, this.ModuleRelativePath))
+                    {
+                        Content = await JsonFormatter.SerializeToHttpContentAsync(new { Type = token.Scheme, Token = token.Token })
+                    };
 
-                return true;
+                    var response = await client.SendAsync(request);
+
+                    var tokenHandler = this.Configuration.TokenHandler;
+                    if (tokenHandler != null)
+                    {
+                        tokenHandler.Clear();
+                    }
+                    return true;
+                }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -116,24 +137,34 @@ namespace Baasic.Client.Token
             {
                 var oldToken = this.Configuration.TokenHandler.Get();
 
-                var newToken = await client.PutAsync<Newtonsoft.Json.Linq.JObject>(client.GetApiUrl(this.ModuleRelativePath), new Newtonsoft.Json.Linq.JObject(new
+                var newToken = await client.PutAsync<Newtonsoft.Json.Linq.JObject>(client.GetApiUrl(true, this.ModuleRelativePath), new Newtonsoft.Json.Linq.JObject(new
                 {
-                    Token = oldToken.Token
+                    Token = oldToken.Token,
+                    Type = oldToken.Scheme
                 }));
 
-                var token = new AuthenticationToken()
-                {
-                    ExpirationDate = DateTime.UtcNow.AddSeconds(newToken.Property("expires_in").ToObject<long>()),
-                    Scheme = newToken.Property("token_type").ToObject<string>(),
-                    Token = newToken.Property("access_token").ToObject<string>(),
-                };
+                var token = this.ReadToken(newToken);
 
-                this.Configuration.TokenHandler.Save(token);
+                var tokenHandler = this.Configuration.TokenHandler;
+                if (tokenHandler != null)
+                {
+                    tokenHandler.Save(token);
+                }
 
                 return token;
             }
         }
 
         #endregion Methods
+
+        private IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
+        {
+            return new AuthenticationToken()
+            {
+                ExpirationDate = DateTime.UtcNow.AddSeconds(rawToken.Property("expires_in").ToObject<long>()),
+                Scheme = rawToken.Property("token_type").ToObject<string>(),
+                Token = rawToken.Property("access_token").ToObject<string>(),
+            };
+        }
     }
 }

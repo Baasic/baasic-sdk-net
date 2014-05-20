@@ -19,7 +19,7 @@ namespace Baasic.Client.TokenHandler
         {
             get
             {
-                return this.ExpirationDate < DateTime.UtcNow;
+                return this.ExpirationDate >= DateTime.UtcNow;
             }
         }
 

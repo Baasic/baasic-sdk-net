@@ -1,5 +1,5 @@
 ﻿using Baasic.Client.Configuration;
-using Newtonsoft.Json;
+using Baasic.Client.Formatters;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -39,7 +39,7 @@ namespace Baasic.Client
         /// Gets the default serializer.
         /// </summary>
         /// <value>Default serializer.</value>
-        protected virtual JsonSerializer Serializer
+        protected virtual IJsonFormatter JsonFormatter
         {
             get;
             private set;
@@ -54,33 +54,20 @@ namespace Baasic.Client
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="httpClientFactory">The HTTP client factory.</param>
+        /// <param name="jsonFormatter">Json formatter.</param>
         public BaasicClient(IClientConfiguration configuration,
-            IHttpClientFactory httpClientFactory
+            IHttpClientFactory httpClientFactory,
+            IJsonFormatter jsonFormatter
             )
         {
-            Configuration = configuration;
-            HttpClientFactory = httpClientFactory;
-
-            this.Serializer = JsonSerializer.Create(this.Configuration.SerializerSettings);
+            this.Configuration = configuration;
+            this.HttpClientFactory = httpClientFactory;
+            this.JsonFormatter = jsonFormatter;
         }
 
         #endregion Constructor
 
         #region Methods
-
-        /// <summary>
-        /// Create string content.
-        /// </summary>
-        /// <param name="data">Data.</param>
-        /// <param name="mthv">Media type.</param>
-        /// <returns>String content.</returns>
-        public StringContent CreateStringContent(string data, string mthv)
-        {
-            var result = new StringContent(data, Configuration.DefaultEncoding, mthv);
-            //TODO: Add authentication header
-            //result.Headers
-            return result;
-        }
 
         /// <summary>
         /// Asynchronously deletes the object from the system.
@@ -124,7 +111,7 @@ namespace Baasic.Client
         /// <returns></returns>
         public string GetApiUrl(string relativeUrl, params object[] parameters)
         {
-            return GetApiUrl(false, Configuration.ApplicationIdentifier, relativeUrl, parameters);
+            return GetApiUrl(false, relativeUrl, parameters);
         }
 
         /// <summary>
@@ -136,7 +123,7 @@ namespace Baasic.Client
         /// <returns></returns>
         public string GetApiUrl(bool ssl, string relativeUrl, params object[] parameters)
         {
-            return String.Format("{0}/{1}", ssl ? Configuration.SecureBaseAddress.TrimEnd('/') : Configuration.BaseAddress.TrimEnd('/'), String.Format(relativeUrl, parameters));
+            return String.Format("{0}/{1}", ssl ? Configuration.SecureBaseAddress.TrimEnd('/') : Configuration.BaseAddress.TrimEnd('/'), String.Format(this.Configuration.ApplicationIdentifier.TrimEnd('/') + "/" + relativeUrl, parameters));
         }
 
         /// <summary>
@@ -166,7 +153,7 @@ namespace Baasic.Client
                 var response = await client.GetAsync(requestUri, cancellationToken);
                 response.EnsureSuccessStatusCode();
                 //TODO: Add HAL Converter
-                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+                return await this.JsonFormatter.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync());
             }
         }
 
@@ -207,12 +194,11 @@ namespace Baasic.Client
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
-                var response = await client.PostAsync(requestUri, CreateStringContent(await Task.Factory.StartNew(() => JsonConvert.SerializeObject(content)), Configuration.DefaultMediaType), cancellationToken);
+                var response = await client.PostAsync(requestUri, await JsonFormatter.SerializeToHttpContentAsync(content), cancellationToken);
                 response.EnsureSuccessStatusCode();
 
                 //TODO: Add HAL Converter
-                var stringContent = await response.Content.ReadAsStringAsync();
-                return await Task.Factory.StartNew<T>(() => JsonConvert.DeserializeObject<T>(stringContent, Configuration.SerializerSettings));
+                return await JsonFormatter.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync());
             }
         }
 
@@ -242,14 +228,10 @@ namespace Baasic.Client
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
-                var response = await client.PutAsync(requestUri, CreateStringContent(await Task.Factory.StartNew(() => JsonConvert.SerializeObject(content)), Configuration.DefaultMediaType), cancellationToken);
+                var response = await client.PutAsync(requestUri, await JsonFormatter.SerializeToHttpContentAsync(content), cancellationToken);
                 response.EnsureSuccessStatusCode();
 
-                var reader = new JsonTextReader(new System.IO.StreamReader(await response.Content.ReadAsStreamAsync()));
-
-                return await Task.Factory.StartNew(() => this.Serializer.Deserialize<T>(reader));
-                //TODO: Add HAL Converter
-                //return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), Configuration.SerializerSettings);
+                return await JsonFormatter.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync());
             }
         }
 
@@ -293,16 +275,15 @@ namespace Baasic.Client
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mthv));
 
             //TODO: Add authentication header
-            var token = Configuration.TokenHandler.Get();
-            if (token != null && token.IsValid)
+            var tokenHandler = this.Configuration.TokenHandler;
+            if (tokenHandler != null)
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.Scheme, token.Token);
+                var token = tokenHandler.Get();
+                if (token != null && token.IsValid)
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.Scheme, token.Token);
+                }
             }
-        }
-
-        private string GetApiUrl(bool ssl, string applicationIdentifier, string relativeUrl, params object[] parameters)
-        {
-            return GetApiUrl(ssl, applicationIdentifier.TrimEnd('/') + "/" + relativeUrl, parameters);
         }
 
         #endregion Methods

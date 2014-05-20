@@ -1,4 +1,5 @@
 ﻿using Baasic.Client.Configuration;
+using Baasic.Client.Formatters;
 using FluentAssertions;
 using Moq;
 using Moq.Protected;
@@ -19,24 +20,10 @@ namespace Baasic.Client.Tests
             Mock<IDependencyResolver> dependencyResolver = new Mock<IDependencyResolver>();
             Mock<IClientConfiguration> clientConfiguration = new Mock<IClientConfiguration>();
             Mock<HttpClientFactory> httpClientFactory = new Mock<HttpClientFactory>(dependencyResolver.Object);
+            var jsonFormatter = new JsonFormatter();
 
-            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object);
+            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object, jsonFormatter);
             target.Should().NotBeNull();
-        }
-
-        [Fact()]
-        public void BaasicClient_CreateStringContentTest()
-        {
-            Mock<IDependencyResolver> dependencyResolver = new Mock<IDependencyResolver>();
-            Mock<HttpClientFactory> httpClientFactory = new Mock<HttpClientFactory>(dependencyResolver.Object);
-            Mock<IClientConfiguration> clientConfiguration = new Mock<IClientConfiguration>();
-            clientConfiguration.Setup(p => p.DefaultEncoding).Returns(System.Text.Encoding.UTF8);
-
-            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object);
-            target.Should().NotBeNull();
-
-            var expected = target.CreateStringContent("Data", ClientConfiguration.HalJsonMediaType);
-            expected.Should().NotBeNull();
         }
 
         [Fact()]
@@ -66,7 +53,9 @@ namespace Baasic.Client.Tests
             clientConfiguration.Setup(p => p.SecureBaseAddress).Returns("https://api.baasic.com/v1");
             clientConfiguration.Setup(p => p.BaseAddress).Returns("http://api.baasic.com/v1");
 
-            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object);
+            var jsonFormatter = new JsonFormatter();
+
+            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object, jsonFormatter);
             target.Should().NotBeNull();
 
             var expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 0));
@@ -103,7 +92,9 @@ namespace Baasic.Client.Tests
             clientConfiguration.Setup(p => p.SecureBaseAddress).Returns("https://api.baasic.com/v1");
             clientConfiguration.Setup(p => p.BaseAddress).Returns("http://api.baasic.com/v1");
 
-            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object);
+            var jsonFormatter = new JsonFormatter();
+
+            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object, jsonFormatter);
             target.Should().NotBeNull();
 
             var expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 0), new CancellationToken());
@@ -136,7 +127,9 @@ namespace Baasic.Client.Tests
             clientConfiguration.Setup(p => p.SecureBaseAddress).Returns("https://api.baasic.com/v1");
             clientConfiguration.Setup(p => p.BaseAddress).Returns("http://api.baasic.com/v1");
 
-            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object);
+            var jsonFormatter = new JsonFormatter();
+
+            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object, jsonFormatter);
             target.Should().NotBeNull();
 
             Action execute = () => target.Dispose();

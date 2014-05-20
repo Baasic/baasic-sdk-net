@@ -23,14 +23,6 @@ namespace Baasic.Client
         #region Methods
 
         /// <summary>
-        /// Create string content.
-        /// </summary>
-        /// <param name="data">Data.</param>
-        /// <param name="mthv">Media type.</param>
-        /// <returns>String content.</returns>
-        StringContent CreateStringContent(string data, string mthv);
-
-        /// <summary>
         /// Asynchronously deletes the object from the system.
         /// </summary>
         /// <param name="requestUri">Request URI.</param>
