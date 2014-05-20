@@ -123,13 +123,24 @@ namespace Baasic.Client.Formatters
         /// </summary>
         /// <param name="obj">Object to serialize.</param>
         /// <returns>HttpContent.</returns>
-        public async Task<HttpContent> SerializeToHttpContentAsync(object obj)
+        public Task<HttpContent> SerializeToHttpContentAsync(object obj)
         {
-            return new StringContent(
-                await this.SerializeAsync(obj),
-                this.defaultEncoding,
-                "application/json"
+            var content = new PushStreamContent((stream, httpContent, transportContext) =>
+                Task.Run(() =>
+                {
+                    using (var writer = new StreamWriter(stream, defaultEncoding))
+                    {
+                        this.serializer.Serialize(writer, obj);
+                    }
+                })
             );
+
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json")
+            {
+                CharSet = defaultEncoding.WebName
+            };
+
+            return Task.FromResult<HttpContent>(content);
         }
     }
 }
