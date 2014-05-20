@@ -80,7 +80,7 @@ namespace Baasic.Client.Token
                 };
 
                 var response = await client.SendAsync(request);
-                var token = this.ReadToken(await JsonFormatter.DeserializeAsync<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync()));
+                var token = this.ReadToken(JsonFormatter.Deserialize<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync()));
 
                 var tokenHandler = this.Configuration.TokenHandler;
                 if (tokenHandler != null)
@@ -109,7 +109,7 @@ namespace Baasic.Client.Token
                 {
                     var request = new HttpRequestMessage(HttpMethod.Delete, client.GetApiUrl(true, this.ModuleRelativePath))
                     {
-                        Content = await JsonFormatter.SerializeToHttpContentAsync(new { Type = token.Scheme, Token = token.Token })
+                        Content = JsonFormatter.SerializeToHttpContent(new { Type = token.Scheme, Token = token.Token })
                     };
 
                     var response = await client.SendAsync(request);

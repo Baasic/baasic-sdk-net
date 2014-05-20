@@ -153,7 +153,7 @@ namespace Baasic.Client
                 var response = await client.GetAsync(requestUri, cancellationToken);
                 response.EnsureSuccessStatusCode();
                 //TODO: Add HAL Converter
-                return await this.JsonFormatter.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync());
+                return this.JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
             }
         }
 
@@ -194,11 +194,11 @@ namespace Baasic.Client
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
-                var response = await client.PostAsync(requestUri, await JsonFormatter.SerializeToHttpContentAsync(content), cancellationToken);
+                var response = await client.PostAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
                 response.EnsureSuccessStatusCode();
 
                 //TODO: Add HAL Converter
-                return await JsonFormatter.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync());
+                return JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
             }
         }
 
@@ -228,10 +228,10 @@ namespace Baasic.Client
             {
                 InitializeClient(client, Configuration.DefaultMediaType);
 
-                var response = await client.PutAsync(requestUri, await JsonFormatter.SerializeToHttpContentAsync(content), cancellationToken);
+                var response = await client.PutAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
                 response.EnsureSuccessStatusCode();
 
-                return await JsonFormatter.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync());
+                return JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
             }
         }
 

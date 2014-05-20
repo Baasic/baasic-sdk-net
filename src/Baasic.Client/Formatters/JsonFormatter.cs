@@ -5,7 +5,6 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Baasic.Client.Formatters
 {
@@ -37,43 +36,37 @@ namespace Baasic.Client.Formatters
         }
 
         /// <summary>
-        /// Deserilzes object from stream.
-        /// </summary>
-        /// <typeparam name="T">Type of object.</typeparam>
-        /// <param name="stream">Stream to read from.</param>
-        /// <returns>Object.</returns>
-        public Task<T> DeserializeAsync<T>(Stream stream)
-        {
-            return Task.Run(() =>
-            {
-                using (var streamReader = new StreamReader(stream))
-                {
-                    using (var reader = new JsonTextReader(streamReader))
-                    {
-                        return serializer.Deserialize<T>(reader);
-                    }
-                }
-            });
-        }
-
-        /// <summary>
         /// Deserilzes object from JSON string.
         /// </summary>
         /// <typeparam name="T">Type of object.</typeparam>
         /// <param name="value">Serialized string.</param>
         /// <returns>Object.</returns>
-        public Task<T> DeserializeAsync<T>(string value)
+        public T Deserialize<T>(string value)
         {
-            return Task.Run(() =>
+            using (var strReader = new StringReader(value))
             {
-                using (var strReader = new StringReader(value))
+                using (var reader = new JsonTextReader(strReader))
                 {
-                    using (var reader = new JsonTextReader(strReader))
-                    {
-                        return serializer.Deserialize<T>(reader);
-                    }
+                    return serializer.Deserialize<T>(reader);
                 }
-            });
+            }
+        }
+
+        /// <summary>
+        /// Deserilzes object from stream.
+        /// </summary>
+        /// <typeparam name="T">Type of object.</typeparam>
+        /// <param name="stream">Stream to read from.</param>
+        /// <returns>Object.</returns>
+        public T Deserialize<T>(Stream stream)
+        {
+            using (var streamReader = new StreamReader(stream))
+            {
+                using (var reader = new JsonTextReader(streamReader))
+                {
+                    return serializer.Deserialize<T>(reader);
+                }
+            }
         }
 
         /// <summary>
@@ -81,22 +74,19 @@ namespace Baasic.Client.Formatters
         /// </summary>
         /// <param name="obj">Object to serialize.</param>
         /// <returns>Serialized JSON string.</returns>
-        public Task<string> SerializeAsync(object obj)
+        public string Serialize(object obj)
         {
-            return Task.Run(() =>
+            var sb = new StringBuilder();
+            using (var strWriter = new StringWriter(sb))
             {
-                var sb = new StringBuilder();
-                using (var strWriter = new StringWriter(sb))
+                using (var jsonWriter = new JsonTextWriter(strWriter))
                 {
-                    using (var jsonWriter = new JsonTextWriter(strWriter))
-                    {
-                        serializer.Serialize(jsonWriter, obj);
-                        jsonWriter.Flush();
+                    serializer.Serialize(jsonWriter, obj);
+                    jsonWriter.Flush();
 
-                        return sb.ToString();
-                    }
+                    return sb.ToString();
                 }
-            });
+            }
         }
 
         /// <summary>
@@ -104,18 +94,15 @@ namespace Baasic.Client.Formatters
         /// </summary>
         /// <param name="obj">Object to serialize.</param>
         /// <param name="stream">Stream to write to.</param>
-        public Task SerializeAsync(object obj, Stream stream)
+        public void Serialize(object obj, Stream stream)
         {
-            return Task.Run(() =>
+            using (var strWriter = new StreamWriter(stream))
             {
-                using (var strWriter = new StreamWriter(stream))
+                using (var jsonWriter = new JsonTextWriter(strWriter))
                 {
-                    using (var jsonWriter = new JsonTextWriter(strWriter))
-                    {
-                        serializer.Serialize(jsonWriter, obj);
-                    }
+                    serializer.Serialize(jsonWriter, obj);
                 }
-            });
+            }
         }
 
         /// <summary>
@@ -123,16 +110,15 @@ namespace Baasic.Client.Formatters
         /// </summary>
         /// <param name="obj">Object to serialize.</param>
         /// <returns>HttpContent.</returns>
-        public Task<HttpContent> SerializeToHttpContentAsync(object obj)
+        public HttpContent SerializeToHttpContent(object obj)
         {
             var content = new PushStreamContent((stream, httpContent, transportContext) =>
-                Task.Run(() =>
                 {
                     using (var writer = new StreamWriter(stream, defaultEncoding))
                     {
                         this.serializer.Serialize(writer, obj);
                     }
-                })
+                }
             );
 
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json")
@@ -140,7 +126,7 @@ namespace Baasic.Client.Formatters
                 CharSet = defaultEncoding.WebName
             };
 
-            return Task.FromResult<HttpContent>(content);
+            return content;
         }
     }
 }

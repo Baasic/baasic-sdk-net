@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Baasic.Client.Formatters
 {
@@ -11,40 +10,40 @@ namespace Baasic.Client.Formatters
     public interface IJsonFormatter
     {
         /// <summary>
-        /// Deserilzes object from stream.
-        /// </summary>
-        /// <typeparam name="T">Type of object.</typeparam>
-        /// <param name="stream">Stream to read from.</param>
-        /// <returns>Object.</returns>
-        Task<T> DeserializeAsync<T>(Stream stream);
-
-        /// <summary>
         /// Deserilzes object from JSON string.
         /// </summary>
         /// <typeparam name="T">Type of object.</typeparam>
         /// <param name="value">Serialized string.</param>
         /// <returns>Object.</returns>
-        Task<T> DeserializeAsync<T>(string value);
+        T Deserialize<T>(string value);
+
+        /// <summary>
+        /// Deserilzes object from stream.
+        /// </summary>
+        /// <typeparam name="T">Type of object.</typeparam>
+        /// <param name="stream">Stream to read from.</param>
+        /// <returns>Object.</returns>
+        T Deserialize<T>(Stream stream);
 
         /// <summary>
         /// Serializes object to JSON string.
         /// </summary>
         /// <param name="obj">Object to serialize.</param>
         /// <returns>Serialized JSON string.</returns>
-        Task<string> SerializeAsync(object obj);
+        string Serialize(object obj);
 
         /// <summary>
         /// Serializes object to stream.
         /// </summary>
         /// <param name="obj">Object to serialize.</param>
         /// <param name="stream">Stream to write to.</param>
-        Task SerializeAsync(object obj, Stream stream);
+        void Serialize(object obj, Stream stream);
 
         /// <summary>
         /// Creates HttpContent from object.
         /// </summary>
         /// <param name="obj">Object to serialize.</param>
         /// <returns>HttpContent.</returns>
-        Task<HttpContent> SerializeToHttpContentAsync(object obj);
+        HttpContent SerializeToHttpContent(object obj);
     }
 }
