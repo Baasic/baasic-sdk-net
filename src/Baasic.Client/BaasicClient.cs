@@ -153,7 +153,8 @@ namespace Baasic.Client
                 var response = await client.GetAsync(requestUri, cancellationToken);
                 response.EnsureSuccessStatusCode();
                 //TODO: Add HAL Converter
-                return this.JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
+
+                return await ReturnContentAsync<T>(response);
             }
         }
 
@@ -198,7 +199,7 @@ namespace Baasic.Client
                 response.EnsureSuccessStatusCode();
 
                 //TODO: Add HAL Converter
-                return JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
+                return await ReturnContentAsync<T>(response);
             }
         }
 
@@ -231,7 +232,7 @@ namespace Baasic.Client
                 var response = await client.PutAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
                 response.EnsureSuccessStatusCode();
 
-                return JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
+                return await ReturnContentAsync<T>(response);
             }
         }
 
@@ -283,6 +284,24 @@ namespace Baasic.Client
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.Scheme, token.Token);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Returns deserialized content from response.
+        /// </summary>
+        /// <typeparam name="T">Resource type.</typeparam>
+        /// <param name="response">Http response.</param>
+        /// <returns>Resource.</returns>
+        protected virtual async Task<T> ReturnContentAsync<T>(HttpResponseMessage response)
+        {
+            if (response.Content != null && response.Content.Headers.ContentLength > 0)
+            {
+                return JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
+            }
+            else
+            {
+                return default(T);
             }
         }
 

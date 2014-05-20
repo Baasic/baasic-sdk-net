@@ -1,5 +1,6 @@
 ﻿using Baasic.Client.Configuration;
 using Baasic.Client.Formatters;
+using Baasic.Client.TokenHandler;
 using FluentAssertions;
 using Moq;
 using Moq.Protected;
@@ -14,6 +15,54 @@ namespace Baasic.Client.Tests
 {
     public class BaasicClientTests
     {
+        [Fact()]
+        public async Task BaasicClient_attach_authentication_token()
+        {
+            var handler = new Mock<HttpMessageHandler>();
+            handler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).Returns((HttpRequestMessage request, CancellationToken cancellationToken) =>
+            {
+                var authorizationHeader = request.Headers.Authorization;
+                authorizationHeader.Should().NotBeNull();
+                authorizationHeader.Scheme.Should().Be("bearer");
+                authorizationHeader.Parameter.Should().Be("testToken");
+
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
+            });
+
+            Mock<HttpClientFactory> httpClientFactory = new Mock<HttpClientFactory>(new Mock<IDependencyResolver>().Object);
+            httpClientFactory.Setup(p => p.Create()).Returns(() =>
+            {
+                return new HttpClient(handler.Object);
+            });
+
+            Mock<IClientConfiguration> clientConfiguration = new Mock<IClientConfiguration>();
+            clientConfiguration.Setup(p => p.DefaultMediaType).Returns(ClientConfiguration.HalJsonMediaType);
+            clientConfiguration.Setup(p => p.DefaultTimeout).Returns(TimeSpan.FromSeconds(1));
+            clientConfiguration.Setup(p => p.ApplicationIdentifier).Returns("Test");
+            clientConfiguration.Setup(p => p.SecureBaseAddress).Returns("https://api.baasic.com/v1");
+            clientConfiguration.Setup(p => p.BaseAddress).Returns("http://api.baasic.com/v1");
+
+            var mockTokenHandler = new Mock<ITokenHandler>();
+            mockTokenHandler.Setup(h => h.Get()).Returns(new AuthenticationToken()
+            {
+                ExpirationDate = DateTime.UtcNow.AddDays(1),
+                Scheme = "bearer",
+                Token = "testToken"
+            });
+
+            clientConfiguration.Setup(p => p.TokenHandler).Returns(mockTokenHandler.Object);
+
+            BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object, new JsonFormatter());
+
+            var requestUrl = target.GetApiUrl("anyRequest");
+
+            await target.GetAsync<object>(requestUrl);
+            await target.PostAsync<object>(requestUrl, new object());
+            await target.PutAsync<object>(requestUrl, new object());
+            await target.DeleteAsync(requestUrl);
+            await target.SendAsync(new HttpRequestMessage(HttpMethod.Get, requestUrl));
+        }
+
         [Fact()]
         public void BaasicClient_BaasicClientTest()
         {
