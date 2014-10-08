@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
-namespace Baasic.Client
+namespace Baasic.Client.Utility
 {
     /// <summary>
     /// URL builder utility class used for URL manipulations.
@@ -75,7 +74,7 @@ namespace Baasic.Client
         #region Constructor overloads
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UrlBuilder" /> class.
+        /// Initializes a new instance of the <see cref="UrlBuilder"/> class.
         /// </summary>
         public UrlBuilder()
             : base()
@@ -83,7 +82,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UrlBuilder" /> class.
+        /// Initializes a new instance of the <see cref="UrlBuilder"/> class.
         /// </summary>
         /// <param name="uri">A URI string.</param>
         public UrlBuilder(string uri)
@@ -93,9 +92,9 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UrlBuilder" /> class.
+        /// Initializes a new instance of the <see cref="UrlBuilder"/> class.
         /// </summary>
-        /// <param name="uri">An instance of the <see cref="T:System.Uri" /> class.</param>
+        /// <param name="uri">An instance of the <see cref="T:System.Uri"/> class.</param>
         public UrlBuilder(Uri uri)
             : base(uri)
         {
@@ -103,7 +102,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UrlBuilder" /> class.
+        /// Initializes a new instance of the <see cref="UrlBuilder"/> class.
         /// </summary>
         /// <param name="schemeName">An Internet access protocol.</param>
         /// <param name="hostName">A DNS-style domain name or IP address.</param>
@@ -113,7 +112,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UrlBuilder" /> class.
+        /// Initializes a new instance of the <see cref="UrlBuilder"/> class.
         /// </summary>
         /// <param name="scheme">An Internet access protocol.</param>
         /// <param name="host">A DNS-style domain name or IP address.</param>
@@ -124,7 +123,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UrlBuilder" /> class.
+        /// Initializes a new instance of the <see cref="UrlBuilder"/> class.
         /// </summary>
         /// <param name="scheme">An Internet access protocol.</param>
         /// <param name="host">A DNS-style domain name or IP address.</param>
@@ -136,7 +135,7 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UrlBuilder" /> class.
+        /// Initializes a new instance of the <see cref="UrlBuilder"/> class.
         /// </summary>
         /// <param name="scheme">An Internet access protocol.</param>
         /// <param name="host">A DNS-style domain name or IP address.</param>

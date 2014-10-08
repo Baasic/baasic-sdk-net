@@ -1,4 +1,5 @@
 ﻿using Baasic.Client.Configuration;
+using Baasic.Client.Utility;
 using System;
 
 namespace Baasic.Client
@@ -11,27 +12,32 @@ namespace Baasic.Client
         #region Fields
 
         /// <summary>
-        /// Default embed. <para> Default value is <see cref="String.Empty" />. </para>
+        /// Default embed.
+        /// <para>Default value is <see cref="String.Empty"/> .</para>
         /// </summary>
         public const string DefaultEmbed = "";
 
         /// <summary>
-        /// Default page. <para> Default value is 1. </para>
+        /// Default page.
+        /// <para>Default value is 1.</para>
         /// </summary>
         public const int DefaultPage = 1;
 
         /// <summary>
-        /// Default search query. <para> Default value is <see cref="String.Empty" />. </para>
+        /// Default search query.
+        /// <para>Default value is <see cref="String.Empty"/> .</para>
         /// </summary>
         public const string DefaultSearchQuery = "";
 
         /// <summary>
-        /// Default sorting. <para> Default value is <see cref="String.Empty" />. </para>
+        /// Default sorting.
+        /// <para>Default value is <see cref="String.Empty"/> .</para>
         /// </summary>
         public const string DefaultSorting = "";
 
         /// <summary>
-        /// Maximum number of results. <para> Default value is 100. </para>
+        /// Maximum number of results.
+        /// <para>Default value is 100.</para>
         /// </summary>
         public const int MaxNumberOfResults = 10;
 
@@ -58,7 +64,7 @@ namespace Baasic.Client
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientBase" /> class.
+        /// Initializes a new instance of the <see cref="ClientBase"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         public ClientBase(IClientConfiguration configuration)

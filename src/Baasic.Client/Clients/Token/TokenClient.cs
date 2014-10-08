@@ -22,9 +22,9 @@ namespace Baasic.Client.Token
         protected virtual IBaasicClientFactory BaasicClientFactory { get; set; }
 
         /// <summary>
-        /// Gets or sets json formatter.
+        /// Gets or sets JSON formatter.
         /// </summary>
-        /// <value>Json formatter.</value>
+        /// <value>JSON formatter.</value>
         protected virtual IJsonFormatter JsonFormatter { get; set; }
 
         /// <summary>
@@ -40,11 +40,11 @@ namespace Baasic.Client.Token
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="KeyValueClient" /> class.
+        /// Initializes a new instance of the <see cref="KeyValueClient"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="baasicClientFactory">The baasic client factory.</param>
-        /// <param name="jsonFormatter">Json formatter.</param>
+        /// <param name="jsonFormatter">JSON formatter.</param>
         public TokenClient(
             IClientConfiguration configuration,
             IBaasicClientFactory baasicClientFactory,
@@ -61,11 +61,11 @@ namespace Baasic.Client.Token
         #region Methods
 
         /// <summary>
-        /// Asynchronously creates new <see cref="IAuthenticationToken" /> for specified used.
+        /// Asynchronously creates new <see cref="IAuthenticationToken"/> for specified used.
         /// </summary>
         /// <param name="username">Username.</param>
         /// <param name="password">Password.</param>
-        /// <returns>New <see cref="IAuthenticationToken" />.</returns>
+        /// <returns>New <see cref="IAuthenticationToken"/> .</returns>
         public async Task<IAuthenticationToken> CreateAsync(string username, string password)
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
@@ -93,12 +93,10 @@ namespace Baasic.Client.Token
         }
 
         /// <summary>
-        /// Asynchronously destroys the <see cref="IAuthenticationToken" />.
+        /// Asynchronously destroys the <see cref="IAuthenticationToken"/> .
         /// </summary>
         /// <param name="token">Token to destroy.</param>
-        /// <returns>
-        /// True if <see cref="IAuthenticationToken" /> is destoyed, false otherwise.
-        /// </returns>
+        /// <returns>True if <see cref="IAuthenticationToken"/> is destroyed, false otherwise.</returns>
         public async Task<bool> DestroyAsync()
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
@@ -127,10 +125,10 @@ namespace Baasic.Client.Token
         }
 
         /// <summary>
-        /// Asynchronously refreshes the <see cref="IAuthenticationToken" />.
+        /// Asynchronously refreshes the <see cref="IAuthenticationToken"/> .
         /// </summary>
         /// <param name="token">Token to update.</param>
-        /// <returns>New <see cref="IAuthenticationToken" />.</returns>
+        /// <returns>New <see cref="IAuthenticationToken"/> .</returns>
         public async Task<IAuthenticationToken> RefreshAsync()
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
@@ -155,8 +153,6 @@ namespace Baasic.Client.Token
             }
         }
 
-        #endregion Methods
-
         private IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
         {
             return new AuthenticationToken()
@@ -166,5 +162,7 @@ namespace Baasic.Client.Token
                 Token = rawToken.Property("access_token").ToObject<string>(),
             };
         }
+
+        #endregion Methods
     }
 }

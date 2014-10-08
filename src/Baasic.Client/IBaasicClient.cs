@@ -55,20 +55,20 @@ namespace Baasic.Client
         string GetApiUrl(bool ssl, string relativeUrl, params object[] parameters);
 
         /// <summary>
-        /// Asynchronously gets the <typeparamref name="T" /> from the system.
+        /// Asynchronously gets the <typeparamref name="T"/> from the system.
         /// </summary>
         /// <typeparam name="T">Object type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
-        /// <returns><typeparamref name="T" />.</returns>
+        /// <returns><typeparamref name="T"/> .</returns>
         Task<T> GetAsync<T>(string requestUri);
 
         /// <summary>
-        /// Asynchronously gets the <typeparamref name="T" /> from the system.
+        /// Asynchronously gets the <typeparamref name="T"/> from the system.
         /// </summary>
         /// <typeparam name="T">Object type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns><typeparamref name="T" />.</returns>
+        /// <returns><typeparamref name="T"/> .</returns>
         Task<T> GetAsync<T>(string requestUri, CancellationToken cancellationToken);
 
         /// <summary>
@@ -80,83 +80,66 @@ namespace Baasic.Client
         string GetSecureApiUrl(string relativeUrl, params object[] parameters);
 
         /// <summary>
-        /// Asynchronously insert the <typeparamref name="T" /> into the system.
+        /// Asynchronously insert the <typeparamref name="T"/> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Newly created <typeparamref name="T" />.</returns>
+        /// <returns>Newly created <typeparamref name="T"/> .</returns>
         Task<T> PostAsync<T>(string requestUri, T content);
 
         /// <summary>
-        /// Asynchronously insert the <typeparamref name="T" /> into the system.
+        /// Asynchronously insert the <typeparamref name="T"/> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Newly created <typeparamref name="T" />.</returns>
+        /// <returns>Newly created <typeparamref name="T"/> .</returns>
         Task<T> PostAsync<T>(string requestUri, T content, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Asynchronously update the <typeparamref name="T" /> in the system.
+        /// Asynchronously update the <typeparamref name="T"/> in the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Updated <typeparamref name="T" />.</returns>
+        /// <returns>Updated <typeparamref name="T"/> .</returns>
         Task<T> PutAsync<T>(string requestUri, T content);
 
         /// <summary>
-        /// Asynchronously update the <typeparamref name="T" /> in the system.
+        /// Asynchronously update the <typeparamref name="T"/> in the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Updated <typeparamref name="T" />.</returns>
+        /// <returns>Updated <typeparamref name="T"/> .</returns>
         Task<T> PutAsync<T>(string requestUri, T content, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Asynchronously sends http request.
+        /// Returns deserialized content from response.
         /// </summary>
-        /// <typeparam name="request">Http request.</typeparam>
-        /// <returns>Http respnse message.</returns>
+        /// <typeparam name="T">Resource type.</typeparam>
+        /// <param name="response">HTTP response.</param>
+        /// <returns><typeparamref name="T"/> Resource.</returns>
+        Task<T> ReadContentAsync<T>(HttpResponseMessage response);
+
+        /// <summary>
+        /// Asynchronously sends HTTP request.
+        /// </summary>
+        /// <typeparam name="request">HTTP request.</typeparam>
+        /// <returns>HTTP response message.</returns>
         Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
 
         /// <summary>
-        /// Asynchronously sends http request.
+        /// Asynchronously sends HTTP request.
         /// </summary>
-        /// <typeparam name="request">Http request.</typeparam>
+        /// <typeparam name="request">HTTP request.</typeparam>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Http respnse message.</returns>
+        /// <returns>HTTP response message.</returns>
         Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken);
 
         #endregion Methods
-    }
-
-    /// <summary>
-    /// <see cref="IBaasicClient" /> factory.
-    /// </summary>
-    public interface IBaasicClientFactory
-    {
-        /// <summary>
-        /// Creates the specified Baasic client.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <returns><see cref="IBaasicClient" /> instance.</returns>
-        IBaasicClient Create(IClientConfiguration configuration);
-    }
-
-    /// <summary>
-    /// <see cref="HttpClient" /> factory.
-    /// </summary>
-    public interface IHttpClientFactory
-    {
-        /// <summary>
-        /// Creates <see cref="HttpClient" /> instance.
-        /// </summary>
-        /// <returns><see cref="HttpClient" /> instance.</returns>
-        HttpClient Create();
     }
 }

@@ -15,6 +15,8 @@ namespace Baasic.Client.Tests
 {
     public class BaasicClientTests
     {
+        #region Methods
+
         [Fact()]
         public async Task BaasicClient_attach_authentication_token()
         {
@@ -64,7 +66,7 @@ namespace Baasic.Client.Tests
         }
 
         [Fact()]
-        public void BaasicClient_BaasicClientTest()
+        public void BaasicClient_constructor_test()
         {
             Mock<IDependencyResolver> dependencyResolver = new Mock<IDependencyResolver>();
             Mock<IClientConfiguration> clientConfiguration = new Mock<IClientConfiguration>();
@@ -76,7 +78,7 @@ namespace Baasic.Client.Tests
         }
 
         [Fact()]
-        public async Task BaasicClient_DeleteAsync_RequestUriOnly_Test()
+        public async Task BaasicClient_DeleteAsync_RequestUriOnly_test()
         {
             var handler = new Mock<HttpMessageHandler>();
             handler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).Returns((HttpRequestMessage request, CancellationToken cancellationToken) =>
@@ -107,15 +109,15 @@ namespace Baasic.Client.Tests
             BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object, jsonFormatter);
             target.Should().NotBeNull();
 
-            var expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 0));
-            expected.Should().BeFalse();
+            Action execute = () => { if (target.DeleteAsync(target.GetApiUrl("/module/{0}", 0)).Result) ; };
+            execute.ShouldThrow<HttpRequestException>();
 
-            expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 1));
+            var expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 1));
             expected.Should().BeTrue();
         }
 
         [Fact()]
-        public async Task BaasicClient_DeleteAsync_Test()
+        public async Task BaasicClient_DeleteAsync_test()
         {
             var handler = new Mock<HttpMessageHandler>();
             handler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).Returns((HttpRequestMessage request, CancellationToken cancellationToken) =>
@@ -146,15 +148,15 @@ namespace Baasic.Client.Tests
             BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object, jsonFormatter);
             target.Should().NotBeNull();
 
-            var expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 0), new CancellationToken());
-            expected.Should().BeFalse();
+            Action execute = () => { if (target.DeleteAsync(target.GetApiUrl("/module/{0}", 0), new CancellationToken()).Result) ; };
+            execute.ShouldThrow<HttpRequestException>();
 
-            expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 1), new CancellationToken());
+            var expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 1), new CancellationToken());
             expected.Should().BeTrue();
         }
 
         [Fact()]
-        public void BaasicClient_Dispose_Test()
+        public void BaasicClient_Dispose_test()
         {
             var handler = new Mock<HttpMessageHandler>();
             handler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).Returns((HttpRequestMessage request, CancellationToken cancellationToken) =>
@@ -238,5 +240,7 @@ namespace Baasic.Client.Tests
         {
             throw new NotImplementedException();
         }
+
+        #endregion Methods
     }
 }

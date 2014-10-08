@@ -50,11 +50,11 @@ namespace Baasic.Client
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaasicClient" /> class.
+        /// Initializes a new instance of the <see cref="BaasicClient"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="httpClientFactory">The HTTP client factory.</param>
-        /// <param name="jsonFormatter">Json formatter.</param>
+        /// <param name="jsonFormatter">JSON formatter.</param>
         public BaasicClient(IClientConfiguration configuration,
             IHttpClientFactory httpClientFactory,
             IJsonFormatter jsonFormatter
@@ -92,6 +92,8 @@ namespace Baasic.Client
                 InitializeClient(client, Configuration.DefaultMediaType);
 
                 var response = await client.DeleteAsync(requestUri, cancellationToken);
+                response.EnsureSuccessStatusCode();
+
                 return response.StatusCode.Equals(HttpStatusCode.OK);
             }
         }
@@ -127,23 +129,23 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Asynchronously gets the <typeparamref name="T" /> from the system.
+        /// Asynchronously gets the <typeparamref name="T"/> from the system.
         /// </summary>
         /// <typeparam name="T">Object type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
-        /// <returns><typeparamref name="T" />.</returns>
+        /// <returns><typeparamref name="T"/> .</returns>
         public virtual Task<T> GetAsync<T>(string requestUri)
         {
             return GetAsync<T>(requestUri, new CancellationToken());
         }
 
         /// <summary>
-        /// Asynchronously gets the <typeparamref name="T" /> from the system.
+        /// Asynchronously gets the <typeparamref name="T"/> from the system.
         /// </summary>
         /// <typeparam name="T">Object type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns><typeparamref name="T" />.</returns>
+        /// <returns><typeparamref name="T"/> .</returns>
         public virtual async Task<T> GetAsync<T>(string requestUri, CancellationToken cancellationToken)
         {
             using (HttpClient client = HttpClientFactory.Create())
@@ -154,7 +156,7 @@ namespace Baasic.Client
                 response.EnsureSuccessStatusCode();
                 //TODO: Add HAL Converter
 
-                return await ReturnContentAsync<T>(response);
+                return await ReadContentAsync<T>(response);
             }
         }
 
@@ -170,25 +172,25 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Asynchronously insert the <typeparamref name="T" /> into the system.
+        /// Asynchronously insert the <typeparamref name="T"/> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Newly created <typeparamref name="T" />.</returns>
+        /// <returns>Newly created <typeparamref name="T"/> .</returns>
         public virtual Task<T> PostAsync<T>(string requestUri, T content)
         {
             return PostAsync<T>(requestUri, content, new CancellationToken());
         }
 
         /// <summary>
-        /// Asynchronously insert the <typeparamref name="T" /> into the system.
+        /// Asynchronously insert the <typeparamref name="T"/> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Newly created <typeparamref name="T" />.</returns>
+        /// <returns>Newly created <typeparamref name="T"/> .</returns>
         public virtual async Task<T> PostAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
         {
             using (HttpClient client = HttpClientFactory.Create())
@@ -199,30 +201,30 @@ namespace Baasic.Client
                 response.EnsureSuccessStatusCode();
 
                 //TODO: Add HAL Converter
-                return await ReturnContentAsync<T>(response);
+                return await ReadContentAsync<T>(response);
             }
         }
 
         /// <summary>
-        /// Asynchronously update the <typeparamref name="T" /> in the system.
+        /// Asynchronously update the <typeparamref name="T"/> in the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Updated <typeparamref name="T" />.</returns>
+        /// <returns>Updated <typeparamref name="T"/> .</returns>
         public virtual Task<T> PutAsync<T>(string requestUri, T content)
         {
             return PutAsync<T>(requestUri, content, new CancellationToken());
         }
 
         /// <summary>
-        /// Asynchronously update the <typeparamref name="T" /> in the system.
+        /// Asynchronously update the <typeparamref name="T"/> in the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="requestUri">Request URI.</param>
         /// <param name="content">Resource instance.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Updated <typeparamref name="T" />.</returns>
+        /// <returns>Updated <typeparamref name="T"/> .</returns>
         public virtual async Task<T> PutAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
         {
             using (HttpClient client = HttpClientFactory.Create())
@@ -232,26 +234,44 @@ namespace Baasic.Client
                 var response = await client.PutAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
                 response.EnsureSuccessStatusCode();
 
-                return await ReturnContentAsync<T>(response);
+                return await ReadContentAsync<T>(response);
             }
         }
 
         /// <summary>
-        /// Asynchronously sends http request.
+        /// Returns deserialized content from response.
         /// </summary>
-        /// <typeparam name="request">Http request.</typeparam>
-        /// <returns>Http respnse message.</returns>
+        /// <typeparam name="T">Resource type.</typeparam>
+        /// <param name="response">HTTP response.</param>
+        /// <returns><typeparamref name="T"/> Resource.</returns>
+        public virtual async Task<T> ReadContentAsync<T>(HttpResponseMessage response)
+        {
+            if (response.Content != null && response.Content.Headers.ContentLength > 0)
+            {
+                return JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
+            }
+            else
+            {
+                return default(T);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously sends HTTP request.
+        /// </summary>
+        /// <typeparam name="request">HTTP request.</typeparam>
+        /// <returns>HTTP response message.</returns>
         public virtual Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
         {
             return this.SendAsync(request, CancellationToken.None);
         }
 
         /// <summary>
-        /// Asynchronously sends http request.
+        /// Asynchronously sends HTTP request.
         /// </summary>
-        /// <typeparam name="request">Http request.</typeparam>
+        /// <typeparam name="request">HTTP request.</typeparam>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Http respnse message.</returns>
+        /// <returns>HTTP response message.</returns>
         public virtual async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             using (HttpClient client = HttpClientFactory.Create())
@@ -287,87 +307,6 @@ namespace Baasic.Client
             }
         }
 
-        /// <summary>
-        /// Returns deserialized content from response.
-        /// </summary>
-        /// <typeparam name="T">Resource type.</typeparam>
-        /// <param name="response">Http response.</param>
-        /// <returns>Resource.</returns>
-        protected virtual async Task<T> ReturnContentAsync<T>(HttpResponseMessage response)
-        {
-            if (response.Content != null && response.Content.Headers.ContentLength > 0)
-            {
-                return JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
-            }
-            else
-            {
-                return default(T);
-            }
-        }
-
         #endregion Methods
-    }
-
-    /// <summary>
-    /// <see cref="IBaasicClient" /> factory.
-    /// </summary>
-    public class BaasicClientFactory : IBaasicClientFactory
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaasicClientFactory" /> class.
-        /// </summary>
-        /// <param name="dependencyResolver">The dependency resolver.</param>
-        public BaasicClientFactory(IDependencyResolver dependencyResolver)
-        {
-            DependencyResolver = dependencyResolver;
-        }
-
-        /// <summary>
-        /// Gets or sets the dependency resolver.
-        /// </summary>
-        /// <value>The dependency resolver.</value>
-        private IDependencyResolver DependencyResolver { get; set; }
-
-        /// <summary>
-        /// Creates the specified Baasic client.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <returns><see cref="IBaasicClient" /> instance.</returns>
-        public virtual IBaasicClient Create(IClientConfiguration configuration)
-        {
-            IBaasicClient client = DependencyResolver.GetService<IBaasicClient>();
-            client.Configuration = configuration;
-            return client;
-        }
-    }
-
-    /// <summary>
-    /// <see cref="HttpClient" /> factory.
-    /// </summary>
-    public class HttpClientFactory : IHttpClientFactory
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaasicClientFactory" /> class.
-        /// </summary>
-        /// <param name="dependencyResolver">The dependency resolver.</param>
-        public HttpClientFactory(IDependencyResolver dependencyResolver)
-        {
-            DependencyResolver = dependencyResolver;
-        }
-
-        /// <summary>
-        /// Gets or sets the dependency resolver.
-        /// </summary>
-        /// <value>The dependency resolver.</value>
-        private IDependencyResolver DependencyResolver { get; set; }
-
-        /// <summary>
-        /// Creates <see cref="HttpClient" /> instance.
-        /// </summary>
-        /// <returns><see cref="HttpClient" /> instance.</returns>
-        public virtual HttpClient Create()
-        {
-            return DependencyResolver.GetService<HttpClient>();
-        }
     }
 }

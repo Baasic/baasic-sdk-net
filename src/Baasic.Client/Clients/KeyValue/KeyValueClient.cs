@@ -1,5 +1,6 @@
 ﻿using Baasic.Client.Configuration;
 using Baasic.Client.Model;
+using Baasic.Client.Utility;
 using System;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Baasic.Client.KeyValueModule
         /// </summary>
         protected override string ModuleRelativePath
         {
-            get { return "KeyValue"; }
+            get { return "keyvalue"; }
         }
 
         #endregion Properties
@@ -31,7 +32,7 @@ namespace Baasic.Client.KeyValueModule
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="KeyValueClient" /> class.
+        /// Initializes a new instance of the <see cref="KeyValueClient"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="baasicClientFactory">The baasic client factory.</param>
@@ -47,10 +48,10 @@ namespace Baasic.Client.KeyValueModule
         #region Methods
 
         /// <summary>
-        /// Asynchronously deletes the <see cref="KeyValue" /> from the system.
+        /// Asynchronously deletes the <see cref="KeyValue"/> from the system.
         /// </summary>
         /// <param name="key">Key.</param>
-        /// <returns>True if <see cref="KeyValue" /> is deleted, false otherwise.</returns>
+        /// <returns>True if <see cref="KeyValue"/> is deleted, false otherwise.</returns>
         public virtual Task<bool> DeleteAsync(object key)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -60,10 +61,10 @@ namespace Baasic.Client.KeyValueModule
         }
 
         /// <summary>
-        /// Asynchronously gets the <see cref="KeyValue" /> by provided key.
+        /// Asynchronously gets the <see cref="KeyValue"/> by provided key.
         /// </summary>
         /// <param name="key">Key.</param>
-        /// <returns><see cref="KeyValue" />.</returns>
+        /// <returns><see cref="KeyValue"/> .</returns>
         public virtual Task<KeyValue> GetAsync(object key)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -73,14 +74,14 @@ namespace Baasic.Client.KeyValueModule
         }
 
         /// <summary>
-        /// Asynchronously gets <see cref="KeyValue" />s for provided page.
+        /// Asynchronously gets <see cref="KeyValue"/> s for provided page.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
-        /// <returns>List of <see cref="KeyValue" />s.</returns>
+        /// <returns>List of <see cref="KeyValue"/> s.</returns>
         public virtual Task<CollectionModelBase<KeyValue>> GetAsync(string searchQuery = "",
             int page = DefaultPage, int rpp = MaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed)
@@ -94,11 +95,11 @@ namespace Baasic.Client.KeyValueModule
         }
 
         /// <summary>
-        /// Asynchronously insert the <see cref="KeyValue" /> into the system.
+        /// Asynchronously insert the <see cref="KeyValue"/> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Newly created <see cref="KeyValue" />.</returns>
+        /// <returns>Newly created <see cref="KeyValue"/> .</returns>
         public virtual Task<KeyValue> InsertAsync(KeyValue content)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -108,11 +109,11 @@ namespace Baasic.Client.KeyValueModule
         }
 
         /// <summary>
-        /// Asynchronously update the <see cref="KeyValue" /> in the system.
+        /// Asynchronously update the <see cref="KeyValue"/> in the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Updated <see cref="KeyValue" />.</returns>
+        /// <returns>Updated <see cref="KeyValue"/> .</returns>
         public virtual Task<KeyValue> UpdateAsync(KeyValue content)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))

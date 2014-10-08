@@ -18,6 +18,8 @@ namespace Baasic.Client.Token.Tests
 {
     public class TokenClientTests
     {
+        #region Methods
+
         [Fact()]
         public void TokenClient_constructor_test()
         {
@@ -177,9 +179,6 @@ namespace Baasic.Client.Token.Tests
         {
             var tokenEndPoint = "https://api.baasic.com/v1/Test/Login";
 
-            var username = "user";
-            var password = "pass";
-
             var handler = new Mock<HttpMessageHandler>();
             handler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).Returns(async (HttpRequestMessage request, CancellationToken cancellationToken) =>
             {
@@ -251,5 +250,7 @@ namespace Baasic.Client.Token.Tests
             token.Scheme.Should().Be("bearer");
             token.Token.Should().Be("newAccessToken");
         }
+
+        #endregion Methods
     }
 }

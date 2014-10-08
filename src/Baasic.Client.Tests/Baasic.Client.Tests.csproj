@@ -78,6 +78,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BaasicClientTests.cs" />
+    <Compile Include="Clients\Articles\ArticleClientTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Token\TokenClientTests.cs" />
   </ItemGroup>
@@ -86,6 +87,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Baasic.Client.Model\Baasic.Client.Model.csproj">
+      <Project>{94197638-4537-46a5-a641-5e1b9626f2e8}</Project>
+      <Name>Baasic.Client.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Baasic.Client\Baasic.Client.csproj">
       <Project>{09ECCE82-F0DF-4A27-B323-370071BF1DAD}</Project>
       <Name>Baasic.Client</Name>

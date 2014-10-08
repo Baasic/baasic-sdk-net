@@ -59,9 +59,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HttpClientFactory.cs" />
+    <Compile Include="BaasicClientFactory.cs" />
+    <Compile Include="Clients\Articles\IArticleClient.cs" />
+    <Compile Include="Clients\Articles\ArticleClient.cs" />
     <Compile Include="DefaultDependencyResolver.cs" />
     <Compile Include="Formatters\IJsonFormatter.cs" />
     <Compile Include="Formatters\JsonFormatter.cs" />
+    <Compile Include="IHttpClientFactory.cs" />
+    <Compile Include="IBaasicClientFactory.cs" />
     <Compile Include="IBaasicClient.cs" />
     <Compile Include="BaasicClient.cs" />
     <Compile Include="ClientBase.cs" />
@@ -69,16 +75,16 @@
     <Compile Include="Configuration\IClientConfiguration.cs" />
     <Compile Include="IDependencyResolverExtensions.cs" />
     <Compile Include="IDependencyResolver .cs" />
-    <Compile Include="KeyValue\IKeyValueClient.cs" />
-    <Compile Include="KeyValue\KeyValueClient.cs" />
+    <Compile Include="Clients\KeyValue\IKeyValueClient.cs" />
+    <Compile Include="Clients\KeyValue\KeyValueClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TokenHandler\AuthenticationToken.cs" />
-    <Compile Include="TokenHandler\DefaultTokenHandler.cs" />
-    <Compile Include="TokenHandler\IAuthenticationToken.cs" />
-    <Compile Include="TokenHandler\ITokenHandler.cs" />
-    <Compile Include="Token\ITokenClient.cs" />
-    <Compile Include="Token\TokenClient.cs" />
-    <Compile Include="UrlBuilder.cs" />
+    <Compile Include="Clients\Token\TokenHandler\AuthenticationToken.cs" />
+    <Compile Include="Clients\Token\TokenHandler\DefaultTokenHandler.cs" />
+    <Compile Include="Clients\Token\TokenHandler\IAuthenticationToken.cs" />
+    <Compile Include="Clients\Token\TokenHandler\ITokenHandler.cs" />
+    <Compile Include="Clients\Token\ITokenClient.cs" />
+    <Compile Include="Clients\Token\TokenClient.cs" />
+    <Compile Include="Utility\UrlBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Baasic.Client.Model\Baasic.Client.Model.csproj">
