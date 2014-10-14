@@ -3,7 +3,7 @@ using Baasic.Client.Model.Articles;
 using System;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.KeyValueModule
+namespace Baasic.Client.ArticleModule
 {
     /// <summary>
     /// Article Module Client.
@@ -77,7 +77,7 @@ namespace Baasic.Client.KeyValueModule
 
         #endregion Article
 
-        #region Tags
+        #region Tag Entry
 
         /// <summary>
         /// Asynchronously adds the tag to article tags.
@@ -131,7 +131,7 @@ namespace Baasic.Client.KeyValueModule
         /// <returns>True if <see cref="TAgEntry"/> is removed, otherwise false.</returns>
         Task<bool> RemoveTagFromArticleAsync(Guid articleId, object key);
 
-        #endregion Tags
+        #endregion Tag Entry
 
         #endregion Methods
     }

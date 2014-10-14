@@ -6,7 +6,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.KeyValueModule
+namespace Baasic.Client.ArticleModule
 {
     /// <summary>
     /// Article Module Client.
@@ -26,7 +26,7 @@ namespace Baasic.Client.KeyValueModule
         /// </summary>
         protected override string ModuleRelativePath
         {
-            get { return "articles"; }
+            get { return "article"; }
         }
 
         #endregion Properties
@@ -172,8 +172,6 @@ namespace Baasic.Client.KeyValueModule
 
         #endregion Article
 
-        #endregion Methods
-
         #region Tags
 
         /// <summary>
@@ -267,5 +265,7 @@ namespace Baasic.Client.KeyValueModule
         }
 
         #endregion Tags
+
+        #endregion Methods
     }
 }
