@@ -110,11 +110,10 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously adds the tag to article tags.
+        /// Asynchronously update the <see cref="Tag"/> .
         /// </summary>
-        /// <param name="articleId">Tag will be added under the specified article id.</param>
-        /// <param name="tag">The new or existing tag.</param>
-        /// <returns>If tag is added <see cref="TagEntry"/> is returned, otherwise null.</returns>
+        /// <param name="tag">The new or existing <see cref="Tag"/> .</param>
+        /// <returns>If tag is updated <see cref="Tag"/> is returned, otherwise null.</returns>
         public virtual Task<Tag> UpdateAsync(Tag tag)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))

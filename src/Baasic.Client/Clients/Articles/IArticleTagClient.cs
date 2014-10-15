@@ -48,10 +48,10 @@ namespace Baasic.Client.ArticleModule
         Task<Tag> InsertAsync(Tag entry);
 
         /// <summary>
-        /// Asynchronously update the <see cref="Tag"/> in the system.
+        /// Asynchronously update the <see cref="Tag"/> .
         /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <returns>Updated <see cref="Tag"/> .</returns>
+        /// <param name="tag">The new or existing <see cref="Tag"/> .</param>
+        /// <returns>If tag is updated <see cref="Tag"/> is returned, otherwise null.</returns>
         Task<Tag> UpdateAsync(Tag tag);
 
         #endregion Methods
