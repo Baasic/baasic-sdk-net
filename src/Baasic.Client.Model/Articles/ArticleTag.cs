@@ -5,18 +5,9 @@ namespace Baasic.Client.Model.Articles
     /// <summary>
     /// Tag used to transfer data from and to controller.
     /// </summary>
-    public class Tag : ModelBase
+    public class ArticleTag : ModelBase
     {
         #region Properties
-
-        /// <summary>
-        /// Gets or sets the tag name.
-        /// </summary>
-        public virtual string Name
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// Gets or sets the tag slug.
@@ -31,6 +22,15 @@ namespace Baasic.Client.Model.Articles
         /// Gets or sets the tag sort order.
         /// </summary>
         public virtual int SortOrder
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the tag name.
+        /// </summary>
+        public virtual string Tag
         {
             get;
             set;

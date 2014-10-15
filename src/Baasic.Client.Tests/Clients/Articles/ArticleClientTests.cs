@@ -470,7 +470,7 @@ namespace Baasic.Client.ArticleModule.Tests
                 else if (request.RequestUri.ToString().EndsWith(url))
                 {
                     httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-                    httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new TagEntry() { Id = Guid.NewGuid(), ArticleId = articleId, TagId = Guid.NewGuid() }));
+                    httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new ArticleTagEntry() { Id = Guid.NewGuid(), ArticleId = articleId, TagId = Guid.NewGuid() }));
                 }
                 return Task.FromResult(httpResponseMessage);
             });
@@ -523,7 +523,7 @@ namespace Baasic.Client.ArticleModule.Tests
                 HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 if (request.RequestUri.ToString().Contains("/article/"))
                 {
-                    TagEntry tagEntry = new JsonFormatter().Deserialize<TagEntry>(request.Content.ReadAsStreamAsync().Result);
+                    ArticleTagEntry tagEntry = new JsonFormatter().Deserialize<ArticleTagEntry>(request.Content.ReadAsStreamAsync().Result);
 
                     if (tagEntry == null)
                     {
@@ -539,7 +539,7 @@ namespace Baasic.Client.ArticleModule.Tests
                     else
                     {
                         httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-                        httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new TagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = tagId }));
+                        httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new ArticleTagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = tagId }));
                     }
                 }
                 return Task.FromResult(httpResponseMessage);
@@ -570,12 +570,12 @@ namespace Baasic.Client.ArticleModule.Tests
             Action execute = () => { target.AddTagToArticleAsync(null).Result.Should().BeNull(); };
             execute.ShouldThrow<HttpRequestException>();
 
-            execute = () => { target.AddTagToArticleAsync(new TagEntry() { Id = tagEntryId, ArticleId = Guid.Empty, TagId = tagId }).Result.Should().BeNull(); };
+            execute = () => { target.AddTagToArticleAsync(new ArticleTagEntry() { Id = tagEntryId, ArticleId = Guid.Empty, TagId = tagId }).Result.Should().BeNull(); };
             execute.ShouldThrow<HttpRequestException>();
-            execute = () => { target.AddTagToArticleAsync(new TagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = Guid.Empty }).Result.Should().BeNull(); };
+            execute = () => { target.AddTagToArticleAsync(new ArticleTagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = Guid.Empty }).Result.Should().BeNull(); };
             execute.ShouldThrow<HttpRequestException>();
 
-            var expected = target.AddTagToArticleAsync(new TagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = tagId }).Result;
+            var expected = target.AddTagToArticleAsync(new ArticleTagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = tagId }).Result;
             expected.Should().NotBeNull();
             expected.Id.ToString().Should().Be(tagEntryId.ToString());
             expected.ArticleId.Should().Be(articleId);
@@ -598,12 +598,12 @@ namespace Baasic.Client.ArticleModule.Tests
                 if (request.RequestUri.ToString().EndsWith("NA"))
                 {
                     httpResponseMessage = new HttpResponseMessage(HttpStatusCode.NotFound);
-                    httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new CollectionModelBase<TagEntry>()));
+                    httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new CollectionModelBase<ArticleTagEntry>()));
                 }
                 else if (request.RequestUri.ToString().EndsWith("Tag"))
                 {
                     httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-                    httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new CollectionModelBase<TagEntry>() { Item = new List<TagEntry>() { new TagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = tagId } } }));
+                    httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new CollectionModelBase<ArticleTagEntry>() { Item = new List<ArticleTagEntry>() { new ArticleTagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = tagId } } }));
                 }
                 return Task.FromResult(httpResponseMessage);
             });
@@ -660,7 +660,7 @@ namespace Baasic.Client.ArticleModule.Tests
                 else if (request.RequestUri.ToString().EndsWith("Tag"))
                 {
                     httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-                    httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new TagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = tagId }));
+                    httpResponseMessage.Content = new StringContent(JsonConvert.SerializeObject(new ArticleTagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = tagId }));
                 }
                 return Task.FromResult(httpResponseMessage);
             });

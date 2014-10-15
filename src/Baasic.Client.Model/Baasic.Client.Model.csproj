@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Articles\TagEntry.cs" />
-    <Compile Include="Articles\Tag.cs" />
+    <Compile Include="Articles\ArticleTagEntry.cs" />
+    <Compile Include="Articles\ArticleTag.cs" />
     <Compile Include="Articles\Rating.cs" />
     <Compile Include="Articles\Comment.cs" />
     <Compile Include="Articles\Author.cs" />

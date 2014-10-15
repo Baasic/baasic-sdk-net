@@ -5,7 +5,7 @@ namespace Baasic.Client.Model.Articles
     /// <summary>
     /// Tag entry used to transfer data from and to controller.
     /// </summary>
-    public class TagEntry : ModelBase
+    public class ArticleTagEntry : ModelBase
     {
         #region Properties
 
@@ -23,7 +23,7 @@ namespace Baasic.Client.Model.Articles
         /// Gets or sets the tag.
         /// </summary>
         /// <value>The tag.</value>
-        public virtual Tag Tag { get; set; }
+        public virtual ArticleTag Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the tag identifier.

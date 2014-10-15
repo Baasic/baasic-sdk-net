@@ -103,7 +103,7 @@ namespace Baasic.Client.Model.Articles
         /// <summary>
         /// Gets the tags.
         /// </summary>
-        public Tag[] Tags
+        public ArticleTag[] Tags
         {
             get;
             set;
