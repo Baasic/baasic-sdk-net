@@ -185,10 +185,10 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.GetAsync("NA", 1, 10, "", "").Result.Should().NotBeNull(); };
+            Action execute = () => { target.FindAsync("NA", null, null, "", "", 1, 10, "", "").Result.Should().NotBeNull(); };
             execute.ShouldThrow<HttpRequestException>();
 
-            var expected = target.GetAsync("Slug", 1, 10, "", "").Result;
+            var expected = target.FindAsync("Slug", null, null, "", "", 1, 10, "", "").Result;
             expected.Should().NotBeNull();
             expected.Item.Should().NotBeNull();
             expected.Item.First().Slug.Should().Be("Slug");
@@ -630,10 +630,10 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.GetTagEntriesAsync("NA", 1, 10, "", "").Result.Should().NotBeNull(); };
+            Action execute = () => { target.FindTagEntriesAsync(articleId, "NA", 1, 10, "", "").Result.Should().NotBeNull(); };
             execute.ShouldThrow<HttpRequestException>();
 
-            var expected = target.GetTagEntriesAsync("Tag", 1, 10, "", "").Result;
+            var expected = target.FindTagEntriesAsync(articleId, "Tag", 1, 10, "", "").Result;
             expected.Should().NotBeNull();
             expected.Item.Should().NotBeNull();
             expected.Item.First().TagId.Should().Be(tagId);

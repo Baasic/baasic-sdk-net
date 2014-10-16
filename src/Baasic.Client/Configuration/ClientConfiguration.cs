@@ -144,24 +144,47 @@ namespace Baasic.Client.Configuration
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
+        /// Initializes a new instance of the <see cref="ClientConfiguration"/> class.
         /// </summary>
         /// <param name="applicationIdentifier">The application identifier.</param>
-        public ClientConfiguration(string applicationIdentifier)
+        public ClientConfiguration(string applicationIdentifier) :
+            this(applicationIdentifier, new TokenHandler.DefaultTokenHandler())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientConfiguration"/> class.
+        /// </summary>
+        /// <param name="applicationIdentifier">The application identifier.</param>
+        /// <param name="tokenHandler">The token handler.</param>
+        public ClientConfiguration(string applicationIdentifier, ITokenHandler tokenHandler)
         {
             ApplicationIdentifier = applicationIdentifier;
+            TokenHandler = tokenHandler;
             Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
+        /// Initializes a new instance of the <see cref="ClientConfiguration"/> class.
         /// </summary>
         /// <param name="baseAddress">The base address.</param>
         /// <param name="applicationIdentifier">The application identifier.</param>
-        public ClientConfiguration(string baseAddress, string applicationIdentifier)
+        public ClientConfiguration(string baseAddress, string applicationIdentifier) :
+            this(baseAddress, applicationIdentifier, new TokenHandler.DefaultTokenHandler())
         {
-            ApplicationIdentifier = applicationIdentifier;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientConfiguration"/> class.
+        /// </summary>
+        /// <param name="baseAddress">The base address.</param>
+        /// <param name="applicationIdentifier">The application identifier.</param>
+        /// <param name="tokenHandler">The token handler.</param>
+        public ClientConfiguration(string baseAddress, string applicationIdentifier, ITokenHandler tokenHandler)
+        {
             BaseAddress = baseAddress;
+            ApplicationIdentifier = applicationIdentifier;
+            TokenHandler = tokenHandler;
             Initialize();
         }
 
@@ -175,8 +198,6 @@ namespace Baasic.Client.Configuration
         protected virtual void Initialize()
         {
             this.DefaultEncoding = Encoding.UTF8;
-
-            this.TokenHandler = new TokenHandler.DefaultTokenHandler();
         }
 
         #endregion Methods

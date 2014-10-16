@@ -1,6 +1,9 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.ArticleModule;
+using Baasic.Client.Configuration;
 using Baasic.Client.Formatters;
 using Baasic.Client.KeyValueModule;
+using Baasic.Client.Token;
+using Baasic.Client.TokenHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +12,32 @@ using System.Net.Http;
 namespace Baasic.Client
 {
     /// <summary>
-    /// Default implementation of <see cref="IDependencyResolver" />.
+    /// Default implementation of <see cref="IDependencyResolver"/> .
     /// </summary>
     public class DefaultDependencyResolver : IDependencyResolver
     {
+        #region Fields
+
         private readonly Dictionary<Type, IList<Func<object>>> _resolvers = new Dictionary<Type, IList<Func<object>>>();
 
+        #endregion Fields
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultDependencyResolver" /> class.
+        /// Initializes a new instance of the <see cref="DefaultDependencyResolver"/> class.
         /// </summary>
         public DefaultDependencyResolver()
         {
             RegisterDefaultServices();
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting
-        /// unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -134,8 +146,7 @@ namespace Baasic.Client
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
-        /// only unmanaged resources.
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
@@ -153,7 +164,14 @@ namespace Baasic.Client
             this.Register<IHttpClientFactory>(() => new HttpClientFactory(this));
             this.Register<IBaasicClientFactory>(() => new BaasicClientFactory(this));
             this.Register<IJsonFormatter>(() => new JsonFormatter());
+            this.Register<ITokenHandler>(() => new DefaultTokenHandler());
+            this.Register<IAuthenticationToken>(() => new AuthenticationToken());
+            this.Register<ITokenClient>(() => new TokenClient(this.GetService<IClientConfiguration>(), this.GetService<IBaasicClientFactory>(), this.GetService<IJsonFormatter>()));
             this.Register<IKeyValueClient>(() => new KeyValueClient(this.GetService<IClientConfiguration>(), this.GetService<IBaasicClientFactory>()));
+            this.Register<IArticleClient>(() => new ArticleClient(this.GetService<IClientConfiguration>(), this.GetService<IBaasicClientFactory>()));
+            this.Register<IArticleTagClient>(() => new ArticleTagClient(this.GetService<IClientConfiguration>(), this.GetService<IBaasicClientFactory>()));
         }
+
+        #endregion Methods
     }
 }

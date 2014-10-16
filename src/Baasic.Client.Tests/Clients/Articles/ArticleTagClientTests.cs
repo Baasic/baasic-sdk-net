@@ -138,10 +138,10 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.GetAsync("NA", 1, 10, "", "").Result.Should().NotBeNull(); };
+            Action execute = () => { target.FindAsync("NA", 1, 10, "", "").Result.Should().NotBeNull(); };
             execute.ShouldThrow<HttpRequestException>();
 
-            var expected = target.GetAsync("Tag", 1, 10, "", "").Result;
+            var expected = target.FindAsync("Tag", 1, 10, "", "").Result;
             expected.Should().NotBeNull();
             expected.Item.Should().NotBeNull();
             expected.Item.First().Tag.Should().Be("Tag");

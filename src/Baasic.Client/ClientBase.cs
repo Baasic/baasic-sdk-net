@@ -18,6 +18,20 @@ namespace Baasic.Client
         public const string DefaultEmbed = "";
 
         /// <summary>
+        /// Default CSV list of fields to include in response.
+        /// <para>Dot notation is supported for all nested resources.</para>
+        /// <para>All other fields will be excluded.</para>
+        /// <para>Default value is <see cref="String.Empty"/> .</para>
+        /// </summary>
+        public const string DefaultFields = "";
+
+        /// <summary>
+        /// Default maximum number of results.
+        /// <para>Default value is 10.</para>
+        /// </summary>
+        public const int DefaultMaxNumberOfResults = 10;
+
+        /// <summary>
         /// Default page.
         /// <para>Default value is 1.</para>
         /// </summary>
@@ -34,12 +48,6 @@ namespace Baasic.Client
         /// <para>Default value is <see cref="String.Empty"/> .</para>
         /// </summary>
         public const string DefaultSorting = "";
-
-        /// <summary>
-        /// Maximum number of results.
-        /// <para>Default value is 100.</para>
-        /// </summary>
-        public const int MaxNumberOfResults = 10;
 
         #endregion Fields
 
@@ -85,21 +93,62 @@ namespace Baasic.Client
         /// <param name="rpp">Records per page.</param>
         /// <param name="sort">Sort expression.</param>
         /// <param name="embed">Embedded items.</param>
+        /// <param name="fields">The fields to include in response.</param>
         protected virtual void InitializeQueryString(UrlBuilder uriBuilder,
-            string searchQuery,
-            int page, int rpp,
-            string sort, string embed)
+            string searchQuery = DefaultSearchQuery,
+            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
             if (!String.IsNullOrWhiteSpace(searchQuery))
                 uriBuilder.QueryString.Add("searchQuery", searchQuery);
             if (!DefaultPage.Equals(page))
                 uriBuilder.QueryString.Add("page", page.ToString());
-            if (!MaxNumberOfResults.Equals(rpp))
+            if (!DefaultMaxNumberOfResults.Equals(rpp))
                 uriBuilder.QueryString.Add("rpp", rpp.ToString());
             if (!String.IsNullOrWhiteSpace(sort))
                 uriBuilder.QueryString.Add("sort", sort);
             if (!String.IsNullOrWhiteSpace(embed))
                 uriBuilder.QueryString.Add("embed", embed);
+            if (!String.IsNullOrWhiteSpace(fields))
+                uriBuilder.QueryString.Add("fields", fields);
+        }
+
+        /// <summary>
+        /// Initialize query string.
+        /// </summary>
+        /// <param name="uriBuilder">Uri builder.</param>
+        /// <param name="embed">Embedded items.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        protected virtual void InitializeQueryString(UrlBuilder uriBuilder,
+            string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            if (!String.IsNullOrWhiteSpace(embed))
+                uriBuilder.QueryString.Add("embed", embed);
+            if (!String.IsNullOrWhiteSpace(fields))
+                uriBuilder.QueryString.Add("fields", fields);
+        }
+
+        /// <summary>
+        /// Initialize query string pair.
+        /// </summary>
+        /// <param name="uriBuilder">Uri builder.</param>
+        protected virtual void InitializeQueryStringPair(UrlBuilder uriBuilder,
+            string key, object value)
+        {
+            if (String.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentNullException("key");
+            }
+
+            if (value != null)
+            {
+                string strValue = value.ToString();
+                if (String.IsNullOrWhiteSpace(strValue))
+                {
+                    return;
+                }
+                uriBuilder.QueryString.Add(key, strValue);
+            }
         }
 
         #endregion Methods

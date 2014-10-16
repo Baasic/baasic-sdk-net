@@ -20,25 +20,27 @@ namespace Baasic.Client.ArticleModule
         Task<bool> DeleteAsync(object key);
 
         /// <summary>
-        /// Asynchronously get <see cref="ArticleTag"/> entries.
+        /// Asynchronously find <see cref="ArticleTag"/> entries.
         /// </summary>
         /// <param name="searchQuery">Search phrase or query.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="ArticleTag"/> .</returns>
-        Task<CollectionModelBase<ArticleTag>> GetAsync(string searchQuery,
-            int page, int rpp,
-            string sort, string embed);
+        Task<CollectionModelBase<ArticleTag>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
+            int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
         /// Asynchronously gets the <see cref="ArticleTag"/> from the system.
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
         /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
         /// <returns>If found <see cref="ArticleTag"/> is returned, otherwise null.</returns>
-        Task<ArticleTag> GetAsync(object key, string embed = "");
+        Task<ArticleTag> GetAsync(object key, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
         /// Asynchronously adds the <see cref="ArticleTag"/> .

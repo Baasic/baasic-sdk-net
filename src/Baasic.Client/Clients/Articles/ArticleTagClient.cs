@@ -62,22 +62,23 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously get <see cref="ArticleTag"/> entries.
+        /// Asynchronously find <see cref="ArticleTag"/> entries.
         /// </summary>
         /// <param name="searchQuery">Search phrase or query.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="ArticleTag"/> .</returns>
-        public virtual Task<CollectionModelBase<ArticleTag>> GetAsync(string searchQuery = "",
-            int page = DefaultPage, int rpp = MaxNumberOfResults,
-            string sort = DefaultSorting, string embed = DefaultEmbed)
+        public virtual Task<CollectionModelBase<ArticleTag>> FindAsync(string searchQuery = DefaultSearchQuery,
+            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
-                InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed);
+                InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
                 return client.GetAsync<CollectionModelBase<ArticleTag>>(uriBuilder.ToString());
             }
         }
@@ -87,12 +88,15 @@ namespace Baasic.Client.ArticleModule
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
         /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
         /// <returns>If found <see cref="ArticleTag"/> is returned, otherwise null.</returns>
-        public virtual Task<ArticleTag> GetAsync(object key, string embed = "")
+        public virtual Task<ArticleTag> GetAsync(object key, string embed = DefaultEmbed, string fields = DefaultFields)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.GetAsync<ArticleTag>(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
+                InitializeQueryString(uriBuilder, embed, fields);
+                return client.GetAsync<ArticleTag>(uriBuilder.ToString());
             }
         }
 

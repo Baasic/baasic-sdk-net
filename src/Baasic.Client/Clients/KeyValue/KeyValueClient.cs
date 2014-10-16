@@ -61,6 +61,28 @@ namespace Baasic.Client.KeyValueModule
         }
 
         /// <summary>
+        /// Asynchronously find <see cref="KeyValue"/> s.
+        /// </summary>
+        /// <param name="searchQuery">Search query.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="rpp">Records per page limit.</param>
+        /// <param name="sort">Sort by field.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>List of <see cref="KeyValue"/> s.</returns>
+        public virtual Task<CollectionModelBase<KeyValue>> FindAsync(string searchQuery = DefaultSearchQuery,
+            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
+                InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
+                return client.GetAsync<CollectionModelBase<KeyValue>>(uriBuilder.ToString());
+            }
+        }
+
+        /// <summary>
         /// Asynchronously gets the <see cref="KeyValue"/> by provided key.
         /// </summary>
         /// <param name="key">Key.</param>
@@ -70,27 +92,6 @@ namespace Baasic.Client.KeyValueModule
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 return client.GetAsync<KeyValue>(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously gets <see cref="KeyValue"/> s for provided page.
-        /// </summary>
-        /// <param name="searchQuery">Search query.</param>
-        /// <param name="page">Page number.</param>
-        /// <param name="rpp">Records per page limit.</param>
-        /// <param name="sort">Sort by field.</param>
-        /// <param name="embed">Embed related resources.</param>
-        /// <returns>List of <see cref="KeyValue"/> s.</returns>
-        public virtual Task<CollectionModelBase<KeyValue>> GetAsync(string searchQuery = "",
-            int page = DefaultPage, int rpp = MaxNumberOfResults,
-            string sort = DefaultSorting, string embed = DefaultEmbed)
-        {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-            {
-                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
-                InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed);
-                return client.GetAsync<CollectionModelBase<KeyValue>>(uriBuilder.ToString());
             }
         }
 
