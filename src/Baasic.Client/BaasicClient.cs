@@ -92,9 +92,8 @@ namespace Baasic.Client
                 InitializeClient(client, Configuration.DefaultMediaType);
 
                 var response = await client.DeleteAsync(requestUri, cancellationToken);
-                response.EnsureSuccessStatusCode();
 
-                return response.StatusCode.Equals(HttpStatusCode.OK);
+                return response.StatusCode.Equals(HttpStatusCode.OK) || response.StatusCode.Equals(HttpStatusCode.NoContent);
             }
         }
 
@@ -153,7 +152,11 @@ namespace Baasic.Client
                 InitializeClient(client, Configuration.DefaultMediaType);
 
                 var response = await client.GetAsync(requestUri, cancellationToken);
-                response.EnsureSuccessStatusCode();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return default(T);
+                }
                 //TODO: Add HAL Converter
 
                 return await ReadContentAsync<T>(response);
@@ -198,7 +201,11 @@ namespace Baasic.Client
                 InitializeClient(client, Configuration.DefaultMediaType);
 
                 var response = await client.PostAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
-                response.EnsureSuccessStatusCode();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return default(T);
+                }
 
                 //TODO: Add HAL Converter
                 return await ReadContentAsync<T>(response);
@@ -232,7 +239,11 @@ namespace Baasic.Client
                 InitializeClient(client, Configuration.DefaultMediaType);
 
                 var response = await client.PutAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
-                response.EnsureSuccessStatusCode();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return default(T);
+                }
 
                 return await ReadContentAsync<T>(response);
             }
@@ -279,7 +290,7 @@ namespace Baasic.Client
                 InitializeClient(client, Configuration.DefaultMediaType);
 
                 var response = await client.SendAsync(request, cancellationToken);
-                response.EnsureSuccessStatusCode();
+
                 //TODO: Add HAL Converter
                 return response;
             }

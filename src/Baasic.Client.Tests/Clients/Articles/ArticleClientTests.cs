@@ -67,9 +67,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.ArchiveAsync("NA").Result.Should().BeFalse(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.ArchiveAsync("NA").Result.Should().BeFalse();
             target.ArchiveAsync("Slug").Result.Should().BeTrue();
         }
 
@@ -136,8 +134,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.DeleteAsync("NA").Result.Should().BeFalse(); };
-            execute.ShouldThrow<HttpRequestException>();
+            target.DeleteAsync("NA").Result.Should().BeFalse();
             target.DeleteAsync("Slug").Result.Should().BeTrue();
         }
 
@@ -185,10 +182,12 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.FindAsync("NA", null, null, "", "", 1, 10, "", "").Result.Should().NotBeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
+            var expected = target.FindAsync("NA", null, null, "", "", 1, 10, "", "").Result;
+            expected.Should().NotBeNull();
+            expected.Item.Should().NotBeNull();
+            expected.Item.Count.Should().Be(0);
 
-            var expected = target.FindAsync("Slug", null, null, "", "", 1, 10, "", "").Result;
+            expected = target.FindAsync("Slug", null, null, "", "", 1, 10, "", "").Result;
             expected.Should().NotBeNull();
             expected.Item.Should().NotBeNull();
             expected.Item.First().Slug.Should().Be("Slug");
@@ -238,9 +237,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.GetAsync("NA", "").Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.GetAsync("NA", "").Result.Should().BeNull();
             var expected = target.GetAsync("Slug", "").Result;
             expected.Should().NotBeNull();
             expected.Slug.Should().Be("Slug");
@@ -295,9 +292,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.InsertAsync(null).Result.Should().NotBeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.InsertAsync(null).Result.Should().BeNull();
             var expected = target.InsertAsync(new Article() { Id = Guid.NewGuid(), Slug = "Slug" }).Result;
             expected.Should().NotBeNull();
             expected.Slug.Should().Be("Slug");
@@ -341,9 +336,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.PublishAsync("NA").Result.Should().BeFalse(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.PublishAsync("NA").Result.Should().BeFalse();
             target.PublishAsync("Slug").Result.Should().BeTrue();
         }
 
@@ -385,9 +378,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.RestoreAsync("NA").Result.Should().BeFalse(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.RestoreAsync("NA").Result.Should().BeFalse();
             target.RestoreAsync("Slug").Result.Should().BeTrue();
         }
 
@@ -440,9 +431,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.UpdateAsync(null).Result.Should().NotBeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.UpdateAsync(null).Result.Should().BeNull();
             var expected = target.UpdateAsync(new Article() { Id = Guid.NewGuid(), Slug = "Slug" }).Result;
             expected.Should().NotBeNull();
             expected.Slug.Should().Be("Slug");
@@ -497,11 +486,9 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.AddTagToArticleAsync(Guid.Empty, "").Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
+            target.AddTagToArticleAsync(Guid.Empty, "").Result.Should().BeNull();
 
-            execute = () => { target.AddTagToArticleAsync(Guid.Empty, tag).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
+            target.AddTagToArticleAsync(Guid.Empty, tag).Result.Should().BeNull();
 
             var expected = target.AddTagToArticleAsync(articleId, tag).Result;
             expected.Should().NotBeNull();
@@ -567,13 +554,10 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.AddTagToArticleAsync(null).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
+            target.AddTagToArticleAsync(null).Result.Should().BeNull();
 
-            execute = () => { target.AddTagToArticleAsync(new ArticleTagEntry() { Id = tagEntryId, ArticleId = Guid.Empty, TagId = tagId }).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-            execute = () => { target.AddTagToArticleAsync(new ArticleTagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = Guid.Empty }).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
+            target.AddTagToArticleAsync(new ArticleTagEntry() { Id = tagEntryId, ArticleId = Guid.Empty, TagId = tagId }).Result.Should().BeNull();
+            target.AddTagToArticleAsync(new ArticleTagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = Guid.Empty }).Result.Should().BeNull();
 
             var expected = target.AddTagToArticleAsync(new ArticleTagEntry() { Id = tagEntryId, ArticleId = articleId, TagId = tagId }).Result;
             expected.Should().NotBeNull();
@@ -630,10 +614,12 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.FindTagEntriesAsync(articleId, "NA", 1, 10, "", "").Result.Should().NotBeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
+            var expected = target.FindTagEntriesAsync(articleId, "NA", 1, 10, "", "").Result;
+            expected.Should().NotBeNull();
+            expected.Item.Should().NotBeNull();
+            expected.Item.Count.Should().Be(0);
 
-            var expected = target.FindTagEntriesAsync(articleId, "Tag", 1, 10, "", "").Result;
+            expected = target.FindTagEntriesAsync(articleId, "Tag", 1, 10, "", "").Result;
             expected.Should().NotBeNull();
             expected.Item.Should().NotBeNull();
             expected.Item.First().TagId.Should().Be(tagId);
@@ -687,8 +673,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.GetTagEntryAsync(Guid.Empty, "NA", "").Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
+            target.GetTagEntryAsync(Guid.Empty, "NA", "").Result.Should().BeNull();
 
             var expected = target.GetTagEntryAsync(articleId, "Tag", "").Result;
             expected.Should().NotBeNull();
@@ -735,8 +720,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.RemoveAllTagsFromArticleAsync(Guid.Empty).Result.Should().BeFalse(); };
-            execute.ShouldThrow<HttpRequestException>();
+            target.RemoveAllTagsFromArticleAsync(Guid.Empty).Result.Should().BeFalse();
             target.RemoveAllTagsFromArticleAsync(articleId).Result.Should().BeTrue();
         }
 
@@ -779,12 +763,8 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.RemoveTagFromArticleAsync(Guid.Empty, "NA").Result.Should().BeFalse(); };
-            execute.ShouldThrow<HttpRequestException>();
-
-            execute = () => { target.RemoveTagFromArticleAsync(articleId, "NA").Result.Should().BeFalse(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.RemoveTagFromArticleAsync(Guid.Empty, "NA").Result.Should().BeFalse();
+            target.RemoveTagFromArticleAsync(articleId, "NA").Result.Should().BeFalse();
             target.RemoveTagFromArticleAsync(articleId, "tag").Result.Should().BeTrue();
         }
 
