@@ -5,7 +5,7 @@ namespace Baasic.Client.Model.Articles
     /// <summary>
     /// Tag used to transfer data from and to controller.
     /// </summary>
-    public class ArticleTag : ModelBase
+    public class ArticleTag : BuiltInModelBase
     {
         #region Properties
 

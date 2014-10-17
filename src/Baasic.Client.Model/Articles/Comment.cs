@@ -5,7 +5,7 @@ namespace Baasic.Client.Model.Articles
     /// <summary>
     /// Comment used to transfer data from and to controller.
     /// </summary>
-    public class Comment : ModelBase
+    public class Comment : BuiltInModelBase
     {
         #region Properties
 

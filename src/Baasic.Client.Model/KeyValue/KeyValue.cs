@@ -5,8 +5,10 @@ namespace Baasic.Client.Model
     /// <summary>
     /// Key value used to transfer data from and to Baasic.
     /// </summary>
-    public class KeyValue : ModelBase
+    public class KeyValue : BuiltInModelBase
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the key.
         /// </summary>
@@ -24,5 +26,7 @@ namespace Baasic.Client.Model
             get;
             set;
         }
+
+        #endregion Properties
     }
 }

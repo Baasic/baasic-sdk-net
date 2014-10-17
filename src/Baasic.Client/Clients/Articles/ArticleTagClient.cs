@@ -71,7 +71,7 @@ namespace Baasic.Client.ArticleModule
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="ArticleTag"/> .</returns>
-        public virtual Task<CollectionModelBase<ArticleTag>> FindAsync(string searchQuery = DefaultSearchQuery,
+        public virtual async Task<CollectionModelBase<ArticleTag>> FindAsync(string searchQuery = DefaultSearchQuery,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
@@ -79,7 +79,12 @@ namespace Baasic.Client.ArticleModule
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
-                return client.GetAsync<CollectionModelBase<ArticleTag>>(uriBuilder.ToString());
+                var result = await client.GetAsync<CollectionModelBase<ArticleTag>>(uriBuilder.ToString());
+                if (result == null)
+                {
+                    result = new CollectionModelBase<ArticleTag>();
+                }
+                return result;
             }
         }
 

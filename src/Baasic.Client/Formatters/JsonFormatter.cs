@@ -13,11 +13,17 @@ namespace Baasic.Client.Formatters
     /// </summary>
     public class JsonFormatter : IJsonFormatter
     {
+        #region Fields
+
         private readonly Encoding defaultEncoding = UTF8Encoding.UTF8;
         private readonly JsonSerializer serializer;
 
+        #endregion Fields
+
+        #region Constructors
+
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="JsonFormatter"/> class.
         /// </summary>
         public JsonFormatter()
         {
@@ -27,7 +33,9 @@ namespace Baasic.Client.Formatters
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 NullValueHandling = NullValueHandling.Include,
                 PreserveReferencesHandling = PreserveReferencesHandling.None,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat
             };
 
             serializerSettings.Converters.Add(new IsoDateTimeConverter());
@@ -35,8 +43,12 @@ namespace Baasic.Client.Formatters
             this.serializer = JsonSerializer.Create(serializerSettings);
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         /// <summary>
-        /// Deserilzes object from JSON string.
+        /// Deserialize object from JSON string.
         /// </summary>
         /// <typeparam name="T">Type of object.</typeparam>
         /// <param name="value">Serialized string.</param>
@@ -128,5 +140,7 @@ namespace Baasic.Client.Formatters
 
             return content;
         }
+
+        #endregion Methods
     }
 }

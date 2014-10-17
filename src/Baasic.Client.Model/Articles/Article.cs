@@ -5,7 +5,7 @@ namespace Baasic.Client.Model.Articles
     /// <summary>
     /// Article used to transfer data from and to controller.
     /// </summary>
-    public class Article : ModelBase
+    public class Article : BuiltInModelBase
     {
         #region Properties
 

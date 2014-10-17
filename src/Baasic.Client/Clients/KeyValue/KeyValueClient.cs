@@ -70,7 +70,7 @@ namespace Baasic.Client.KeyValueModule
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="KeyValue"/> s.</returns>
-        public virtual Task<CollectionModelBase<KeyValue>> FindAsync(string searchQuery = DefaultSearchQuery,
+        public virtual async Task<CollectionModelBase<KeyValue>> FindAsync(string searchQuery = DefaultSearchQuery,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
@@ -78,7 +78,12 @@ namespace Baasic.Client.KeyValueModule
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
-                return client.GetAsync<CollectionModelBase<KeyValue>>(uriBuilder.ToString());
+                var result = await client.GetAsync<CollectionModelBase<KeyValue>>(uriBuilder.ToString());
+                if (result == null)
+                {
+                    result = new CollectionModelBase<KeyValue>();
+                }
+                return result;
             }
         }
 

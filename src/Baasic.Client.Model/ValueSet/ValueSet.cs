@@ -5,8 +5,10 @@ namespace Baasic.Client.Model
     /// <summary>
     /// Value set used to transfer data from and to Baasic.
     /// </summary>
-    public class ValueSet : ModelBase
+    public class ValueSet : BuiltInModelBase
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the value set description.
         /// </summary>
@@ -29,5 +31,7 @@ namespace Baasic.Client.Model
         /// Gets or sets the value set items associated with the set.
         /// </summary>
         public ValueSetItem[] Values { get; set; }
+
+        #endregion Properties
     }
 }

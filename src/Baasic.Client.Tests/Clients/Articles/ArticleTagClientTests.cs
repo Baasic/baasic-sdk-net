@@ -83,12 +83,8 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.DeleteAsync("NA").Result.Should().BeFalse(); };
-            execute.ShouldThrow<HttpRequestException>();
-
-            execute = () => { target.DeleteAsync("NA").Result.Should().BeFalse(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.DeleteAsync("NA").Result.Should().BeFalse();
+            target.DeleteAsync("NA").Result.Should().BeFalse();
             target.DeleteAsync("tag").Result.Should().BeTrue();
         }
 
@@ -138,10 +134,12 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.FindAsync("NA", 1, 10, "", "").Result.Should().NotBeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
+            var expected = target.FindAsync("NA", 1, 10, "", "").Result;
+            expected.Should().NotBeNull();
+            expected.Item.Should().NotBeNull();
+            expected.Item.Count.Should().Be(0);
 
-            var expected = target.FindAsync("Tag", 1, 10, "", "").Result;
+            expected = target.FindAsync("Tag", 1, 10, "", "").Result;
             expected.Should().NotBeNull();
             expected.Item.Should().NotBeNull();
             expected.Item.First().Tag.Should().Be("Tag");
@@ -193,9 +191,7 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.GetAsync("NA", "").Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.GetAsync("NA", "").Result.Should().BeNull();
             var expected = target.GetAsync("Tag", "").Result;
             expected.Should().NotBeNull();
             expected.Tag.Should().Be("Tag");
@@ -258,14 +254,9 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.InsertAsync(null).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-
-            execute = () => { target.InsertAsync(new ArticleTag() { Id = tagId }).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-            execute = () => { target.InsertAsync(new ArticleTag() { Id = tagId, Slug = "Tag" }).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.InsertAsync(null).Result.Should().BeNull();
+            target.InsertAsync(new ArticleTag() { Id = tagId }).Result.Should().BeNull();
+            target.InsertAsync(new ArticleTag() { Id = tagId, Slug = "Tag" }).Result.Should().BeNull();
             var expected = target.InsertAsync(new ArticleTag() { Id = tagId, Slug = "Tag", Tag = "Tag" }).Result;
             expected.Should().NotBeNull();
             expected.Id.ToString().Should().Be(tagId.ToString());
@@ -330,14 +321,9 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            Action execute = () => { target.UpdateAsync(null).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-
-            execute = () => { target.UpdateAsync(new ArticleTag() { Id = tagId }).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-            execute = () => { target.UpdateAsync(new ArticleTag() { Id = tagId, Slug = "Tag" }).Result.Should().BeNull(); };
-            execute.ShouldThrow<HttpRequestException>();
-
+            target.UpdateAsync(null).Result.Should().BeNull();
+            target.UpdateAsync(new ArticleTag() { Id = tagId }).Result.Should().BeNull();
+            target.UpdateAsync(new ArticleTag() { Id = tagId, Slug = "Tag" }).Result.Should().BeNull();
             var expected = target.UpdateAsync(new ArticleTag() { Id = tagId, Slug = "Tag1", Tag = "Tag1" }).Result;
             expected.Should().NotBeNull();
             expected.Id.ToString().Should().Be(tagId.ToString());

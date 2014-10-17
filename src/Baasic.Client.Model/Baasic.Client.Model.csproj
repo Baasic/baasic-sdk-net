@@ -50,8 +50,10 @@
     <Compile Include="Articles\Author.cs" />
     <Compile Include="Articles\Article.cs" />
     <Compile Include="ICollectionModel.cs" />
+    <Compile Include="IBuiltInModel.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="KeyValue\KeyValue.cs" />
+    <Compile Include="BuiltInModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CollectionModelBase.cs" />
     <Compile Include="ModelBase.cs" />

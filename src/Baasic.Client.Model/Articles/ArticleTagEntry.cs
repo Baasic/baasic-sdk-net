@@ -5,7 +5,7 @@ namespace Baasic.Client.Model.Articles
     /// <summary>
     /// Tag entry used to transfer data from and to controller.
     /// </summary>
-    public class ArticleTagEntry : ModelBase
+    public class ArticleTagEntry : BuiltInModelBase
     {
         #region Properties
 

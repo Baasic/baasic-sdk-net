@@ -5,7 +5,7 @@ namespace Baasic.Client.Model.Articles
     /// <summary>
     /// Rating used to transfer data from and to controller.
     /// </summary>
-    public class Rating : ModelBase
+    public class Rating : BuiltInModelBase
     {
         #region Properties
 

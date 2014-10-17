@@ -110,7 +110,7 @@ namespace Baasic.Client.ArticleModule
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="Article"/> s.</returns>
-        public virtual Task<CollectionModelBase<Article>> FindAsync(string searchQuery = DefaultSearchQuery,
+        public virtual async Task<CollectionModelBase<Article>> FindAsync(string searchQuery = DefaultSearchQuery,
             DateTime? startDate = null, DateTime? endDate = null,
             string statuses = "", string tags = "",
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
@@ -124,7 +124,12 @@ namespace Baasic.Client.ArticleModule
                 InitializeQueryStringPair(uriBuilder, "endDate", endDate);
                 InitializeQueryStringPair(uriBuilder, "statuses", statuses);
                 InitializeQueryStringPair(uriBuilder, "tags", tags);
-                return client.GetAsync<CollectionModelBase<Article>>(uriBuilder.ToString());
+                var result = await client.GetAsync<CollectionModelBase<Article>>(uriBuilder.ToString());
+                if (result == null)
+                {
+                    result = new CollectionModelBase<Article>();
+                }
+                return result;
             }
         }
 
@@ -243,7 +248,7 @@ namespace Baasic.Client.ArticleModule
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="ArticleTagEntry"/> .</returns>
-        public virtual Task<CollectionModelBase<ArticleTagEntry>> FindTagEntriesAsync(object articleKey, string searchQuery = DefaultSearchQuery,
+        public virtual async Task<CollectionModelBase<ArticleTagEntry>> FindTagEntriesAsync(object articleKey, string searchQuery = DefaultSearchQuery,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
@@ -251,7 +256,12 @@ namespace Baasic.Client.ArticleModule
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/tag", ModuleRelativePath), articleKey));
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
-                return client.GetAsync<CollectionModelBase<ArticleTagEntry>>(uriBuilder.ToString());
+                var result = await client.GetAsync<CollectionModelBase<ArticleTagEntry>>(uriBuilder.ToString());
+                if (result == null)
+                {
+                    result = new CollectionModelBase<ArticleTagEntry>();
+                }
+                return result;
             }
         }
 
