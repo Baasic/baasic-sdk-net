@@ -25,7 +25,7 @@ namespace Baasic.Client.ArticleModule
         /// </summary>
         protected override string ModuleRelativePath
         {
-            get { return "articletag"; }
+            get { return "article-tags"; }
         }
 
         #endregion Properties

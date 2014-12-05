@@ -26,7 +26,7 @@ namespace Baasic.Client.ArticleModule
         /// </summary>
         protected override string ModuleRelativePath
         {
-            get { return "article"; }
+            get { return "articles"; }
         }
 
         #endregion Properties
@@ -60,7 +60,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/archive/{{0}}", ModuleRelativePath), key));
+                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/archive", ModuleRelativePath), key));
                 var result = await client.SendAsync(request);
                 return result.IsSuccessStatusCode;
             }
@@ -172,7 +172,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/publish/{{0}}", ModuleRelativePath), key));
+                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/publish", ModuleRelativePath), key));
                 var result = await client.SendAsync(request);
                 return result.IsSuccessStatusCode;
             }
@@ -187,7 +187,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/restore/{{0}}", ModuleRelativePath), key));
+                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/restore", ModuleRelativePath), key));
                 var result = await client.SendAsync(request);
                 return result.IsSuccessStatusCode;
             }
@@ -220,7 +220,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<ArticleTagEntry>(client.GetApiUrl(String.Format("{0}/{{0}}/tag/{{1}}", ModuleRelativePath), articleKey, tag), null);
+                return client.PostAsync<ArticleTagEntry>(client.GetApiUrl(String.Format("{0}/{{0}}/tags/{{1}}", ModuleRelativePath), articleKey, tag), null);
             }
         }
 
@@ -233,7 +233,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<ArticleTagEntry>(client.GetApiUrl(String.Format("{0}/tag/", ModuleRelativePath)), entry);
+                return client.PostAsync<ArticleTagEntry>(client.GetApiUrl(String.Format("{0}/tags/", ModuleRelativePath)), entry);
             }
         }
 
@@ -254,7 +254,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/tag", ModuleRelativePath), articleKey));
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/tags", ModuleRelativePath), articleKey));
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
                 var result = await client.GetAsync<CollectionModelBase<ArticleTagEntry>>(uriBuilder.ToString());
                 if (result == null)
@@ -277,7 +277,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/tag/{{1}}", ModuleRelativePath), articleKey, key));
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/tags/{{1}}", ModuleRelativePath), articleKey, key));
                 InitializeQueryString(uriBuilder, embed, fields);
                 return client.GetAsync<ArticleTagEntry>(uriBuilder.ToString());
             }
@@ -292,7 +292,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/tag", ModuleRelativePath), articleKey));
+                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/tags", ModuleRelativePath), articleKey));
             }
         }
 
@@ -306,7 +306,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/tag/{{1}}", ModuleRelativePath), articleKey, key));
+                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/tags/{{1}}", ModuleRelativePath), articleKey, key));
             }
         }
 

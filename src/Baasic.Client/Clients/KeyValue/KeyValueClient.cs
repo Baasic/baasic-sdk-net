@@ -24,7 +24,7 @@ namespace Baasic.Client.KeyValueModule
         /// </summary>
         protected override string ModuleRelativePath
         {
-            get { return "keyvalue"; }
+            get { return "key-values"; }
         }
 
         #endregion Properties
