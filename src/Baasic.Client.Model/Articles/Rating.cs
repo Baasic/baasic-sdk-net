@@ -12,7 +12,7 @@ namespace Baasic.Client.Model.Articles
         /// <summary>
         /// Gets or sets the article id.
         /// </summary>
-        public virtual Guid ArticleId
+        public virtual SGuid ArticleId
         {
             get;
             set;
@@ -21,7 +21,7 @@ namespace Baasic.Client.Model.Articles
         /// <summary>
         /// Gets or sets the user id.
         /// </summary>
-        public virtual Guid UserId
+        public virtual SGuid UserId
         {
             get;
             set;

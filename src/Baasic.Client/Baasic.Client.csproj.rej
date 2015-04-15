@@ -1,0 +1,6 @@
+diff a/src/Baasic.Client/Baasic.Client.csproj b/src/Baasic.Client/Baasic.Client.csproj	(rejected hunks)
+@@ -4,3 +4,3 @@
+   <PropertyGroup>
+-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
++    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>

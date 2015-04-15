@@ -13,7 +13,7 @@ namespace Baasic.Client.Model.Articles
         /// Gets or sets the article identifier.
         /// </summary>
         /// <value>The article identifier.</value>
-        public virtual Guid ArticleId
+        public virtual SGuid ArticleId
         {
             get;
             set;
@@ -29,7 +29,7 @@ namespace Baasic.Client.Model.Articles
         /// Gets or sets the tag identifier.
         /// </summary>
         /// <value>The tag identifier.</value>
-        public virtual Guid TagId
+        public virtual SGuid TagId
         {
             get;
             set;

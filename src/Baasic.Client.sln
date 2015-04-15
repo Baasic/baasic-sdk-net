@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client", "Baasic.Client\Baasic.Client.csproj", "{09ECCE82-F0DF-4A27-B323-370071BF1DAD}"
 EndProject
@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D7CF9D
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.Tests", "Baasic.Client.Tests\Baasic.Client.Tests.csproj", "{BE92A27B-0326-421A-B47C-CEA4CB5882C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.Common", "Baasic.Client.Common\Baasic.Client.Common.csproj", "{D9A9B364-8F08-4C40-A307-95C0C5D95FB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,10 @@ Global
 		{BE92A27B-0326-421A-B47C-CEA4CB5882C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE92A27B-0326-421A-B47C-CEA4CB5882C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE92A27B-0326-421A-B47C-CEA4CB5882C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9A9B364-8F08-4C40-A307-95C0C5D95FB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9A9B364-8F08-4C40-A307-95C0C5D95FB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9A9B364-8F08-4C40-A307-95C0C5D95FB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9A9B364-8F08-4C40-A307-95C0C5D95FB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

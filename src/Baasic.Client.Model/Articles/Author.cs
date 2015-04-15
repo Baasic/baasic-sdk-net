@@ -21,7 +21,7 @@ namespace Baasic.Client.Model.Articles
         /// <summary>
         /// Gets or sets the author id.
         /// </summary>
-        public new System.Guid Id
+        public new SGuid Id
         {
             get;
             set;

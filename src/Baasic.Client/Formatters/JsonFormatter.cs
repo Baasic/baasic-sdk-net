@@ -23,7 +23,7 @@ namespace Baasic.Client.Formatters
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonFormatter"/> class.
+        /// Initializes a new instance of the <see cref="JsonFormatter" /> class.
         /// </summary>
         public JsonFormatter()
         {
@@ -39,6 +39,7 @@ namespace Baasic.Client.Formatters
             };
 
             serializerSettings.Converters.Add(new IsoDateTimeConverter());
+            serializerSettings.Converters.Add(new SGuidConverter());
 
             this.serializer = JsonSerializer.Create(serializerSettings);
         }
@@ -65,7 +66,7 @@ namespace Baasic.Client.Formatters
         }
 
         /// <summary>
-        /// Deserilzes object from stream.
+        /// Deserializes object from stream.
         /// </summary>
         /// <typeparam name="T">Type of object.</typeparam>
         /// <param name="stream">Stream to read from.</param>

@@ -40,7 +40,7 @@ namespace Baasic.Client.Token
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="KeyValueClient"/> class.
+        /// Initializes a new instance of the <see cref="TokenClient" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="baasicClientFactory">The baasic client factory.</param>
@@ -61,11 +61,11 @@ namespace Baasic.Client.Token
         #region Methods
 
         /// <summary>
-        /// Asynchronously creates new <see cref="IAuthenticationToken"/> for specified used.
+        /// Asynchronously creates new <see cref="IAuthenticationToken" /> for specified used.
         /// </summary>
         /// <param name="username">Username.</param>
         /// <param name="password">Password.</param>
-        /// <returns>New <see cref="IAuthenticationToken"/> .</returns>
+        /// <returns>New <see cref="IAuthenticationToken" /> .</returns>
         public async Task<IAuthenticationToken> CreateAsync(string username, string password)
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
@@ -79,8 +79,20 @@ namespace Baasic.Client.Token
                     })
                 };
 
+                IAuthenticationToken token = null;
+                IAuthenticationToken oldToken = this.Configuration.TokenHandler.Get();
+                this.Configuration.TokenHandler.Clear();
+
                 var response = await client.SendAsync(request);
-                var token = this.ReadToken(JsonFormatter.Deserialize<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync()));
+                try
+                {
+                    token = this.ReadToken(JsonFormatter.Deserialize<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync()));
+                }
+                catch (Exception ex)
+                {
+                    this.Configuration.TokenHandler.Save(oldToken);
+                    throw ex;
+                }
 
                 var tokenHandler = this.Configuration.TokenHandler;
                 if (tokenHandler != null)
@@ -93,10 +105,10 @@ namespace Baasic.Client.Token
         }
 
         /// <summary>
-        /// Asynchronously destroys the <see cref="IAuthenticationToken"/> .
+        /// Asynchronously destroys the <see cref="IAuthenticationToken" /> .
         /// </summary>
         /// <param name="token">Token to destroy.</param>
-        /// <returns>True if <see cref="IAuthenticationToken"/> is destroyed, false otherwise.</returns>
+        /// <returns>True if <see cref="IAuthenticationToken" /> is destroyed, false otherwise.</returns>
         public async Task<bool> DestroyAsync()
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
@@ -125,10 +137,10 @@ namespace Baasic.Client.Token
         }
 
         /// <summary>
-        /// Asynchronously refreshes the <see cref="IAuthenticationToken"/> .
+        /// Asynchronously refreshes the <see cref="IAuthenticationToken" /> .
         /// </summary>
         /// <param name="token">Token to update.</param>
-        /// <returns>New <see cref="IAuthenticationToken"/> .</returns>
+        /// <returns>New <see cref="IAuthenticationToken" /> .</returns>
         public async Task<IAuthenticationToken> RefreshAsync()
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
@@ -155,6 +167,12 @@ namespace Baasic.Client.Token
 
         private IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
         {
+            var details = rawToken.Property("details");
+            if (details != null)
+            {
+                throw new InvalidOperationException(rawToken.Property("message").ToString());
+            }
+
             return new AuthenticationToken()
             {
                 ExpirationDate = DateTime.UtcNow.AddSeconds(rawToken.Property("expires_in").ToObject<long>()),

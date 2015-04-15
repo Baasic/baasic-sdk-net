@@ -12,7 +12,7 @@ namespace Baasic.Client.Model
         /// <summary>
         /// Gets or sets the primary key.
         /// </summary>
-        public new Guid Id { get; set; }
+        public new SGuid Id { get; set; }
 
         #endregion Properties
     }

@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -89,6 +89,10 @@
     <Compile Include="Utility\UrlBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Baasic.Client.Common\Baasic.Client.Common.csproj">
+      <Project>{d9a9b364-8f08-4c40-a307-95c0c5d95fb9}</Project>
+      <Name>Baasic.Client.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Baasic.Client.Model\Baasic.Client.Model.csproj">
       <Project>{94197638-4537-46a5-a641-5e1b9626f2e8}</Project>
       <Name>Baasic.Client.Model</Name>

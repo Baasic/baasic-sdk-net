@@ -12,7 +12,7 @@ namespace Baasic.Client.Model
         /// <summary>
         /// Gets or sets the set id.
         /// </summary>
-        public virtual Guid SetId
+        public virtual SGuid SetId
         {
             get;
             set;
