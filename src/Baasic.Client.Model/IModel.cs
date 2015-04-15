@@ -7,6 +7,8 @@ namespace Baasic.Client.Model
     /// </summary>
     public interface IModel
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the Date created.
         /// </summary>
@@ -20,6 +22,8 @@ namespace Baasic.Client.Model
         /// <summary>
         /// Gets or sets the primary key.
         /// </summary>
-        object Id { get; set; }
+        SGuid Id { get; set; }
+
+        #endregion Properties
     }
 }

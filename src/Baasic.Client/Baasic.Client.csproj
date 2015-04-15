@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="Clients\Articles\ArticleTagClient.cs" />
     <Compile Include="Clients\Articles\IArticleTagClient.cs" />
+    <Compile Include="Clients\Dynamic\DynamicResourceClient.cs" />
+    <Compile Include="Clients\Dynamic\IDynamicResourceClient.cs" />
     <Compile Include="HttpClientFactory.cs" />
     <Compile Include="BaasicClientFactory.cs" />
     <Compile Include="Clients\Articles\IArticleClient.cs" />

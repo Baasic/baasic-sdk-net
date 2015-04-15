@@ -7,13 +7,5 @@ namespace Baasic.Client.Model
     /// </summary>
     public interface IBuiltInModel : IModel
     {
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the primary key.
-        /// </summary>
-        new SGuid Id { get; set; }
-
-        #endregion Properties
     }
 }
