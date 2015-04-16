@@ -48,8 +48,6 @@ namespace Baasic.Client.DynamicResource
 
         #region Methods
 
-        #region Article
-
         /// <summary>
         /// Asynchronously deletes the dynamic resource of <see cref="T" /> from the system.
         /// </summary>
@@ -130,8 +128,6 @@ namespace Baasic.Client.DynamicResource
                 return client.PutAsync<T>(client.GetApiUrl("{0}/{1}", ModuleRelativePath, typeof(T).Name), resource);
             }
         }
-
-        #endregion Article
 
         #endregion Methods
     }
