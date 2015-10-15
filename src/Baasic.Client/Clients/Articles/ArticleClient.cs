@@ -34,7 +34,7 @@ namespace Baasic.Client.ArticleModule
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArticleClient"/> class.
+        /// Initializes a new instance of the <see cref="ArticleClient" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="baasicClientFactory">The baasic client factory.</param>
@@ -52,10 +52,10 @@ namespace Baasic.Client.ArticleModule
         #region Article
 
         /// <summary>
-        /// Asynchronously archives the <see cref="Article"/> in the system.
+        /// Asynchronously archives the <see cref="Article" /> in the system.
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
-        /// <returns>True if <see cref="Article"/> is archived, false otherwise.</returns>
+        /// <returns>True if <see cref="Article" /> is archived, false otherwise.</returns>
         public virtual async Task<bool> ArchiveAsync(object key)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -67,10 +67,10 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously deletes the <see cref="Article"/> from the system.
+        /// Asynchronously deletes the <see cref="Article" /> from the system.
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
-        /// <returns>True if <see cref="Article"/> is deleted, false otherwise.</returns>
+        /// <returns>True if <see cref="Article" /> is deleted, false otherwise.</returns>
         public virtual Task<bool> DeleteAsync(object key)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -80,7 +80,7 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously find <see cref="Article"/> s.
+        /// Asynchronously find <see cref="Article" /> s.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
         /// <param name="page">Page number.</param>
@@ -88,7 +88,7 @@ namespace Baasic.Client.ArticleModule
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>List of <see cref="Article"/> s.</returns>
+        /// <returns>List of <see cref="Article" /> s.</returns>
         public virtual Task<CollectionModelBase<Article>> FindAsync(string searchQuery = DefaultSearchQuery,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
@@ -97,7 +97,7 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously find <see cref="Article"/> s.
+        /// Asynchronously find <see cref="Article" /> s.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
         /// <param name="startDate">The start date.</param>
@@ -109,7 +109,7 @@ namespace Baasic.Client.ArticleModule
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>List of <see cref="Article"/> s.</returns>
+        /// <returns>List of <see cref="Article" /> s.</returns>
         public virtual async Task<CollectionModelBase<Article>> FindAsync(string searchQuery = DefaultSearchQuery,
             DateTime? startDate = null, DateTime? endDate = null,
             string statuses = "", string tags = "",
@@ -134,12 +134,12 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously gets the <see cref="Article"/> by provided key.
+        /// Asynchronously gets the <see cref="Article" /> by provided key.
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
         /// <param name="embed">The embed.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns><see cref="Article"/> .</returns>
+        /// <returns><see cref="Article" /> .</returns>
         public virtual Task<Article> GetAsync(object key, string embed = DefaultEmbed, string fields = DefaultFields)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -151,10 +151,10 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously insert the <see cref="Article"/> into the system.
+        /// Asynchronously insert the <see cref="Article" /> into the system.
         /// </summary>
         /// <param name="article">The article.</param>
-        /// <returns>Newly created <see cref="Article"/> .</returns>
+        /// <returns>Newly created <see cref="Article" /> .</returns>
         public virtual Task<Article> InsertAsync(Article article)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -164,10 +164,10 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously publish the <see cref="Article"/> in the system.
+        /// Asynchronously publish the <see cref="Article" /> in the system.
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
-        /// <returns>True if <see cref="Article"/> is published, false otherwise.</returns>
+        /// <returns>True if <see cref="Article" /> is published, false otherwise.</returns>
         public virtual async Task<bool> PublishAsync(object key)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -179,10 +179,10 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously restore the <see cref="Article"/> in the system.
+        /// Asynchronously restore the <see cref="Article" /> in the system.
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
-        /// <returns>True if <see cref="Article"/> is restored, false otherwise.</returns>
+        /// <returns>True if <see cref="Article" /> is restored, false otherwise.</returns>
         public virtual async Task<bool> RestoreAsync(object key)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -194,10 +194,10 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously update the <see cref="Article"/> in the system.
+        /// Asynchronously update the <see cref="Article" /> in the system.
         /// </summary>
         /// <param name="article">The article.</param>
-        /// <returns>Updated <see cref="Article"/> .</returns>
+        /// <returns>Updated <see cref="Article" /> .</returns>
         public virtual Task<Article> UpdateAsync(Article article)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -215,7 +215,7 @@ namespace Baasic.Client.ArticleModule
         /// </summary>
         /// <param name="articleKey">Tag will be added under the specified article id or slug.</param>
         /// <param name="tag">The new or existing tag.</param>
-        /// <returns>If tag is added <see cref="ArticleTagEntry"/> is returned, otherwise null.</returns>
+        /// <returns>If tag is added <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
         public virtual Task<ArticleTagEntry> AddTagToArticleAsync(object articleKey, string tag)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -228,7 +228,7 @@ namespace Baasic.Client.ArticleModule
         /// Asynchronously adds the tag to article tags.
         /// </summary>
         /// <param name="entry">The tag entry.</param>
-        /// <returns>If tag is added <see cref="ArticleTagEntry"/> is returned, otherwise null.</returns>
+        /// <returns>If tag is added <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
         public virtual Task<ArticleTagEntry> AddTagToArticleAsync(ArticleTagEntry entry)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -238,7 +238,7 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously find <see cref="ArticleTagEntry"/> entries.
+        /// Asynchronously find <see cref="ArticleTagEntry" /> entries.
         /// </summary>
         /// <param name="articleKey">Article id or slug.</param>
         /// <param name="searchQuery">Search phrase or query.</param>
@@ -247,7 +247,7 @@ namespace Baasic.Client.ArticleModule
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>List of <see cref="ArticleTagEntry"/> .</returns>
+        /// <returns>List of <see cref="ArticleTagEntry" /> .</returns>
         public virtual async Task<CollectionModelBase<ArticleTagEntry>> FindTagEntriesAsync(object articleKey, string searchQuery = DefaultSearchQuery,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
@@ -266,13 +266,13 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously gets the <see cref="ArticleTagEntry"/> from the system.
+        /// Asynchronously gets the <see cref="ArticleTagEntry" /> from the system.
         /// </summary>
         /// <param name="articleKey">Article id or slug.</param>
         /// <param name="key">Key (Id or Slug).</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>If found <see cref="ArticleTagEntry"/> is returned, otherwise null.</returns>
+        /// <returns>If found <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
         public virtual Task<ArticleTagEntry> GetTagEntryAsync(object articleKey, object key, string embed = DefaultEmbed, string fields = DefaultFields)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -284,10 +284,10 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously removes all <see cref="ArticleTagEntry"/> from the system.
+        /// Asynchronously removes all <see cref="ArticleTagEntry" /> from the system.
         /// </summary>
         /// <param name="articleKey">Article id or slug used to remove tags.</param>
-        /// <returns>True if <see cref="ArticleTagEntry"/> s are removed, false otherwise.</returns>
+        /// <returns>True if <see cref="ArticleTagEntry" /> s are removed, false otherwise.</returns>
         public virtual Task<bool> RemoveAllTagsFromArticleAsync(object articleKey)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -297,11 +297,11 @@ namespace Baasic.Client.ArticleModule
         }
 
         /// <summary>
-        /// Asynchronously removes the <see cref="ArticleTagEntry"/> from the system.
+        /// Asynchronously removes the <see cref="ArticleTagEntry" /> from the system.
         /// </summary>
         /// <param name="articleKey">Article id or slug to used to remove tag.</param>
         /// <param name="key">Key (Id or Slug).</param>
-        /// <returns>True if <see cref="TAgEntry"/> is removed, otherwise false.</returns>
+        /// <returns>True if <see cref="TAgEntry" /> is removed, otherwise false.</returns>
         public virtual Task<bool> RemoveTagFromArticleAsync(object articleKey, object key)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
