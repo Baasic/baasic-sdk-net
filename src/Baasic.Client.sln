@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D7CF9D
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.Tests", "Baasic.Client.Tests\Baasic.Client.Tests.csproj", "{BE92A27B-0326-421A-B47C-CEA4CB5882C3}"
@@ -19,6 +20,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.Common", "Baasic.Client.Common\Baasic.Client.Common.csproj", "{D9A9B364-8F08-4C40-A307-95C0C5D95FB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.Ninject", "Baasic.Client.Ninject\Baasic.Client.Ninject.csproj", "{57A2D016-E9A0-4A9D-8789-E2DF36D3EEEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{284DEECA-B236-495D-B953-1BFFB796A0E8}"
+	ProjectSection(SolutionItems) = preProject
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
