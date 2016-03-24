@@ -124,7 +124,7 @@ namespace Baasic.Client.KeyValueModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<KeyValue>(client.GetApiUrl(ModuleRelativePath), content);
+                return client.PutAsync<KeyValue>(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
             }
         }
 

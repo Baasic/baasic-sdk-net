@@ -125,7 +125,7 @@ namespace Baasic.Client.DynamicResource
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T>(client.GetApiUrl("{0}/{1}", ModuleRelativePath, typeof(T).Name), resource);
+                return client.PutAsync<T>(client.GetApiUrl(string.Format("{{0}}/{{1}}/{0}", resource.Id), ModuleRelativePath, typeof(T).Name), resource);
             }
         }
 

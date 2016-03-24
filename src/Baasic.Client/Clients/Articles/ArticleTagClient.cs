@@ -127,7 +127,7 @@ namespace Baasic.Client.ArticleModule
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<ArticleTag>(client.GetApiUrl(ModuleRelativePath), tag);
+                return client.PutAsync<ArticleTag>(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, tag.Id)), tag);
             }
         }
 
