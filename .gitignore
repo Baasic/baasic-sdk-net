@@ -7,3 +7,7 @@ src/Baasic.Client/bin/
 packages/
 src/Baasic.Client.Tests/obj/
 src/Baasic.Client.Tests/bin/
+src/Baasic.Client.Common/bin/
+src/Baasic.Client.Common/obj/
+src/Baasic.Client.Ninject/bin/
+src/Baasic.Client.Ninject/obj/
