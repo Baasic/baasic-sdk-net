@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Baasic.Client.Model.Permissions
+namespace Baasic.Client.Model.ACL
 {
     /// <summary>
     /// Access policy.

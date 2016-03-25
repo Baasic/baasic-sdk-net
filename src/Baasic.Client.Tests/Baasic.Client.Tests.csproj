@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Baasic.Client.Tests.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

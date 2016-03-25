@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Baasic.Client.Model.Permissions
+namespace Baasic.Client.Model.ACL
 {
     /// <summary>
     /// Access action.

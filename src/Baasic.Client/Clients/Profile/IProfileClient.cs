@@ -15,9 +15,9 @@ namespace Baasic.Client.ProfileModule
         /// <summary>
         /// Asynchronously deletes the <see cref="UserProfile" /> from the system.
         /// </summary>
-        /// <param name="key">Key.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="UserProfile" /> is deleted, false otherwise.</returns>
-        Task<bool> DeleteAsync(object key);
+        Task<bool> DeleteAsync(object id);
 
         /// <summary>
         /// Asynchronously find <see cref="UserProfile" /> s.
@@ -32,11 +32,12 @@ namespace Baasic.Client.ProfileModule
         Task<CollectionModelBase<UserProfile>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults, string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
-        /// Asynchronously gets the <see cref="UserProfile" /> by provided key.
+        /// Asynchronously gets the <see cref="UserProfile" /> by provided id.
         /// </summary>
-        /// <param name="key">Key.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="embed">The embed.</param>
         /// <returns><see cref="UserProfile" /> .</returns>
-        Task<KeyValue> GetAsync(object key);
+        Task<UserProfile> GetAsync(object id, string embed = ClientBase.DefaultEmbed);
 
         /// <summary>
         /// Asynchronously insert the <see cref="UserProfile" /> into the system.
