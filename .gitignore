@@ -11,3 +11,7 @@ src/Baasic.Client.Common/bin/
 src/Baasic.Client.Common/obj/
 src/Baasic.Client.Ninject/bin/
 src/Baasic.Client.Ninject/obj/
+
+
+ClearAssemblyCache.cmd
+PushNuGets.cmd

@@ -1,6 +1,8 @@
 ﻿using Baasic.Client.Configuration;
+using Baasic.Client.Core;
 using Baasic.Client.Formatters;
-using Baasic.Client.TokenHandler;
+using Baasic.Client.Infrastructure.DependencyInjection;
+using Baasic.Client.Infrastructure.Security;
 using FluentAssertions;
 using Moq;
 using Moq.Protected;
@@ -13,6 +15,7 @@ using Xunit;
 
 namespace Baasic.Client.Tests
 {
+    [Trait("Core", "Core")]
     public class BaasicClientTests
     {
         #region Methods

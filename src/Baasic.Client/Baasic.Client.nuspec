@@ -13,8 +13,8 @@
     <language>en-US</language>
     <tags>Baasic, .NET, Portable, Clients</tags>
     <dependencies>
-      <dependency id="Baasic.Client.Common" version="(,2.0.0)" />
-      <dependency id="Baasic.Client.Model" version="(,2.0.0)" />
+      <dependency id="Baasic.Client.Common" version="[0.8.102,1.0.0)" />
+      <dependency id="Baasic.Client.Model" version="[0.8.102,1.0.0)" />
     </dependencies>
   </metadata>
 </package>

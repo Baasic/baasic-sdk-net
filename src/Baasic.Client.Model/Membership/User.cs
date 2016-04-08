@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Baasic.Client.Model.Membership
 {
     /// <summary>
-    /// User used to transfer data from and to controller.
+    /// User used to transfer data from and to Baasic.
     /// </summary>
-    public class User : ModelBase
+    public class User : BuiltInModelBase
     {
         #region Properties
 

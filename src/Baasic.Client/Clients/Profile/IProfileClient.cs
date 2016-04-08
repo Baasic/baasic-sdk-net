@@ -1,9 +1,10 @@
-﻿using Baasic.Client.Model;
+﻿using Baasic.Client.Core;
+using Baasic.Client.Model;
 using Baasic.Client.Model.Profile;
 using System;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.ProfileModule
+namespace Baasic.Client.Modules.Profile
 {
     /// <summary>
     /// Profile Module Client.
@@ -47,7 +48,7 @@ namespace Baasic.Client.ProfileModule
         Task<UserProfile> InsertAsync(UserProfile content);
 
         /// <summary>
-        /// Asynchronously update the <see cref="KeyValue" /> in the system.
+        /// Asynchronously update the <see cref="UserProfile" /> in the system.
         /// </summary>
         /// <param name="content">Resource instance.</param>
         /// <returns>Updated <see cref="UserProfile" /> .</returns>

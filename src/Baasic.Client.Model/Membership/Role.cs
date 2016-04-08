@@ -3,9 +3,9 @@
 namespace Baasic.Client.Model.Membership
 {
     /// <summary>
-    /// Role used to transfer data from and to controller.
+    /// Role used to transfer data from and to Baasic.
     /// </summary>
-    public class Role : ModelBase
+    public class Role : BuiltInModelBase
     {
         #region Properties
 

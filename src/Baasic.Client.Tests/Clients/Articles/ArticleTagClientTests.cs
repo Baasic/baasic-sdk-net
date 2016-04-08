@@ -1,7 +1,10 @@
 ﻿using Baasic.Client.Configuration;
+using Baasic.Client.Core;
 using Baasic.Client.Formatters;
+using Baasic.Client.Infrastructure.DependencyInjection;
 using Baasic.Client.Model;
 using Baasic.Client.Model.Articles;
+using Baasic.Client.Modules.Articles;
 using FluentAssertions;
 using Moq;
 using Moq.Protected;
@@ -17,6 +20,7 @@ using Xunit;
 
 namespace Baasic.Client.ArticleModule.Tests
 {
+    [Trait("Module", "Article")]
     public class ArticleTagClientTests
     {
         #region Methods

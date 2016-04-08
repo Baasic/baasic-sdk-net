@@ -1,4 +1,4 @@
-﻿using Baasic.Client.TokenHandler;
+﻿using Baasic.Client.Infrastructure.Security;
 using System;
 using System.Text;
 
@@ -9,6 +9,8 @@ namespace Baasic.Client.Configuration
     /// </summary>
     public interface IClientConfiguration
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
@@ -64,5 +66,7 @@ namespace Baasic.Client.Configuration
         {
             get;
         }
+
+        #endregion Properties
     }
 }

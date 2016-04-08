@@ -48,11 +48,11 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="BaasicClientDependencyResolver.cs" />
-    <Compile Include="DIModule.cs" />
+    <Compile Include="NinjectDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Baasic.Client.Ninject.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>

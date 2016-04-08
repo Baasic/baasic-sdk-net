@@ -1,4 +1,4 @@
-﻿using Baasic.Client.TokenHandler;
+﻿using Baasic.Client.Infrastructure.Security;
 using System;
 using System.Text;
 
@@ -7,7 +7,7 @@ namespace Baasic.Client.Configuration
     /// <summary>
     /// Client configuration.
     /// </summary>
-    public class ClientConfiguration : IClientConfiguration
+    public abstract class ClientConfiguration : IClientConfiguration
     {
         #region Fields
 
@@ -35,18 +35,10 @@ namespace Baasic.Client.Configuration
 
         #region Properties
 
-        private string _baseAddress;
-
-        private string _defaultMediaType;
-
-        private TimeSpan _defaultTimeout = TimeSpan.FromSeconds(10);
-
-        private string _secureBaseAddress;
-
         /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
-        public string ApplicationIdentifier { get; set; }
+        public string ApplicationIdentifier { get; private set; }
 
         /// <summary>
         /// Gets or sets server base address.
@@ -59,7 +51,7 @@ namespace Baasic.Client.Configuration
                     _baseAddress = BaasicBaseAddress + BaasicVersion;
                 return _baseAddress;
             }
-            set
+            private set
             {
                 _baseAddress = value;
                 _secureBaseAddress = null;
@@ -72,7 +64,7 @@ namespace Baasic.Client.Configuration
         public Encoding DefaultEncoding
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -86,7 +78,7 @@ namespace Baasic.Client.Configuration
                     return HalJsonMediaType;
                 return _defaultMediaType;
             }
-            set
+            private set
             {
                 _defaultMediaType = value;
             }
@@ -101,7 +93,7 @@ namespace Baasic.Client.Configuration
             {
                 return _defaultTimeout;
             }
-            set
+            private set
             {
                 _defaultTimeout = value;
             }
@@ -118,7 +110,7 @@ namespace Baasic.Client.Configuration
                     _secureBaseAddress = BaseAddress.Replace("http://", "https://");
                 return _secureBaseAddress;
             }
-            set
+            private set
             {
                 _secureBaseAddress = value;
             }
@@ -130,30 +122,29 @@ namespace Baasic.Client.Configuration
         public ITokenHandler TokenHandler
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
         /// Gets or sets the version.
         /// </summary>
         /// <value>The version.</value>
-        public string Version { get; set; }
+        public string Version { get; private set; }
+
+        private string _baseAddress;
+
+        private string _defaultMediaType;
+
+        private TimeSpan _defaultTimeout = TimeSpan.FromSeconds(10);
+
+        private string _secureBaseAddress;
 
         #endregion Properties
 
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConfiguration"/> class.
-        /// </summary>
-        /// <param name="applicationIdentifier">The application identifier.</param>
-        public ClientConfiguration(string applicationIdentifier) :
-            this(applicationIdentifier, new TokenHandler.DefaultTokenHandler())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConfiguration"/> class.
+        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
         /// </summary>
         /// <param name="applicationIdentifier">The application identifier.</param>
         /// <param name="tokenHandler">The token handler.</param>
@@ -165,17 +156,7 @@ namespace Baasic.Client.Configuration
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConfiguration"/> class.
-        /// </summary>
-        /// <param name="baseAddress">The base address.</param>
-        /// <param name="applicationIdentifier">The application identifier.</param>
-        public ClientConfiguration(string baseAddress, string applicationIdentifier) :
-            this(baseAddress, applicationIdentifier, new TokenHandler.DefaultTokenHandler())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConfiguration"/> class.
+        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
         /// </summary>
         /// <param name="baseAddress">The base address.</param>
         /// <param name="applicationIdentifier">The application identifier.</param>

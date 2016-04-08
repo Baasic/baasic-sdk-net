@@ -1,8 +1,9 @@
-﻿using Baasic.Client.Model;
+﻿using Baasic.Client.Core;
+using Baasic.Client.Model;
 using System;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.DynamicResource
+namespace Baasic.Client.Modules.DynamicResource
 {
     /// <summary>
     /// Dynamic resource client.

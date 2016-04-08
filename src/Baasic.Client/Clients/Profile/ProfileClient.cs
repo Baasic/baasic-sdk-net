@@ -1,11 +1,12 @@
 ﻿using Baasic.Client.Configuration;
+using Baasic.Client.Core;
 using Baasic.Client.Model;
 using Baasic.Client.Model.Profile;
 using Baasic.Client.Utility;
 using System;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.ProfileModule
+namespace Baasic.Client.Modules.Profile
 {
     /// <summary>
     /// Profile Module Client.

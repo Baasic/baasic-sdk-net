@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{284DEE
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.WebHost", "Baasic.Client.WebHost\Baasic.Client.WebHost.csproj", "{9A6BF463-234D-4723-B581-FB3DE6A6680A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{57A2D016-E9A0-4A9D-8789-E2DF36D3EEEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57A2D016-E9A0-4A9D-8789-E2DF36D3EEEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57A2D016-E9A0-4A9D-8789-E2DF36D3EEEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A6BF463-234D-4723-B581-FB3DE6A6680A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A6BF463-234D-4723-B581-FB3DE6A6680A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A6BF463-234D-4723-B581-FB3DE6A6680A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A6BF463-234D-4723-B581-FB3DE6A6680A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
