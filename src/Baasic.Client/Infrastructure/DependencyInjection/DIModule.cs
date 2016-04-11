@@ -25,35 +25,27 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
         /// <param name="dependencyResolver">The dependency resolver.</param>
         public virtual void Load(IDependencyResolver dependencyResolver)
         {
-            #region Core
-
             dependencyResolver.Register<HttpClient, HttpClient>();
             dependencyResolver.Register<IHttpClientFactory, Baasic.Client.Core.HttpClientFactory>();
             dependencyResolver.Register<IBaasicClient, BaasicClient>();
             dependencyResolver.Register<IBaasicClientFactory, BaasicClientFactory>();
             dependencyResolver.Register<IJsonFormatter, JsonFormatter>();
 
-            #endregion Core
-
-            #region Security
-
             dependencyResolver.Register<ITokenHandler, DefaultTokenHandler>();
             dependencyResolver.Register<IAuthenticationToken, AuthenticationToken>();
             dependencyResolver.Register<ITokenClient, TokenClient>();
-
-            #endregion Security
-
-            #region Clients
 
             dependencyResolver.Register<IKeyValueClient, KeyValueClient>();
             dependencyResolver.Register<IArticleClient, ArticleClient>();
             dependencyResolver.Register<IArticleTagClient, ArticleTagClient>();
             dependencyResolver.Register(typeof(IDynamicResourceClient<>), typeof(DynamicResourceClient<>));
+
             dependencyResolver.Register<IRoleClient, RoleClient>();
             dependencyResolver.Register<IUserClient, UserClient>();
-            dependencyResolver.Register<IProfileClient, ProfileClient>();
+            dependencyResolver.Register<IUserRegistrationClient, UserRegistrationClient>();
+            dependencyResolver.Register<IUserPasswordRecoveryClient, UserPasswordRecoveryClient>();
 
-            #endregion Clients
+            dependencyResolver.Register<IProfileClient, ProfileClient>();
         }
 
         #endregion Methods

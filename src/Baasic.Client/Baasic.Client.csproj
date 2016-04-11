@@ -68,8 +68,12 @@
     <Compile Include="Clients\Articles\IArticleTagClient.cs" />
     <Compile Include="Clients\Dynamic\DynamicResourceClient.cs" />
     <Compile Include="Clients\Dynamic\IDynamicResourceClient.cs" />
+    <Compile Include="Clients\Membership\IUserPasswordRecoveryClient.cs" />
+    <Compile Include="Clients\Membership\IUserRegistrationClient.cs" />
     <Compile Include="Clients\Membership\IUserClient.cs" />
     <Compile Include="Clients\Membership\IRoleClient.cs" />
+    <Compile Include="Clients\Membership\UserRegistrationClient.cs" />
+    <Compile Include="Clients\Membership\UserPasswordRecoveryClient.cs" />
     <Compile Include="Clients\Membership\UserClient.cs" />
     <Compile Include="Clients\Membership\RoleClient.cs" />
     <Compile Include="Clients\Profile\IProfileClient.cs" />

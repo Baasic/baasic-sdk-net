@@ -38,15 +38,6 @@ namespace Baasic.Client.Model.Membership
         }
 
         /// <summary>
-        /// Gets or sets the author id.
-        /// </summary>
-        public new SGuid Id
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets whether the membership user can be authenticated.
         /// </summary>
         public virtual bool IsApproved

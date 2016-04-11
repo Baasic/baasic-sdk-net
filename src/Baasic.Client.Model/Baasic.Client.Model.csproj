@@ -59,6 +59,9 @@
     <Compile Include="IModel.cs" />
     <Compile Include="KeyValue\KeyValue.cs" />
     <Compile Include="BuiltInModelBase.cs" />
+    <Compile Include="Membership\CreateUserDTO.cs" />
+    <Compile Include="Membership\PasswordRecoveryRequestDTO.cs" />
+    <Compile Include="Membership\PasswordRecoveryDTO.cs" />
     <Compile Include="Membership\UpdatePasswordDTO.cs" />
     <Compile Include="Membership\Role.cs" />
     <Compile Include="Membership\User.cs" />
