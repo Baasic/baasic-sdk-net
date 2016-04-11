@@ -7,7 +7,7 @@ namespace Baasic.Client.Configuration
     /// <summary>
     /// Client configuration.
     /// </summary>
-    public abstract class ClientConfiguration : IClientConfiguration
+    public class ClientConfiguration : IClientConfiguration
     {
         #region Fields
 
@@ -38,7 +38,7 @@ namespace Baasic.Client.Configuration
         /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
-        public string ApplicationIdentifier { get; private set; }
+        public string ApplicationIdentifier { get; protected set; }
 
         /// <summary>
         /// Gets or sets server base address.
@@ -51,7 +51,7 @@ namespace Baasic.Client.Configuration
                     _baseAddress = BaasicBaseAddress + BaasicVersion;
                 return _baseAddress;
             }
-            private set
+            protected set
             {
                 _baseAddress = value;
                 _secureBaseAddress = null;
@@ -64,7 +64,7 @@ namespace Baasic.Client.Configuration
         public Encoding DefaultEncoding
         {
             get;
-            private set;
+            protected set;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Baasic.Client.Configuration
                     return HalJsonMediaType;
                 return _defaultMediaType;
             }
-            private set
+            protected set
             {
                 _defaultMediaType = value;
             }
@@ -93,7 +93,7 @@ namespace Baasic.Client.Configuration
             {
                 return _defaultTimeout;
             }
-            private set
+            protected set
             {
                 _defaultTimeout = value;
             }
@@ -110,7 +110,7 @@ namespace Baasic.Client.Configuration
                     _secureBaseAddress = BaseAddress.Replace("http://", "https://");
                 return _secureBaseAddress;
             }
-            private set
+            protected set
             {
                 _secureBaseAddress = value;
             }
@@ -122,14 +122,14 @@ namespace Baasic.Client.Configuration
         public ITokenHandler TokenHandler
         {
             get;
-            private set;
+            protected set;
         }
 
         /// <summary>
         /// Gets or sets the version.
         /// </summary>
         /// <value>The version.</value>
-        public string Version { get; private set; }
+        public string Version { get; protected set; }
 
         private string _baseAddress;
 

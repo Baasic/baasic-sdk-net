@@ -130,6 +130,27 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
         }
 
         /// <summary>
+        /// Initializes the specified modules.
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">modules</exception>
+        public void Initialize()
+        {
+            IEnumerable<IDIModule> modules = null;
+
+            //TODO: Implement assembly scan and search for IDIModules
+
+            if (modules == null)
+            {
+                throw new ArgumentNullException("modules");
+            }
+
+            foreach (IDIModule module in modules)
+            {
+                module.Load(this);
+            }
+        }
+
+        /// <summary>
         /// Registers the specified service type.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>

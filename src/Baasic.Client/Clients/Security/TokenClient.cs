@@ -168,10 +168,10 @@ namespace Baasic.Client.Security.Token
 
         private IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
         {
-            var details = rawToken.Property("details");
-            if (details != null)
+            var error = rawToken.Property("error");
+            if (error != null)
             {
-                throw new InvalidOperationException(rawToken.Property("message").ToString());
+                throw new InvalidOperationException(rawToken.Property("error_description").ToString());
             }
 
             return new AuthenticationToken()
@@ -179,6 +179,7 @@ namespace Baasic.Client.Security.Token
                 ExpirationDate = DateTime.UtcNow.AddSeconds(rawToken.Property("expires_in").ToObject<long>()),
                 Scheme = rawToken.Property("token_type").ToObject<string>(),
                 Token = rawToken.Property("access_token").ToObject<string>(),
+                UrlToken = rawToken.Property("access_url_token").ToObject<string>()
             };
         }
 

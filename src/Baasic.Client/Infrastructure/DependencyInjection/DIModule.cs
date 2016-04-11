@@ -15,64 +15,43 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
     /// <summary>
     /// Dependency Injection Module containing Baasic Client bindings.
     /// </summary>
-    public partial class DIModule
+    public partial class DIModule : IDIModule
     {
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DIModule" /> class.
-        /// </summary>
-        /// <param name="dependencyResolver">The dependency resolver.</param>
-        public DIModule(IDependencyResolver dependencyResolver)
-        {
-            DependencyResolver = dependencyResolver;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the dependency resolver.
-        /// </summary>
-        /// <value>The dependency resolver.</value>
-        protected IDependencyResolver DependencyResolver { get; private set; }
-
-        #endregion Properties
-
         #region Methods
 
         /// <summary>
         /// Load dependency injection bindings.
         /// </summary>
-        public virtual void Load()
+        /// <param name="dependencyResolver">The dependency resolver.</param>
+        public virtual void Load(IDependencyResolver dependencyResolver)
         {
             #region Core
 
-            DependencyResolver.Register<HttpClient>(() => new HttpClient());
-            DependencyResolver.Register<IHttpClientFactory, Baasic.Client.Core.HttpClientFactory>();
-            DependencyResolver.Register<IBaasicClientFactory, BaasicClientFactory>();
-            DependencyResolver.Register<IJsonFormatter, JsonFormatter>();
+            dependencyResolver.Register<HttpClient, HttpClient>();
+            dependencyResolver.Register<IHttpClientFactory, Baasic.Client.Core.HttpClientFactory>();
+            dependencyResolver.Register<IBaasicClient, BaasicClient>();
+            dependencyResolver.Register<IBaasicClientFactory, BaasicClientFactory>();
+            dependencyResolver.Register<IJsonFormatter, JsonFormatter>();
 
             #endregion Core
 
             #region Security
 
-            DependencyResolver.Register<ITokenHandler, DefaultTokenHandler>();
-            DependencyResolver.Register<IAuthenticationToken, AuthenticationToken>();
-            DependencyResolver.Register<ITokenClient, TokenClient>();
+            dependencyResolver.Register<ITokenHandler, DefaultTokenHandler>();
+            dependencyResolver.Register<IAuthenticationToken, AuthenticationToken>();
+            dependencyResolver.Register<ITokenClient, TokenClient>();
 
             #endregion Security
 
             #region Clients
 
-            DependencyResolver.Register<IKeyValueClient, KeyValueClient>();
-            DependencyResolver.Register<IArticleClient, ArticleClient>();
-            DependencyResolver.Register<IArticleTagClient, ArticleTagClient>();
-            DependencyResolver.Register(typeof(IDynamicResourceClient<>), typeof(DynamicResourceClient<>));
-            DependencyResolver.Register<IRoleClient, RoleClient>();
-            DependencyResolver.Register<IUserClient, UserClient>();
-            DependencyResolver.Register<IProfileClient, ProfileClient>();
+            dependencyResolver.Register<IKeyValueClient, KeyValueClient>();
+            dependencyResolver.Register<IArticleClient, ArticleClient>();
+            dependencyResolver.Register<IArticleTagClient, ArticleTagClient>();
+            dependencyResolver.Register(typeof(IDynamicResourceClient<>), typeof(DynamicResourceClient<>));
+            dependencyResolver.Register<IRoleClient, RoleClient>();
+            dependencyResolver.Register<IUserClient, UserClient>();
+            dependencyResolver.Register<IProfileClient, ProfileClient>();
 
             #endregion Clients
         }

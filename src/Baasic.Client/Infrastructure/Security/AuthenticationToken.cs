@@ -35,6 +35,12 @@ namespace Baasic.Client.Infrastructure.Security
         /// </summary>
         public string Token { get; set; }
 
+        /// <summary>
+        /// Gets the URL token.
+        /// </summary>
+        /// <value>The URL token.</value>
+        public string UrlToken { get; set; }
+
         #endregion Properties
     }
 }

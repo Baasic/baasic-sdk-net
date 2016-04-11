@@ -1,5 +1,6 @@
 ﻿using Baasic.Client.Infrastructure.DependencyInjection;
 using Ninject;
+using Ninject.Extensions.Conventions;
 using System;
 using System.Collections.Generic;
 
@@ -80,6 +81,28 @@ namespace Baasic.Client.Ninject
         public IEnumerable<T> GetServices<T>()
         {
             return Kernel.GetAll<T>();
+        }
+
+        /// <summary>
+        /// Initializes the specified modules.
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">modules</exception>
+        public void Initialize()
+        {
+            Kernel.Bind(x =>
+{
+    x.FromAssembliesMatching("Baasic.Client.dll", "Baasic.Client.*.dll")
+     .SelectAllClasses()
+     .InheritedFrom<IDIModule>()
+     .BindDefaultInterface();
+});
+
+            IEnumerable<IDIModule> modules = Kernel.GetAll<IDIModule>();
+
+            foreach (IDIModule module in modules)
+            {
+                module.Load(this);
+            }
         }
 
         /// <summary>

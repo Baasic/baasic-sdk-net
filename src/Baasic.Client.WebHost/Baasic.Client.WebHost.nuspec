@@ -11,7 +11,7 @@
     <summary />
     <copyright>Mono Ltd.</copyright>
     <language>en-US</language>
-    <tags>Baasic, .NET, Clients, Ninject</tags>
+    <tags>Baasic, .NET, Clients, WebHost</tags>
     <dependencies>
       <dependency id="Baasic.Client" version="[0.8.102,1.0.0)" />
     </dependencies>

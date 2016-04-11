@@ -88,6 +88,7 @@
     <Compile Include="Infrastructure\Core\ClientBase.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
     <Compile Include="Configuration\IClientConfiguration.cs" />
+    <Compile Include="Infrastructure\DependencyInjection\IDIModule.cs" />
     <Compile Include="Infrastructure\DependencyInjection\DIModule.cs" />
     <Compile Include="Infrastructure\DependencyInjection\IDependencyResolver .cs" />
     <Compile Include="Clients\KeyValue\IKeyValueClient.cs" />

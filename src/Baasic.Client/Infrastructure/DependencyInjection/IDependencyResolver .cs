@@ -39,6 +39,11 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
         IEnumerable<T> GetServices<T>();
 
         /// <summary>
+        /// Initializes the specified modules.
+        /// </summary>
+        void Initialize();
+
+        /// <summary>
         /// Registers the specified service type to activator.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
