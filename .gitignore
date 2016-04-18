@@ -15,3 +15,5 @@ src/Baasic.Client.Ninject/obj/
 
 ClearAssemblyCache.cmd
 PushNuGets.cmd
+src/Baasic.Client.WebHost/bin/
+src/Baasic.Client.WebHost/obj/
