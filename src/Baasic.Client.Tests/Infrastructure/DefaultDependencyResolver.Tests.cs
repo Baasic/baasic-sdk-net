@@ -37,8 +37,8 @@ namespace Baasic.Client.Tests.Infrastructure
             this.fixture.Target.Should().NotBeNull();
 
             Action execute = () => { 
-                var module = new DIModule(this.fixture.Target);
-                module.Load();
+                var module = new DIModule();
+                module.Load(this.fixture.Target);
             };
             execute.ShouldNotThrow();
         }
@@ -50,8 +50,8 @@ namespace Baasic.Client.Tests.Infrastructure
 
             Action execute = () =>
             {
-                var module = new DIModule(this.fixture.Target);
-                module.Load();
+                var module = new DIModule();
+                module.Load(this.fixture.Target);
             };
             execute.ShouldNotThrow();
 
@@ -66,8 +66,8 @@ namespace Baasic.Client.Tests.Infrastructure
 
             Action execute = () =>
             {
-                var module = new DIModule(this.fixture.Target);
-                module.Load();
+                var module = new DIModule();
+                module.Load(this.fixture.Target);
             };
             execute.ShouldNotThrow();
 
@@ -85,8 +85,8 @@ namespace Baasic.Client.Tests.Infrastructure
 
             Action execute = () =>
             {
-                var module = new DIModule(this.fixture.Target);
-                module.Load();
+                var module = new DIModule();
+                module.Load(this.fixture.Target);
             };
             execute.ShouldNotThrow();
 
@@ -106,8 +106,8 @@ namespace Baasic.Client.Tests.Infrastructure
 
             Action execute = () =>
             {
-                var module = new DIModule(this.fixture.Target);
-                module.Load();
+                var module = new DIModule();
+                module.Load(this.fixture.Target);
             };
             execute.ShouldNotThrow();
 

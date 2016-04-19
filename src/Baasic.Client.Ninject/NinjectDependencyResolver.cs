@@ -122,7 +122,7 @@ namespace Baasic.Client.Ninject
         /// <param name="implementationType">Type of the implementation.</param>
         public void Register(Type serviceType, Type implementationType)
         {
-            Kernel.Rebind(serviceType, implementationType);
+            Kernel.Rebind(serviceType).To(implementationType);
         }
 
         /// <summary>

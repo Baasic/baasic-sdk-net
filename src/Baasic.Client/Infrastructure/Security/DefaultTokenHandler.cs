@@ -8,6 +8,14 @@ namespace Baasic.Client.Infrastructure.Security
     /// </summary>
     public class DefaultTokenHandler : ITokenHandler
     {
+        #region Fields
+
+        private static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
+
+        private static IAuthenticationToken token = null;
+
+        #endregion Fields
+
         #region Methods
 
         /// <summary>
@@ -74,12 +82,5 @@ namespace Baasic.Client.Infrastructure.Security
         }
 
         #endregion Methods
-
-        #region Fields
-
-        private static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
-        private static IAuthenticationToken token = null;
-
-        #endregion Fields
     }
 }
