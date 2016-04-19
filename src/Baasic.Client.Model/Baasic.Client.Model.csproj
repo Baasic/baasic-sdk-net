@@ -45,6 +45,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Articles\ArticleSettings.cs" />
     <Compile Include="Articles\ArticleStatus.cs" />
     <Compile Include="Articles\ArticleTagEntry.cs" />
     <Compile Include="Articles\ArticleTag.cs" />

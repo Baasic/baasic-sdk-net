@@ -14,6 +14,22 @@ namespace Baasic.Client.Modules.Articles
     /// </summary>
     public class ArticleClient : ClientBase, IArticleClient
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ArticleClient" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="baasicClientFactory">The baasic client factory.</param>
+        public ArticleClient(IClientConfiguration configuration,
+            IBaasicClientFactory baasicClientFactory)
+            : base(configuration)
+        {
+            BaasicClientFactory = baasicClientFactory;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -32,25 +48,34 @@ namespace Baasic.Client.Modules.Articles
 
         #endregion Properties
 
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ArticleClient" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="baasicClientFactory">The baasic client factory.</param>
-        public ArticleClient(IClientConfiguration configuration,
-            IBaasicClientFactory baasicClientFactory)
-            : base(configuration)
-        {
-            BaasicClientFactory = baasicClientFactory;
-        }
-
-        #endregion Constructor
-
         #region Methods
 
-        #region Article
+        /// <summary>
+        /// Asynchronously adds the tag to article tags.
+        /// </summary>
+        /// <param name="articleKey">Tag will be added under the specified article id or slug.</param>
+        /// <param name="tag">The new or existing tag.</param>
+        /// <returns>If tag is added <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
+        public virtual Task<ArticleTagEntry> AddTagToArticleAsync(object articleKey, string tag)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                return client.PostAsync<ArticleTagEntry>(client.GetApiUrl(String.Format("{0}/{{0}}/tags/{{1}}", ModuleRelativePath), articleKey, tag), null);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously adds the tag to article tags.
+        /// </summary>
+        /// <param name="entry">The tag entry.</param>
+        /// <returns>If tag is added <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
+        public virtual Task<ArticleTagEntry> AddTagToArticleAsync(ArticleTagEntry entry)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                return client.PostAsync<ArticleTagEntry>(client.GetApiUrl(String.Format("{0}/tags/", ModuleRelativePath)), entry);
+            }
+        }
 
         /// <summary>
         /// Asynchronously archives the <see cref="Article" /> in the system.
@@ -135,6 +160,34 @@ namespace Baasic.Client.Modules.Articles
         }
 
         /// <summary>
+        /// Asynchronously find <see cref="ArticleTagEntry" /> entries.
+        /// </summary>
+        /// <param name="articleKey">Article id or slug.</param>
+        /// <param name="searchQuery">Search phrase or query.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="rpp">Records per page limit.</param>
+        /// <param name="sort">Sort by field.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>List of <see cref="ArticleTagEntry" /> .</returns>
+        public virtual async Task<CollectionModelBase<ArticleTagEntry>> FindTagEntriesAsync(object articleKey, string searchQuery = DefaultSearchQuery,
+            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/tags", ModuleRelativePath), articleKey));
+                InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
+                var result = await client.GetAsync<CollectionModelBase<ArticleTagEntry>>(uriBuilder.ToString());
+                if (result == null)
+                {
+                    result = new CollectionModelBase<ArticleTagEntry>();
+                }
+                return result;
+            }
+        }
+
+        /// <summary>
         /// Asynchronously gets the <see cref="Article" /> by provided key.
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
@@ -148,6 +201,24 @@ namespace Baasic.Client.Modules.Articles
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
                 InitializeQueryString(uriBuilder, embed, fields);
                 return client.GetAsync<Article>(uriBuilder.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously gets the <see cref="ArticleTagEntry" /> from the system.
+        /// </summary>
+        /// <param name="articleKey">Article id or slug.</param>
+        /// <param name="key">Key (Id or Slug).</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
+        public virtual Task<ArticleTagEntry> GetTagEntryAsync(object articleKey, object key, string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/tags/{{1}}", ModuleRelativePath), articleKey, key));
+                InitializeQueryString(uriBuilder, embed, fields);
+                return client.GetAsync<ArticleTagEntry>(uriBuilder.ToString());
             }
         }
 
@@ -180,111 +251,6 @@ namespace Baasic.Client.Modules.Articles
         }
 
         /// <summary>
-        /// Asynchronously restore the <see cref="Article" /> in the system.
-        /// </summary>
-        /// <param name="key">Key (Id or Slug).</param>
-        /// <returns>True if <see cref="Article" /> is restored, false otherwise.</returns>
-        public virtual async Task<bool> RestoreAsync(object key)
-        {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-            {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/restore", ModuleRelativePath), key));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously update the <see cref="Article" /> in the system.
-        /// </summary>
-        /// <param name="article">The article.</param>
-        /// <returns>Updated <see cref="Article" /> .</returns>
-        public virtual Task<Article> UpdateAsync(Article article)
-        {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-            {
-                return client.PutAsync<Article>(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, article.Id)), article);
-            }
-        }
-
-        #endregion Article
-
-        #region Tags
-
-        /// <summary>
-        /// Asynchronously adds the tag to article tags.
-        /// </summary>
-        /// <param name="articleKey">Tag will be added under the specified article id or slug.</param>
-        /// <param name="tag">The new or existing tag.</param>
-        /// <returns>If tag is added <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
-        public virtual Task<ArticleTagEntry> AddTagToArticleAsync(object articleKey, string tag)
-        {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-            {
-                return client.PostAsync<ArticleTagEntry>(client.GetApiUrl(String.Format("{0}/{{0}}/tags/{{1}}", ModuleRelativePath), articleKey, tag), null);
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously adds the tag to article tags.
-        /// </summary>
-        /// <param name="entry">The tag entry.</param>
-        /// <returns>If tag is added <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
-        public virtual Task<ArticleTagEntry> AddTagToArticleAsync(ArticleTagEntry entry)
-        {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-            {
-                return client.PostAsync<ArticleTagEntry>(client.GetApiUrl(String.Format("{0}/tags/", ModuleRelativePath)), entry);
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously find <see cref="ArticleTagEntry" /> entries.
-        /// </summary>
-        /// <param name="articleKey">Article id or slug.</param>
-        /// <param name="searchQuery">Search phrase or query.</param>
-        /// <param name="page">Page number.</param>
-        /// <param name="rpp">Records per page limit.</param>
-        /// <param name="sort">Sort by field.</param>
-        /// <param name="embed">Embed related resources.</param>
-        /// <param name="fields">The fields to include in response.</param>
-        /// <returns>List of <see cref="ArticleTagEntry" /> .</returns>
-        public virtual async Task<CollectionModelBase<ArticleTagEntry>> FindTagEntriesAsync(object articleKey, string searchQuery = DefaultSearchQuery,
-            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
-            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
-        {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-            {
-                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/tags", ModuleRelativePath), articleKey));
-                InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
-                var result = await client.GetAsync<CollectionModelBase<ArticleTagEntry>>(uriBuilder.ToString());
-                if (result == null)
-                {
-                    result = new CollectionModelBase<ArticleTagEntry>();
-                }
-                return result;
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously gets the <see cref="ArticleTagEntry" /> from the system.
-        /// </summary>
-        /// <param name="articleKey">Article id or slug.</param>
-        /// <param name="key">Key (Id or Slug).</param>
-        /// <param name="embed">Embed related resources.</param>
-        /// <param name="fields">The fields to include in response.</param>
-        /// <returns>If found <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
-        public virtual Task<ArticleTagEntry> GetTagEntryAsync(object articleKey, object key, string embed = DefaultEmbed, string fields = DefaultFields)
-        {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-            {
-                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/tags/{{1}}", ModuleRelativePath), articleKey, key));
-                InitializeQueryString(uriBuilder, embed, fields);
-                return client.GetAsync<ArticleTagEntry>(uriBuilder.ToString());
-            }
-        }
-
-        /// <summary>
         /// Asynchronously removes all <see cref="ArticleTagEntry" /> from the system.
         /// </summary>
         /// <param name="articleKey">Article id or slug used to remove tags.</param>
@@ -311,7 +277,33 @@ namespace Baasic.Client.Modules.Articles
             }
         }
 
-        #endregion Tags
+        /// <summary>
+        /// Asynchronously restore the <see cref="Article" /> in the system.
+        /// </summary>
+        /// <param name="key">Key (Id or Slug).</param>
+        /// <returns>True if <see cref="Article" /> is restored, false otherwise.</returns>
+        public virtual async Task<bool> RestoreAsync(object key)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/restore", ModuleRelativePath), key));
+                var result = await client.SendAsync(request);
+                return result.IsSuccessStatusCode;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously update the <see cref="Article" /> in the system.
+        /// </summary>
+        /// <param name="article">The article.</param>
+        /// <returns>Updated <see cref="Article" /> .</returns>
+        public virtual Task<Article> UpdateAsync(Article article)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                return client.PutAsync<Article>(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, article.Id)), article);
+            }
+        }
 
         #endregion Methods
     }
