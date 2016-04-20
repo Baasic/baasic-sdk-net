@@ -7,16 +7,12 @@ namespace Baasic.Client
     /// </summary>
     public struct SGuid : IComparable, IComparable<SGuid>, IEquatable<SGuid>
     {
-        #region Static
+        #region Fields
 
         /// <summary>
         /// A read-only instance of the ShortGuid class whose value is guaranteed to be all zeros.
         /// </summary>
         public static readonly SGuid Empty = new SGuid(Guid.Empty);
-
-        #endregion Static
-
-        #region Fields
 
         private Guid _guid;
         private string _value;
@@ -122,91 +118,7 @@ namespace Baasic.Client
 
         #endregion Properties
 
-        #region ToString
-
-        /// <summary>
-        /// Returns the base62 encoded guid as a string
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return !String.IsNullOrWhiteSpace(_value) ? _value : Empty.Value;
-        }
-
-        #endregion ToString
-
-        #region Equals
-
-        /// <summary>
-        /// Returns a value indicating whether this instance and a specified Object represent the same type and value.
-        /// </summary>
-        /// <param name="obj">The object to compare</param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is SGuid)
-                return _guid.Equals(((SGuid)obj)._guid);
-            if (obj is Guid)
-                return _guid.Equals((Guid)obj);
-            if (obj is string)
-                return _guid.Equals(((SGuid)obj)._guid);
-            return false;
-        }
-
-        #endregion Equals
-
-        #region GetHashCode
-
-        /// <summary>
-        /// Returns the HashCode for underlying Guid.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return _guid.GetHashCode();
-        }
-
-        #endregion GetHashCode
-
-        #region NewGuid
-
-        /// <summary>
-        /// Initializes a new instance of the ShortGuid class
-        /// </summary>
-        /// <returns></returns>
-        public static SGuid NewGuid()
-        {
-            return new SGuid(Guid.NewGuid());
-        }
-
-        #endregion NewGuid
-
-        #region Encode
-
-        /// <summary>
-        /// Creates a new instance of a Guid using the string value, then returns the base62 encoded version of the Guid.
-        /// </summary>
-        /// <param name="value">An actual Guid string (i.e. not a ShortGuid)</param>
-        /// <returns></returns>
-        public static string Encode(string value)
-        {
-            Guid guid = new Guid(value);
-            return Encode(guid);
-        }
-
-        /// <summary>
-        /// Encodes the given Guid as a base62 string that is 22 characters long.
-        /// </summary>
-        /// <param name="guid">The Guid to encode</param>
-        /// <returns></returns>
-        public static string Encode(Guid guid)
-        {
-            return guid.ToByteArray().ToBase62();
-        }
-
-        #endregion Encode
-
-        #region Decode
+        #region Methods
 
         /// <summary>
         /// Decodes the given base62 string
@@ -228,30 +140,25 @@ namespace Baasic.Client
         }
 
         /// <summary>
-        /// Converts the string representation of GUId or SGUID to the equivalent <see cref="T:System.Guid" /> structure.
+        /// Creates a new instance of a Guid using the string value, then returns the base62 encoded version of the Guid.
         /// </summary>
-        /// <returns>true if the parse operation was successful; otherwise, false.</returns>
-        /// <param name="input">The GUID or SGUID to convert.</param>
-        /// <param name="result">The structure that will contain the parsed value.</param>
-        public static bool TryParse(string input, out Guid result)
+        /// <param name="value">An actual Guid string (i.e. not a ShortGuid)</param>
+        /// <returns></returns>
+        public static string Encode(string value)
         {
-            if (input.IndexOf('-') > -1)
-            {
-                return Guid.TryParse(input, out result);
-            }
-            try
-            {
-                result = Decode(input);
-                return true;
-            }
-            catch { }
-            result = Guid.Empty;
-            return false;
+            Guid guid = new Guid(value);
+            return Encode(guid);
         }
 
-        #endregion Decode
-
-        #region Operators
+        /// <summary>
+        /// Encodes the given Guid as a base62 string that is 22 characters long.
+        /// </summary>
+        /// <param name="guid">The Guid to encode</param>
+        /// <returns></returns>
+        public static string Encode(Guid guid)
+        {
+            return guid.ToByteArray().ToBase62();
+        }
 
         /// <summary>
         /// Implicitly converts the ShortGuid to it's Guid equivalent
@@ -302,6 +209,15 @@ namespace Baasic.Client
         }
 
         /// <summary>
+        /// Initializes a new instance of the ShortGuid class
+        /// </summary>
+        /// <returns></returns>
+        public static SGuid NewGuid()
+        {
+            return new SGuid(Guid.NewGuid());
+        }
+
+        /// <summary>
         /// Determines if both ShortGuids do not have the same underlying Guid value.
         /// </summary>
         /// <param name="x"></param>
@@ -324,9 +240,27 @@ namespace Baasic.Client
             return x._guid == y._guid;
         }
 
-        #endregion Operators
-
-        #region Methods
+        /// <summary>
+        /// Converts the string representation of GUId or SGUID to the equivalent <see cref="T:System.Guid" /> structure.
+        /// </summary>
+        /// <returns>true if the parse operation was successful; otherwise, false.</returns>
+        /// <param name="input">The GUID or SGUID to convert.</param>
+        /// <param name="result">The structure that will contain the parsed value.</param>
+        public static bool TryParse(string input, out Guid result)
+        {
+            if (input.IndexOf('-') > -1)
+            {
+                return Guid.TryParse(input, out result);
+            }
+            try
+            {
+                result = Decode(input);
+                return true;
+            }
+            catch { }
+            result = Guid.Empty;
+            return false;
+        }
 
         public int CompareTo(object value)
         {
@@ -365,6 +299,28 @@ namespace Baasic.Client
             return value.Guid.CompareTo(this.Guid);
         }
 
+        /// <summary>
+        /// Returns a value indicating whether this instance and a specified Object represent the same type and value.
+        /// </summary>
+        /// <param name="obj">The object to compare</param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is SGuid)
+                return _guid.Equals(((SGuid)obj)._guid);
+            if (obj is Guid)
+                return _guid.Equals((Guid)obj);
+            if (obj is string && obj != null && !string.IsNullOrWhiteSpace(obj.ToString()))
+            {
+                Guid value = Guid.Empty;
+                if (SGuid.TryParse(obj.ToString(), out value))
+                {
+                    return _guid.Equals(value);
+                }
+            }
+            return false;
+        }
+
         public bool Equals(SGuid value)
         {
             if (value == null)
@@ -372,6 +328,24 @@ namespace Baasic.Client
                 return false;
             }
             return value.Guid.Equals(this.Guid);
+        }
+
+        /// <summary>
+        /// Returns the HashCode for underlying Guid.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return _guid.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns the base62 encoded guid as a string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return !String.IsNullOrWhiteSpace(_value) ? _value : Empty.Value;
         }
 
         #endregion Methods
@@ -382,16 +356,6 @@ namespace Baasic.Client
     /// </summary>
     public class SGuidArgumentException : ArgumentException
     {
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the invalid value.
-        /// </summary>
-        /// <value>The invalid value.</value>
-        public string InvalidValue { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
         /// <summary>
@@ -406,5 +370,15 @@ namespace Baasic.Client
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the invalid value.
+        /// </summary>
+        /// <value>The invalid value.</value>
+        public string InvalidValue { get; set; }
+
+        #endregion Properties
     }
 }
