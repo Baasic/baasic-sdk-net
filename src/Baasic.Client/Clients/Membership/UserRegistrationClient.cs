@@ -33,6 +33,34 @@ namespace Baasic.Client.Membership
 
         #endregion Constructors
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the baasic client factory.
+        /// </summary>
+        /// <value>The baasic client factory.</value>
+        protected virtual IBaasicClientFactory BaasicClientFactory { get; set; }
+
+        /// <summary>
+        /// Gets the default serializer.
+        /// </summary>
+        /// <value>Default serializer.</value>
+        protected virtual IJsonFormatter JsonFormatter
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the module relative path.
+        /// </summary>
+        protected override string ModuleRelativePath
+        {
+            get { return "register"; }
+        }
+
+        #endregion Properties
+
         #region Methods
 
         /// <summary>
@@ -63,45 +91,17 @@ namespace Baasic.Client.Membership
                 };
 
                 var response = await client.SendAsync(request);
-                try
+                if (response.IsSuccessStatusCode)
                 {
                     return JsonFormatter.Deserialize<User>(await response.Content.ReadAsStringAsync());
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw ex;
+                    throw new InvalidOperationException(await response.Content.ReadAsStringAsync());
                 }
             }
         }
 
         #endregion Methods
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the baasic client factory.
-        /// </summary>
-        /// <value>The baasic client factory.</value>
-        protected virtual IBaasicClientFactory BaasicClientFactory { get; set; }
-
-        /// <summary>
-        /// Gets the default serializer.
-        /// </summary>
-        /// <value>Default serializer.</value>
-        protected virtual IJsonFormatter JsonFormatter
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the module relative path.
-        /// </summary>
-        protected override string ModuleRelativePath
-        {
-            get { return "register"; }
-        }
-
-        #endregion Properties
     }
 }
