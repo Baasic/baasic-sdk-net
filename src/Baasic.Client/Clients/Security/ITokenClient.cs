@@ -27,6 +27,13 @@ namespace Baasic.Client.Security.Token
         Task<bool> DestroyAsync();
 
         /// <summary>
+        /// Asynchronously gets the <see cref="IAuthenticationUser" />.
+        /// </summary>
+        /// <param name="embed">Embed related resources.</param>
+        /// <returns>New <see cref="IAuthenticationUser" /> .</returns>
+        Task<IAuthenticatedUser> GetUserAsync(string embed);
+
+        /// <summary>
         /// Asynchronously refreshes the <see cref="IAuthenticationToken" /> .
         /// </summary>
         /// <param name="token">Token to update.</param>

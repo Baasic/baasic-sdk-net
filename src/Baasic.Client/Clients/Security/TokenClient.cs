@@ -2,6 +2,7 @@
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
+using Baasic.Client.Utility;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -14,6 +15,27 @@ namespace Baasic.Client.Security.Token
     /// </summary>
     public class TokenClient : ClientBase, ITokenClient
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TokenClient" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="baasicClientFactory">The baasic client factory.</param>
+        /// <param name="jsonFormatter">JSON formatter.</param>
+        public TokenClient(
+            IClientConfiguration configuration,
+            IBaasicClientFactory baasicClientFactory,
+            IJsonFormatter jsonFormatter
+            )
+            : base(configuration)
+        {
+            this.BaasicClientFactory = baasicClientFactory;
+            this.JsonFormatter = jsonFormatter;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -37,27 +59,6 @@ namespace Baasic.Client.Security.Token
         }
 
         #endregion Properties
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenClient" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="baasicClientFactory">The baasic client factory.</param>
-        /// <param name="jsonFormatter">JSON formatter.</param>
-        public TokenClient(
-            IClientConfiguration configuration,
-            IBaasicClientFactory baasicClientFactory,
-            IJsonFormatter jsonFormatter
-            )
-            : base(configuration)
-        {
-            this.BaasicClientFactory = baasicClientFactory;
-            this.JsonFormatter = jsonFormatter;
-        }
-
-        #endregion Constructor
 
         #region Methods
 
@@ -133,8 +134,22 @@ namespace Baasic.Client.Security.Token
                     return true;
                 }
             }
-
             return false;
+        }
+
+        /// <summary>
+        /// Asynchronously gets the <see cref="IAuthenticationUser" />.
+        /// </summary>
+        /// <param name="embed">Embed related resources.</param>
+        /// <returns>New <see cref="IAuthenticationUser" /> .</returns>
+        public async Task<IAuthenticatedUser> GetUserAsync(string embed)
+        {
+            using (var client = this.BaasicClientFactory.Create(this.Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(true, this.ModuleRelativePath));
+                InitializeQueryString(uriBuilder, embed, string.Empty);
+                return await client.GetAsync<AuthenticatedUser>(uriBuilder.ToString());
+            }
         }
 
         /// <summary>

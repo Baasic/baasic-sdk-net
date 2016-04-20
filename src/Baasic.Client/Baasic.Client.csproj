@@ -99,6 +99,8 @@
     <Compile Include="Infrastructure\DependencyInjection\IDependencyResolver .cs" />
     <Compile Include="Clients\KeyValue\IKeyValueClient.cs" />
     <Compile Include="Clients\KeyValue\KeyValueClient.cs" />
+    <Compile Include="Infrastructure\Security\AuthenticatedUser.cs" />
+    <Compile Include="Infrastructure\Security\IAuthenticatedUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\Security\AuthenticationToken.cs" />
     <Compile Include="Infrastructure\Security\DefaultTokenHandler.cs" />
