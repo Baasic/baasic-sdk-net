@@ -23,6 +23,12 @@ namespace Baasic.Client.Infrastructure.Security
         string Email { get; }
 
         /// <summary>
+        /// Gets the user identifier.
+        /// </summary>
+        /// <value>The user identifier.</value>
+        SGuid Id { get; }
+
+        /// <summary>
         /// Gets the permissions.
         /// </summary>
         /// <value>The permissions.</value>
@@ -33,12 +39,6 @@ namespace Baasic.Client.Infrastructure.Security
         /// </summary>
         /// <value>The roles.</value>
         IEnumerable<string> Roles { get; }
-
-        /// <summary>
-        /// Gets the user identifier.
-        /// </summary>
-        /// <value>The user identifier.</value>
-        SGuid UserId { get; }
 
         /// <summary>
         /// Gets the username.

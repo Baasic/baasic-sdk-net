@@ -30,6 +30,16 @@ namespace Baasic.Client.Infrastructure.Security
         }
 
         /// <summary>
+        /// Gets the user identifier.
+        /// </summary>
+        /// <value>The user identifier.</value>
+        public SGuid Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the permissions.
         /// </summary>
         /// <value>The permissions.</value>
@@ -44,16 +54,6 @@ namespace Baasic.Client.Infrastructure.Security
         /// </summary>
         /// <value>The roles.</value>
         public System.Collections.Generic.IEnumerable<string> Roles
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets the user identifier.
-        /// </summary>
-        /// <value>The user identifier.</value>
-        public SGuid UserId
         {
             get;
             set;
