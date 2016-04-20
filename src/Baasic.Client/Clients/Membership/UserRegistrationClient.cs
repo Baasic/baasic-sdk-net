@@ -72,7 +72,14 @@ namespace Baasic.Client.Membership
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return await client.PutAsync<AuthenticationToken>(client.GetApiUrl(String.Format("{0}/activate/{1}", ModuleRelativePath, activationToken)), null);
+                var token = await client.PutAsync<AuthenticationToken>(client.GetApiUrl(String.Format("{0}/activate/{1}", ModuleRelativePath, activationToken)), null);
+                var tokenHandler = this.Configuration.TokenHandler;
+                if (tokenHandler != null)
+                {
+                    tokenHandler.Save(token);
+                }
+
+                return token;
             }
         }
 
