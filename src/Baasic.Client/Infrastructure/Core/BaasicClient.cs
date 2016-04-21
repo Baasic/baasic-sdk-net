@@ -14,6 +14,26 @@ namespace Baasic.Client.Core
     /// </summary>
     public class BaasicClient : IBaasicClient
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaasicClient" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="httpClientFactory">The HTTP client factory.</param>
+        /// <param name="jsonFormatter">JSON formatter.</param>
+        public BaasicClient(IClientConfiguration configuration,
+            IHttpClientFactory httpClientFactory,
+            IJsonFormatter jsonFormatter
+            )
+        {
+            this.Configuration = configuration;
+            this.HttpClientFactory = httpClientFactory;
+            this.JsonFormatter = jsonFormatter;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -46,26 +66,6 @@ namespace Baasic.Client.Core
         }
 
         #endregion Properties
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaasicClient" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="httpClientFactory">The HTTP client factory.</param>
-        /// <param name="jsonFormatter">JSON formatter.</param>
-        public BaasicClient(IClientConfiguration configuration,
-            IHttpClientFactory httpClientFactory,
-            IJsonFormatter jsonFormatter
-            )
-        {
-            this.Configuration = configuration;
-            this.HttpClientFactory = httpClientFactory;
-            this.JsonFormatter = jsonFormatter;
-        }
-
-        #endregion Constructor
 
         #region Methods
 
@@ -244,8 +244,45 @@ namespace Baasic.Client.Core
                 {
                     return default(T);
                 }
-
                 return await ReadContentAsync<T>(response);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously update the <typeparamref name="TIn" /> in the system.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <returns><typeparamref name="TOut" /> .</returns>
+        public virtual Task<TOut> PutAsync<TIn, TOut>(string requestUri, TIn content)
+        {
+            return PutAsync<TIn, TOut>(requestUri, content, new CancellationToken());
+        }
+
+        /// <summary>
+        /// Asynchronously update the <typeparamref name="TIn" /> in the system.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns><typeparamref name="TOut" /> .</returns>
+        public virtual async Task<TOut> PutAsync<TIn, TOut>(string requestUri, TIn content, CancellationToken cancellationToken)
+        {
+            using (HttpClient client = HttpClientFactory.Create())
+            {
+                InitializeClient(client, Configuration.DefaultMediaType);
+
+                var response = await client.PutAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return default(TOut);
+                }
+                return await ReadContentAsync<TOut>(response);
             }
         }
 

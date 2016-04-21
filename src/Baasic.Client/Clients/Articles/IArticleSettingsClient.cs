@@ -24,8 +24,8 @@ namespace Baasic.Client.Modules.Articles
         /// Asynchronously update the <see cref="ArticleSettings" /> .
         /// </summary>
         /// <param name="settings">The new or existing <see cref="ArticleSettings" /> .</param>
-        /// <returns>If tag is updated <see cref="ArticleSettings" /> is returned, otherwise null.</returns>
-        Task<ArticleSettings> UpdateAsync(ArticleSettings settings);
+        /// <returns>True if successfully updated <see cref="ArticleSettings" />.</returns>
+        Task<bool> UpdateAsync(ArticleSettings settings);
 
         #endregion Methods
     }

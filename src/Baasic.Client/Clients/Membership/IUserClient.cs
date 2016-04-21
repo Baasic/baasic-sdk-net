@@ -87,8 +87,8 @@ namespace Baasic.Client.Membership
         /// Asynchronously update the <see cref="User" /> in the system.
         /// </summary>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Updated <see cref="User" /> .</returns>
-        Task<User> UpdateAsync(User content);
+        /// <returns>True if <see cref="User" /> is updated, false otherwise.</returns>
+        Task<bool> UpdateAsync(User content);
 
         /// <summary>
         /// Asynchronously update the <see cref="User" /> password in the system.

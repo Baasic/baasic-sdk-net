@@ -4,6 +4,7 @@ using Baasic.Client.Model;
 using Baasic.Client.Model.Membership;
 using Baasic.Client.Utility;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Baasic.Client.Membership
@@ -13,6 +14,22 @@ namespace Baasic.Client.Membership
     /// </summary>
     public class UserClient : ClientBase, IUserClient
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserClient" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="baasicClientFactory">The baasic client factory.</param>
+        public UserClient(IClientConfiguration configuration,
+            IBaasicClientFactory baasicClientFactory)
+            : base(configuration)
+        {
+            BaasicClientFactory = baasicClientFactory;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -30,22 +47,6 @@ namespace Baasic.Client.Membership
         }
 
         #endregion Properties
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserClient" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="baasicClientFactory">The baasic client factory.</param>
-        public UserClient(IClientConfiguration configuration,
-            IBaasicClientFactory baasicClientFactory)
-            : base(configuration)
-        {
-            BaasicClientFactory = baasicClientFactory;
-        }
-
-        #endregion Constructor
 
         #region Methods
 
@@ -185,15 +186,25 @@ namespace Baasic.Client.Membership
         }
 
         /// <summary>
-        /// Asynchronously update the <see cref="Role" /> in the system.
+        /// Asynchronously update the <see cref="User" /> in the system.
         /// </summary>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Updated <see cref="Role" /> .</returns>
-        public virtual Task<User> UpdateAsync(User content)
+        /// <returns>True if <see cref="User" /> is updated, false otherwise.</returns>
+        public virtual async Task<bool> UpdateAsync(User content)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<User>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
+                var result = await client.PutAsync<User, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
+                switch (result)
+                {
+                    case System.Net.HttpStatusCode.Created:
+                    case System.Net.HttpStatusCode.NoContent:
+                    case System.Net.HttpStatusCode.OK:
+                        return true;
+
+                    default:
+                        return false;
+                }
             }
         }
 
@@ -207,7 +218,7 @@ namespace Baasic.Client.Membership
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return (await client.PutAsync<UpdatePasswordDTO>(client.GetApiUrl(String.Format("{0}/{1}/change-password", ModuleRelativePath, userName)), recoveryParams) != null);
+                return await client.PutAsync<UpdatePasswordDTO, bool>(client.GetApiUrl(String.Format("{0}/{1}/change-password", ModuleRelativePath, userName)), recoveryParams);
             }
         }
 

@@ -51,8 +51,8 @@ namespace Baasic.Client.Modules.Profile
         /// Asynchronously update the <see cref="UserProfile" /> in the system.
         /// </summary>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Updated <see cref="UserProfile" /> .</returns>
-        Task<UserProfile> UpdateAsync(UserProfile content);
+        /// <returns>True if <see cref="UserProfile" /> is successfully updated, false otherwise.</returns>
+        Task<bool> UpdateAsync(UserProfile content);
 
         #endregion Methods
     }

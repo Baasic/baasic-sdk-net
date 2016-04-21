@@ -13,6 +13,22 @@ namespace Baasic.Client.Modules.Profile
     /// </summary>
     public class ProfileClient : ClientBase, IProfileClient
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProfileClient" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="baasicClientFactory">The baasic client factory.</param>
+        public ProfileClient(IClientConfiguration configuration,
+            IBaasicClientFactory baasicClientFactory)
+            : base(configuration)
+        {
+            BaasicClientFactory = baasicClientFactory;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -30,22 +46,6 @@ namespace Baasic.Client.Modules.Profile
         }
 
         #endregion Properties
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfileClient" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="baasicClientFactory">The baasic client factory.</param>
-        public ProfileClient(IClientConfiguration configuration,
-            IBaasicClientFactory baasicClientFactory)
-            : base(configuration)
-        {
-            BaasicClientFactory = baasicClientFactory;
-        }
-
-        #endregion Constructor
 
         #region Methods
 
@@ -122,12 +122,12 @@ namespace Baasic.Client.Modules.Profile
         /// Asynchronously update the <see cref="UserProfile" /> in the system.
         /// </summary>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Updated <see cref="UserProfile" /> .</returns>
-        public virtual Task<UserProfile> UpdateAsync(UserProfile content)
+        /// <returns>True if <see cref="UserProfile" /> is successfully updated, false otherwise.</returns>
+        public virtual Task<bool> UpdateAsync(UserProfile content)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<UserProfile>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
+                return client.PutAsync<UserProfile, bool>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
             }
         }
 

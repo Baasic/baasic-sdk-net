@@ -3,6 +3,7 @@ using Baasic.Client.Core;
 using Baasic.Client.Model.Articles;
 using Baasic.Client.Utility;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Baasic.Client.Modules.Articles
@@ -68,12 +69,22 @@ namespace Baasic.Client.Modules.Articles
         /// Asynchronously update the <see cref="ArticleSettings" /> .
         /// </summary>
         /// <param name="settings">The new or existing <see cref="ArticleSettings" /> .</param>
-        /// <returns>If tag is updated <see cref="ArticleSettings" /> is returned, otherwise null.</returns>
-        public virtual Task<ArticleSettings> UpdateAsync(ArticleSettings settings)
+        /// <returns>True if successfully updated <see cref="ArticleSettings" />.</returns>
+        public virtual async Task<bool> UpdateAsync(ArticleSettings settings)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<ArticleSettings>(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, settings.Id)), settings);
+                var result = await client.PutAsync<ArticleSettings, HttpStatusCode>(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, settings.Id)), settings);
+                switch (result)
+                {
+                    case System.Net.HttpStatusCode.Created:
+                    case System.Net.HttpStatusCode.NoContent:
+                    case System.Net.HttpStatusCode.OK:
+                        return true;
+
+                    default:
+                        return false;
+                }
             }
         }
 
