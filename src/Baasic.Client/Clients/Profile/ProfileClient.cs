@@ -4,6 +4,7 @@ using Baasic.Client.Model;
 using Baasic.Client.Model.Profile;
 using Baasic.Client.Utility;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Baasic.Client.Modules.Profile
@@ -123,11 +124,21 @@ namespace Baasic.Client.Modules.Profile
         /// </summary>
         /// <param name="content">Resource instance.</param>
         /// <returns>True if <see cref="UserProfile" /> is successfully updated, false otherwise.</returns>
-        public virtual Task<bool> UpdateAsync(UserProfile content)
+        public virtual async Task<bool> UpdateAsync(UserProfile content)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<UserProfile, bool>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
+                var result = await client.PutAsync<UserProfile, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
+                switch (result)
+                {
+                    case System.Net.HttpStatusCode.Created:
+                    case System.Net.HttpStatusCode.NoContent:
+                    case System.Net.HttpStatusCode.OK:
+                        return true;
+
+                    default:
+                        return false;
+                }
             }
         }
 
