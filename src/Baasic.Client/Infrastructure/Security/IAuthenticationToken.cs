@@ -10,6 +10,18 @@ namespace Baasic.Client.Infrastructure.Security
         #region Properties
 
         /// <summary>
+        /// Gets or sets the expiration date.
+        /// </summary>
+        /// <value>The expiration date.</value>
+        DateTime ExpirationDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the expires in.
+        /// </summary>
+        /// <value>The expires in.</value>
+        long? ExpiresIn { get; set; }
+
+        /// <summary>
         /// Gets if token is valid.
         /// </summary>
         bool IsValid { get; }
@@ -18,6 +30,12 @@ namespace Baasic.Client.Infrastructure.Security
         /// Gets token scheme.
         /// </summary>
         string Scheme { get; }
+
+        /// <summary>
+        /// Gets or sets the expiration time.
+        /// </summary>
+        /// <value>The expiration time.</value>
+        long? SlidingWindow { get; set; }
 
         /// <summary>
         /// Gets token.
