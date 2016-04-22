@@ -1,5 +1,6 @@
 ﻿using Baasic.Client.Configuration;
 using Baasic.Client.Formatters;
+using Baasic.Client.Infrastructure.Security;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -93,7 +94,14 @@ namespace Baasic.Client.Core
 
                 var response = await client.DeleteAsync(requestUri, cancellationToken);
 
-                return response.StatusCode.Equals(HttpStatusCode.OK) || response.StatusCode.Equals(HttpStatusCode.NoContent);
+                var isValid = response.StatusCode.Equals(HttpStatusCode.OK) || response.StatusCode.Equals(HttpStatusCode.NoContent);
+
+                if (isValid)
+                {
+                    this.ProlongSlidingToken();
+                }
+
+                return isValid;
             }
         }
 
@@ -159,6 +167,8 @@ namespace Baasic.Client.Core
                 }
                 //TODO: Add HAL Converter
 
+                this.ProlongSlidingToken();
+
                 return await ReadContentAsync<T>(response);
             }
         }
@@ -207,6 +217,8 @@ namespace Baasic.Client.Core
                     return default(T);
                 }
 
+                this.ProlongSlidingToken();
+
                 //TODO: Add HAL Converter
                 return await ReadContentAsync<T>(response);
             }
@@ -244,6 +256,8 @@ namespace Baasic.Client.Core
                 {
                     return default(T);
                 }
+                this.ProlongSlidingToken();
+
                 return await ReadContentAsync<T>(response);
             }
         }
@@ -328,6 +342,11 @@ namespace Baasic.Client.Core
 
                 var response = await client.SendAsync(request, cancellationToken);
 
+                if (response.IsSuccessStatusCode)
+                {
+                    this.ProlongSlidingToken();
+                }
+
                 //TODO: Add HAL Converter
                 return response;
             }
@@ -351,6 +370,30 @@ namespace Baasic.Client.Core
                 if (token != null && token.IsValid)
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.Scheme, token.Token);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prolongs the sliding token.
+        /// </summary>
+        protected virtual void ProlongSlidingToken()
+        {
+            var tokenHandler = this.Configuration.TokenHandler;
+            if (tokenHandler != null)
+            {
+                var token = tokenHandler.Get();
+                if (token != null && token.IsValid && token.SlidingWindow.HasValue)
+                {
+                    var newToken = new AuthenticationToken()
+                    {
+                        ExpirationDate = token.SlidingWindow.HasValue ? DateTime.UtcNow.AddSeconds(token.SlidingWindow.GetValueOrDefault()) : token.ExpirationDate,
+                        SlidingWindow = token.SlidingWindow,
+                        Scheme = token.Scheme,
+                        Token = token.Token,
+                        UrlToken = token.UrlToken
+                    };
+                    tokenHandler.Save(newToken);
                 }
             }
         }

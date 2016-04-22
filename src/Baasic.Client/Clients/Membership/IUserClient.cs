@@ -63,11 +63,11 @@ namespace Baasic.Client.Membership
         Task<User> GetAsync(object id, string embed = ClientBase.DefaultEmbed);
 
         /// <summary>
-        /// Asynchronously insert the <see cref="User" /> into the system.
+        /// Asynchronously insert the <see cref="NewUser" /> into the system.
         /// </summary>
         /// <param name="content">Resource instance.</param>
-        /// <returns>Newly created <see cref="User" /> .</returns>
-        Task<User> InsertAsync(User content);
+        /// <returns>Newly created <see cref="NewUser" /> .</returns>
+        Task<NewUser> InsertAsync(NewUser content);
 
         /// <summary>
         /// Asynchronously locks the <see cref="User" /> in the system.

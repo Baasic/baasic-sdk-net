@@ -72,7 +72,10 @@ namespace Baasic.Client.Membership
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                var token = await client.PutAsync<AuthenticationToken>(client.GetApiUrl(String.Format("{0}/activate/{1}", ModuleRelativePath, activationToken)), null);
+                var response = await client.PutAsync<Newtonsoft.Json.Linq.JObject>(client.GetApiUrl(String.Format("{0}/activate/{1}", ModuleRelativePath, activationToken)), null);
+
+                var token = this.ReadToken(response);
+
                 var tokenHandler = this.Configuration.TokenHandler;
                 if (tokenHandler != null)
                 {
@@ -107,6 +110,25 @@ namespace Baasic.Client.Membership
                     throw new InvalidOperationException(await response.Content.ReadAsStringAsync());
                 }
             }
+        }
+
+        private IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
+        {
+            var error = rawToken.Property("error");
+            if (error != null)
+            {
+                throw new InvalidOperationException(rawToken.Property("error_description").ToString());
+            }
+            var token = rawToken.ToObject<AuthenticationToken>();
+            if (token.ExpiresIn.HasValue)
+            {
+                token.ExpirationDate = DateTime.UtcNow.AddSeconds(token.ExpiresIn.GetValueOrDefault());
+            }
+            else
+            {
+                token.ExpirationDate = DateTime.UtcNow.AddSeconds(token.SlidingWindow.GetValueOrDefault());
+            }
+            return token;
         }
 
         #endregion Methods

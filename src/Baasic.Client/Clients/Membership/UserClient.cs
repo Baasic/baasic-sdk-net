@@ -151,11 +151,11 @@ namespace Baasic.Client.Membership
         /// </summary>
         /// <param name="content">Resource instance.</param>
         /// <returns>Newly created <see cref="User" /> .</returns>
-        public virtual Task<User> InsertAsync(User content)
+        public virtual Task<NewUser> InsertAsync(NewUser content)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<User>(client.GetApiUrl(ModuleRelativePath), content);
+                return client.PostAsync<NewUser>(client.GetApiUrl(ModuleRelativePath), content);
             }
         }
 

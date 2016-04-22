@@ -72,7 +72,7 @@ namespace Baasic.Client.Security.Token
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, this.ModuleRelativePath))
+                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, string.Format("{0}?options=sliding", this.ModuleRelativePath)))
                 {
                     Content = new FormUrlEncodedContent(new KeyValuePair<string, string>[] {
                         new KeyValuePair<string, string>("grant_type", "password"),
@@ -188,14 +188,16 @@ namespace Baasic.Client.Security.Token
             {
                 throw new InvalidOperationException(rawToken.Property("error_description").ToString());
             }
-
-            return new AuthenticationToken()
+            var token = rawToken.ToObject<AuthenticationToken>();
+            if (token.ExpiresIn.HasValue)
             {
-                ExpirationDate = DateTime.UtcNow.AddSeconds(rawToken.Property("expires_in").ToObject<long>()),
-                Scheme = rawToken.Property("token_type").ToObject<string>(),
-                Token = rawToken.Property("access_token").ToObject<string>(),
-                UrlToken = rawToken.Property("access_url_token").ToObject<string>()
-            };
+                token.ExpirationDate = DateTime.UtcNow.AddSeconds(token.ExpiresIn.GetValueOrDefault());
+            }
+            else
+            {
+                token.ExpirationDate = DateTime.UtcNow.AddSeconds(token.SlidingWindow.GetValueOrDefault());
+            }
+            return token;
         }
 
         #endregion Methods
