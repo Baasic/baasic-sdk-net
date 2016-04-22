@@ -308,6 +308,10 @@ namespace Baasic.Client.Core
         /// <returns><typeparamref name="T" /> Resource.</returns>
         public virtual async Task<T> ReadContentAsync<T>(HttpResponseMessage response)
         {
+            if (typeof(T) == typeof(HttpStatusCode))
+            {
+                return (T)(object)response.StatusCode;
+            }
             if (response.Content != null && response.Content.Headers.ContentLength > 0)
             {
                 return JsonFormatter.Deserialize<T>(await response.Content.ReadAsStreamAsync());
