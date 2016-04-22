@@ -8,6 +8,12 @@ namespace Baasic.Client.Infrastructure.Security
     /// </summary>
     public class WebSessionTokenHandler : ITokenHandler
     {
+        #region Fields
+
+        private static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
+
+        #endregion Fields
+
         #region Methods
 
         /// <summary>
@@ -18,15 +24,20 @@ namespace Baasic.Client.Infrastructure.Security
         {
             if (rwl.TryEnterWriteLock(Timeout.Infinite))
             {
+                bool result = false;
                 try
                 {
-                    System.Web.HttpContext.Current.Session["token"] = null;
+                    if (System.Web.HttpContext.Current.Session != null)
+                    {
+                        System.Web.HttpContext.Current.Session["token"] = null;
+                        result = true;
+                    }
                 }
                 finally
                 {
                     rwl.ExitWriteLock();
                 }
-                return true;
+                return result;
             }
             return false;
         }
@@ -41,7 +52,10 @@ namespace Baasic.Client.Infrastructure.Security
             {
                 try
                 {
-                    return System.Web.HttpContext.Current.Session["token"] as IAuthenticationToken;
+                    if (System.Web.HttpContext.Current.Session != null)
+                    {
+                        return System.Web.HttpContext.Current.Session["token"] as IAuthenticationToken;
+                    }
                 }
                 finally
                 {
@@ -60,25 +74,24 @@ namespace Baasic.Client.Infrastructure.Security
         {
             if (rwl.TryEnterWriteLock(Timeout.Infinite))
             {
+                var result = false;
                 try
                 {
-                    System.Web.HttpContext.Current.Session["token"] = token;
+                    if (System.Web.HttpContext.Current.Session != null)
+                    {
+                        System.Web.HttpContext.Current.Session["token"] = token;
+                        result = true;
+                    }
                 }
                 finally
                 {
                     rwl.ExitWriteLock();
                 }
-                return true;
+                return result;
             }
             return false;
         }
 
         #endregion Methods
-
-        #region Fields
-
-        private static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
-
-        #endregion Fields
     }
 }
