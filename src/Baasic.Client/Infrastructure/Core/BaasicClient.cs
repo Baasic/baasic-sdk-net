@@ -15,6 +15,12 @@ namespace Baasic.Client.Core
     /// </summary>
     public class BaasicClient : IBaasicClient
     {
+        #region Fields
+
+        private Lazy<HttpClient> _client;
+
+        #endregion Fields
+
         #region Constructors
 
         /// <summary>
@@ -28,9 +34,15 @@ namespace Baasic.Client.Core
             IJsonFormatter jsonFormatter
             )
         {
-            this.Configuration = configuration;
-            this.HttpClientFactory = httpClientFactory;
-            this.JsonFormatter = jsonFormatter;
+            Configuration = configuration;
+            HttpClientFactory = httpClientFactory;
+            JsonFormatter = jsonFormatter;
+            this._client = new Lazy<HttpClient>(() =>
+            {
+                var client = HttpClientFactory.Create();
+                InitializeClient(client, Configuration.DefaultMediaType);
+                return client;
+            }, true);
         }
 
         #endregion Constructors
@@ -44,6 +56,22 @@ namespace Baasic.Client.Core
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets the client.
+        /// </summary>
+        /// <value>The client.</value>
+        protected HttpClient Client
+        {
+            get
+            {
+                return this._client.Value;
+            }
+            set
+            {
+                this._client = new Lazy<HttpClient>(() => value);
+            }
         }
 
         /// <summary>
@@ -88,11 +116,12 @@ namespace Baasic.Client.Core
         /// <returns>True if object is deleted, false otherwise.</returns>
         public virtual async Task<bool> DeleteAsync(string requestUri, CancellationToken cancellationToken)
         {
-            using (HttpClient client = HttpClientFactory.Create())
+            HttpClient client = Client;
             {
-                InitializeClient(client, Configuration.DefaultMediaType);
+                var request = new HttpRequestMessage(HttpMethod.Delete, requestUri);
+                InitializeClientAuthorization(request);
 
-                var response = await client.DeleteAsync(requestUri, cancellationToken);
+                var response = await client.SendAsync(request, cancellationToken);
 
                 var isValid = response.StatusCode.Equals(HttpStatusCode.OK) || response.StatusCode.Equals(HttpStatusCode.NoContent);
 
@@ -155,17 +184,17 @@ namespace Baasic.Client.Core
         /// <returns><typeparamref name="T" /> .</returns>
         public virtual async Task<T> GetAsync<T>(string requestUri, CancellationToken cancellationToken)
         {
-            using (HttpClient client = HttpClientFactory.Create())
+            HttpClient client = Client;
             {
-                InitializeClient(client, Configuration.DefaultMediaType);
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+                InitializeClientAuthorization(request);
 
-                var response = await client.GetAsync(requestUri, cancellationToken);
+                var response = await client.SendAsync(request, cancellationToken);
 
                 if (!response.IsSuccessStatusCode)
                 {
                     return default(T);
                 }
-                //TODO: Add HAL Converter
 
                 this.ProlongSlidingToken();
 
@@ -206,11 +235,15 @@ namespace Baasic.Client.Core
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
         public virtual async Task<T> PostAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
         {
-            using (HttpClient client = HttpClientFactory.Create())
+            HttpClient client = Client;
             {
-                InitializeClient(client, Configuration.DefaultMediaType);
+                var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
+                {
+                    Content = JsonFormatter.SerializeToHttpContent(content)
+                };
+                InitializeClientAuthorization(request);
 
-                var response = await client.PostAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
+                var response = await client.SendAsync(request, cancellationToken);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -246,11 +279,15 @@ namespace Baasic.Client.Core
         /// <returns>Updated <typeparamref name="T" /> .</returns>
         public virtual async Task<T> PutAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
         {
-            using (HttpClient client = HttpClientFactory.Create())
+            HttpClient client = Client;
             {
-                InitializeClient(client, Configuration.DefaultMediaType);
+                var request = new HttpRequestMessage(HttpMethod.Put, requestUri)
+                {
+                    Content = JsonFormatter.SerializeToHttpContent(content)
+                };
+                InitializeClientAuthorization(request);
 
-                var response = await client.PutAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
+                var response = await client.SendAsync(request, cancellationToken);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -286,11 +323,15 @@ namespace Baasic.Client.Core
         /// <returns><typeparamref name="TOut" /> .</returns>
         public virtual async Task<TOut> PutAsync<TIn, TOut>(string requestUri, TIn content, CancellationToken cancellationToken)
         {
-            using (HttpClient client = HttpClientFactory.Create())
+            HttpClient client = Client;
             {
-                InitializeClient(client, Configuration.DefaultMediaType);
+                var request = new HttpRequestMessage(HttpMethod.Put, requestUri)
+                {
+                    Content = JsonFormatter.SerializeToHttpContent(content)
+                };
+                InitializeClientAuthorization(request);
 
-                var response = await client.PutAsync(requestUri, JsonFormatter.SerializeToHttpContent(content), cancellationToken);
+                var response = await client.SendAsync(request, cancellationToken);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -340,9 +381,9 @@ namespace Baasic.Client.Core
         /// <returns>HTTP response message.</returns>
         public virtual async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            using (HttpClient client = HttpClientFactory.Create())
+            HttpClient client = Client;
             {
-                InitializeClient(client, Configuration.DefaultMediaType);
+                InitializeClientAuthorization(request);
 
                 var response = await client.SendAsync(request, cancellationToken);
 
@@ -365,15 +406,21 @@ namespace Baasic.Client.Core
         {
             client.Timeout = Configuration.DefaultTimeout;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mthv));
+        }
 
-            //TODO: Add authentication header
+        /// <summary>
+        /// Initialize HTTP client authorization.
+        /// </summary>
+        /// <param name="client">HTTP client.</param>
+        protected virtual void InitializeClientAuthorization(HttpRequestMessage request)
+        {
             var tokenHandler = this.Configuration.TokenHandler;
             if (tokenHandler != null)
             {
                 var token = tokenHandler.Get();
                 if (token != null && token.IsValid)
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token.Scheme, token.Token);
+                    request.Headers.Authorization = new AuthenticationHeaderValue(token.Scheme, token.Token);
                 }
             }
         }
