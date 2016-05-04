@@ -186,7 +186,7 @@ namespace Baasic.Client.Security.Token
             var error = rawToken.Property("error");
             if (error != null)
             {
-                throw new InvalidOperationException(rawToken.Property("error_description").ToString());
+                throw new InvalidOperationException(error.ToString());
             }
             var token = rawToken.ToObject<AuthenticationToken>();
             if (token.ExpiresIn.HasValue)
