@@ -186,7 +186,7 @@ namespace Baasic.Client.Utility
 
             for (int i = 0; i < count; i++)
             {
-                pairs[i] = string.Concat(keys[i], "=", values[i]);
+                pairs[i] = string.Concat(Uri.EscapeUriString(keys[i]), "=", Uri.EscapeUriString(values[i]));
             }
 
             base.Query = string.Join("&", pairs);
