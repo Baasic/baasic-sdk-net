@@ -45,12 +45,17 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Articles\ArticleCommentStatus.cs" />
     <Compile Include="Articles\ArticleSettings.cs" />
     <Compile Include="Articles\ArticleStatus.cs" />
     <Compile Include="Articles\ArticleTagEntry.cs" />
     <Compile Include="Articles\ArticleTag.cs" />
+    <Compile Include="Articles\ArticleCommentOptions.cs" />
+    <Compile Include="Articles\ArticleCommentReply.cs" />
+    <Compile Include="Articles\CreateArticleComment.cs" />
+    <Compile Include="Articles\CreateArticleCommentReply.cs" />
     <Compile Include="Articles\Rating.cs" />
-    <Compile Include="Articles\Comment.cs" />
+    <Compile Include="Articles\ArticleComment.cs" />
     <Compile Include="Articles\Author.cs" />
     <Compile Include="Articles\Article.cs" />
     <Compile Include="Dynamic\Owner.cs" />

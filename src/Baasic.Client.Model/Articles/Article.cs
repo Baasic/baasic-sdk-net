@@ -48,7 +48,7 @@ namespace Baasic.Client.Model.Articles
         /// <summary>
         /// Gets the comments.
         /// </summary>
-        public Comment[] Comments
+        public ArticleComment[] Comments
         {
             get;
             set;
