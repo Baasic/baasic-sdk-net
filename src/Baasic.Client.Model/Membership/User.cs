@@ -20,15 +20,6 @@ namespace Baasic.Client.Model.Membership
         }
 
         /// <summary>
-        /// Gets or sets the author display name.
-        /// </summary>
-        public virtual string DisplayName
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the e-mail address for the membership user.
         /// </summary>
         public virtual string Email
