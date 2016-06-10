@@ -40,6 +40,8 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IKeyValueClient, KeyValueClient>();
             dependencyResolver.Register<IArticleSettingsClient, ArticleSettingsClient>();
             dependencyResolver.Register<IArticleClient, ArticleClient>();
+            dependencyResolver.Register<IArticleCommentsClient, ArticleCommentsClient>();
+            dependencyResolver.Register<IArticleCommentRepliesClient, ArticleCommentRepliesClient>();
             dependencyResolver.Register<IArticleTagClient, ArticleTagClient>();
             dependencyResolver.Register(typeof(IDynamicResourceClient<>), typeof(DynamicResourceClient<>));
 

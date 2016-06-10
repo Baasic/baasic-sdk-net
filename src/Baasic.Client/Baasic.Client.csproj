@@ -64,8 +64,12 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Clients\Articles\ArticleCommentRepliesClient.cs" />
+    <Compile Include="Clients\Articles\ArticleCommentsClient.cs" />
     <Compile Include="Clients\Articles\ArticleSettingsClient.cs" />
     <Compile Include="Clients\Articles\ArticleTagClient.cs" />
+    <Compile Include="Clients\Articles\IArticleCommentRepliesClient.cs" />
+    <Compile Include="Clients\Articles\IArticleCommentsClient.cs" />
     <Compile Include="Clients\Articles\IArticleSettingsClient.cs" />
     <Compile Include="Clients\Articles\IArticleTagClient.cs" />
     <Compile Include="Clients\Dynamic\DynamicResourceClient.cs" />

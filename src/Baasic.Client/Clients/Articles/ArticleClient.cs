@@ -475,10 +475,12 @@ namespace Baasic.Client.Modules.Articles
         }
 
         /// <summary>
-        /// Asynchronously insert the <see cref="Article" /> into the system.
+        /// Asynchronously insert the <see cref="CreateArticleComment" /> into the system.
         /// </summary>
-        /// <param name="article">The article.</param>
-        /// <returns>Newly created <see cref="Article" /> .</returns>
+        /// <param name="comment">The comment.</param>
+        /// <returns>
+        /// Newly created <see cref="ArticleComment" /> .
+        /// </returns>
         public virtual Task<ArticleComment> InsertCommentAsync(CreateArticleComment comment)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
