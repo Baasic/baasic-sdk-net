@@ -345,6 +345,48 @@ namespace Baasic.Client.ArticleModule.Tests
         }
 
         [Fact()]
+        public void ArticleClient_UnpublishAsync_test()
+        {
+            #region Setup
+
+            var handler = new Mock<HttpMessageHandler>();
+            handler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).Returns((HttpRequestMessage request, CancellationToken cancellationToken) =>
+            {
+                HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                if (request.RequestUri.ToString().EndsWith("unpublish/NA"))
+                    httpResponseMessage = new HttpResponseMessage(HttpStatusCode.NotFound);
+                else if (request.RequestUri.ToString().EndsWith("unpublish/Slug"))
+                    httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                return Task.FromResult(httpResponseMessage);
+            });
+
+            Mock<HttpClientFactory> httpClientFactory = new Mock<HttpClientFactory>(new Mock<IDependencyResolver>().Object);
+            httpClientFactory.Setup(p => p.Create()).Returns(() =>
+            {
+                return new HttpClient(handler.Object);
+            });
+
+            Mock<IBaasicClientFactory> baasicClientFactory = new Mock<IBaasicClientFactory>();
+            baasicClientFactory.Setup(f => f.Create(It.IsAny<IClientConfiguration>())).Returns((IClientConfiguration config) => new BaasicClient(config, httpClientFactory.Object, new JsonFormatter()));
+
+            Mock<IClientConfiguration> clientConfiguration = new Mock<IClientConfiguration>();
+            clientConfiguration.Setup(p => p.DefaultMediaType).Returns(ClientConfiguration.HalJsonMediaType);
+            clientConfiguration.Setup(p => p.DefaultTimeout).Returns(TimeSpan.FromSeconds(1));
+            clientConfiguration.Setup(p => p.ApplicationIdentifier).Returns("Test");
+            clientConfiguration.Setup(p => p.SecureBaseAddress).Returns("https://api.baasic.com/v1");
+            clientConfiguration.Setup(p => p.BaseAddress).Returns("http://api.baasic.com/v1");
+
+            ArticleClient target = new ArticleClient(clientConfiguration.Object, baasicClientFactory.Object);
+
+            target.Should().NotBeNull();
+
+            #endregion Setup
+
+            target.UnpublishAsync("NA").Result.Should().BeFalse();
+            target.UnpublishAsync("Slug").Result.Should().BeTrue();
+        }
+
+        [Fact()]
         public void ArticleClient_RestoreAsync_test()
         {
             #region Setup
