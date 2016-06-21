@@ -340,8 +340,8 @@ namespace Baasic.Client.ArticleModule.Tests
 
             #endregion Setup
 
-            target.PublishAsync("NA").Result.Should().BeFalse();
-            target.PublishAsync("Slug").Result.Should().BeTrue();
+            target.PublishAsync("NA", new ArticleOptions { ArticleUrl = "NA" }).Result.Should().BeFalse();
+            target.PublishAsync("Slug", new ArticleOptions { ArticleUrl = "Slug" }).Result.Should().BeTrue();
         }
 
         [Fact()]

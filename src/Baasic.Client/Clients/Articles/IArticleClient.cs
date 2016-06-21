@@ -269,8 +269,16 @@ namespace Baasic.Client.Modules.Articles
         /// Asynchronously publish the <see cref="Article" /> in the system.
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
+        /// <param name="options">The options.</param>
         /// <returns>True if <see cref="Article" /> is published, false otherwise.</returns>
-        Task<bool> PublishAsync(object key);
+        Task<bool> PublishAsync(object key, ArticleOptions options);
+
+        /// <summary>
+        /// Asynchronously unpublish the <see cref="Article" /> in the system.
+        /// </summary>
+        /// <param name="key">Key (Id or Slug).</param>
+        /// <returns>True if <see cref="Article" /> is unpublished, false otherwise.</returns>
+        Task<bool> UnpublishAsync(object key);
 
         /// <summary>
         /// Asynchronously removes all <see cref="ArticleTagEntry" /> from the system.

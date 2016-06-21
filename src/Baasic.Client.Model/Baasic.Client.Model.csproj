@@ -46,6 +46,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Articles\ArticleCommentStatus.cs" />
+    <Compile Include="Articles\ArticleOptions.cs" />
     <Compile Include="Articles\ArticleSettings.cs" />
     <Compile Include="Articles\ArticleStatus.cs" />
     <Compile Include="Articles\ArticleTagEntry.cs" />

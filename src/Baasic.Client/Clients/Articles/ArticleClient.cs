@@ -540,13 +540,38 @@ namespace Baasic.Client.Modules.Articles
         /// Asynchronously publish the <see cref="Article" /> in the system.
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
+        /// <param name="options">The options.</param>
         /// <returns>True if <see cref="Article" /> is published, false otherwise.</returns>
-        public virtual async Task<bool> PublishAsync(object key)
+        public virtual async Task<bool> PublishAsync(object key, ArticleOptions options)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {   
+                var result = await client.PutAsync<ArticleOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/publish", ModuleRelativePath), key), options);
+                switch (result)
+                {
+                    case System.Net.HttpStatusCode.Created:
+                    case System.Net.HttpStatusCode.NoContent:
+                    case System.Net.HttpStatusCode.OK:
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously unpublish the <see cref="Article" /> in the system.
+        /// </summary>
+        /// <param name="key">Key (Id or Slug).</param>
+        /// <returns>True if <see cref="Article" /> is unpublished, false otherwise.</returns>
+        public virtual async Task<bool> UnpublishAsync(object key)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/publish", ModuleRelativePath), key));
+                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/unpublish", ModuleRelativePath), key));
                 var result = await client.SendAsync(request);
+
                 return result.IsSuccessStatusCode;
             }
         }
