@@ -31,7 +31,45 @@ namespace Baasic.Client.Configuration
         /// </summary>
         public const string JsonMediaType = "application/json";
 
+        private string _baseAddress;
+
+        private string _defaultMediaType;
+
+        private TimeSpan _defaultTimeout = TimeSpan.FromSeconds(30);
+
+        private string _secureBaseAddress;
+
         #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
+        /// </summary>
+        /// <param name="applicationIdentifier">The application identifier.</param>
+        /// <param name="tokenHandler">The token handler.</param>
+        public ClientConfiguration(string applicationIdentifier, ITokenHandler tokenHandler)
+        {
+            ApplicationIdentifier = applicationIdentifier;
+            TokenHandler = tokenHandler;
+            Initialize();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
+        /// </summary>
+        /// <param name="baseAddress">The base address.</param>
+        /// <param name="applicationIdentifier">The application identifier.</param>
+        /// <param name="tokenHandler">The token handler.</param>
+        public ClientConfiguration(string baseAddress, string applicationIdentifier, ITokenHandler tokenHandler)
+        {
+            BaseAddress = baseAddress;
+            ApplicationIdentifier = applicationIdentifier;
+            TokenHandler = tokenHandler;
+            Initialize();
+        }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -131,45 +169,7 @@ namespace Baasic.Client.Configuration
         /// <value>The version.</value>
         public string Version { get; protected set; }
 
-        private string _baseAddress;
-
-        private string _defaultMediaType;
-
-        private TimeSpan _defaultTimeout = TimeSpan.FromSeconds(10);
-
-        private string _secureBaseAddress;
-
         #endregion Properties
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
-        /// </summary>
-        /// <param name="applicationIdentifier">The application identifier.</param>
-        /// <param name="tokenHandler">The token handler.</param>
-        public ClientConfiguration(string applicationIdentifier, ITokenHandler tokenHandler)
-        {
-            ApplicationIdentifier = applicationIdentifier;
-            TokenHandler = tokenHandler;
-            Initialize();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientConfiguration" /> class.
-        /// </summary>
-        /// <param name="baseAddress">The base address.</param>
-        /// <param name="applicationIdentifier">The application identifier.</param>
-        /// <param name="tokenHandler">The token handler.</param>
-        public ClientConfiguration(string baseAddress, string applicationIdentifier, ITokenHandler tokenHandler)
-        {
-            BaseAddress = baseAddress;
-            ApplicationIdentifier = applicationIdentifier;
-            TokenHandler = tokenHandler;
-            Initialize();
-        }
-
-        #endregion Constructor
 
         #region Methods
 
