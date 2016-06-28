@@ -247,7 +247,7 @@ namespace Baasic.Client.Core
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return default(T);
+                    throw new InvalidOperationException(response.ReasonPhrase);
                 }
 
                 this.ProlongSlidingToken();
@@ -291,7 +291,7 @@ namespace Baasic.Client.Core
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return default(T);
+                    throw new InvalidOperationException(response.ReasonPhrase);
                 }
                 this.ProlongSlidingToken();
 
