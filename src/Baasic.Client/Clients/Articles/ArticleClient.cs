@@ -244,11 +244,36 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="Article" /> s.</returns>
-        public virtual async Task<CollectionModelBase<Article>> FindAsync(string searchQuery = DefaultSearchQuery,
+        public virtual Task<CollectionModelBase<Article>> FindAsync(string searchQuery = DefaultSearchQuery,
             DateTime? startDate = null, DateTime? endDate = null,
             string statuses = "", string tags = "",
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            return FindAsync<Article>(searchQuery, startDate, endDate, statuses, tags, page, rpp, sort, embed, fields);
+        }
+
+        /// <summary>
+        /// Asynchronously find <see cref="Article" /> s.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Article" />.</typeparam>
+        /// <param name="searchQuery">Search query.</param>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
+        /// <param name="statuses">The article statuses.</param>
+        /// <param name="tags">The article tags.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="rpp">Records per page limit.</param>
+        /// <param name="sort">Sort by field.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>Collection of <typeparamref name="T" /> s.</returns>
+        public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
+            DateTime? startDate = null, DateTime? endDate = null,
+            string statuses = "", string tags = "",
+            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+            where T : Article
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
@@ -258,17 +283,17 @@ namespace Baasic.Client.Modules.Articles
                 InitializeQueryStringPair(uriBuilder, "endDate", endDate);
                 InitializeQueryStringPair(uriBuilder, "statuses", statuses);
                 InitializeQueryStringPair(uriBuilder, "tags", tags);
-                var result = await client.GetAsync<CollectionModelBase<Article>>(uriBuilder.ToString());
+                var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {
-                    result = new CollectionModelBase<Article>();
+                    result = new CollectionModelBase<T>();
                 }
                 return result;
             }
         }
 
         /// <summary>
-        /// Finds the comment replies asynchronous.
+        /// Asynchronously finds the comment replies.
         /// </summary>
         /// <param name="articleKey">The article key.</param>
         /// <param name="commentId">The comment identifier.</param>
@@ -280,19 +305,41 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="embed">The embed.</param>
         /// <param name="fields">The fields.</param>
         /// <returns></returns>
-        public virtual async Task<CollectionModelBase<ArticleCommentReply>> FindCommentRepliesAsync(object articleKey, SGuid commentId, string searchQuery = DefaultSearchQuery,
+        public virtual Task<CollectionModelBase<ArticleCommentReply>> FindCommentRepliesAsync(object articleKey, SGuid commentId, string searchQuery = DefaultSearchQuery,
             string statuses = "", int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            return FindCommentRepliesAsync<ArticleCommentReply>(articleKey, commentId, searchQuery, statuses, page, rpp, sort, embed, fields);
+        }
+
+        /// <summary>
+        /// Asynchronously finds the comment replies.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleCommentReply" />.</typeparam>
+        /// <param name="articleKey">The article key.</param>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <param name="searchQuery">The search query.</param>
+        /// <param name="statuses">The statuses.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="rpp">The RPP.</param>
+        /// <param name="sort">The sort.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns>Collection of <typeparamref name="T" />.</returns>
+        public virtual async Task<CollectionModelBase<T>> FindCommentRepliesAsync<T>(object articleKey, SGuid commentId, string searchQuery = DefaultSearchQuery,
+            string statuses = "", int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+            where T : ArticleCommentReply
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies", ModuleRelativePath), articleKey, commentId));
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
                 InitializeQueryStringPair(uriBuilder, "statuses", statuses);
-                var result = await client.GetAsync<CollectionModelBase<ArticleCommentReply>>(uriBuilder.ToString());
+                var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {
-                    result = new CollectionModelBase<ArticleCommentReply>();
+                    result = new CollectionModelBase<T>();
                 }
                 return result;
             }
@@ -398,11 +445,25 @@ namespace Baasic.Client.Modules.Articles
         /// <returns><see cref="Article" /> .</returns>
         public virtual Task<Article> GetAsync(object key, string embed = DefaultEmbed, string fields = DefaultFields)
         {
+            return GetAsync<Article>(key, embed, fields);
+        }
+
+        /// <summary>
+        /// Asynchronously gets the <see cref="Article" /> by provided key.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Article" />.</typeparam>
+        /// <param name="key">Key (Id or Slug).</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns><typeparamref name="T" />.</returns>
+        public virtual Task<T> GetAsync<T>(object key, string embed = DefaultEmbed, string fields = DefaultFields)
+            where T : Article
+        {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
                 InitializeQueryString(uriBuilder, embed, fields);
-                return client.GetAsync<Article>(uriBuilder.ToString());
+                return client.GetAsync<T>(uriBuilder.ToString());
             }
         }
 
@@ -478,9 +539,7 @@ namespace Baasic.Client.Modules.Articles
         /// Asynchronously insert the <see cref="CreateArticleComment" /> into the system.
         /// </summary>
         /// <param name="comment">The comment.</param>
-        /// <returns>
-        /// Newly created <see cref="ArticleComment" /> .
-        /// </returns>
+        /// <returns>Newly created <see cref="ArticleComment" /> .</returns>
         public virtual Task<ArticleComment> InsertCommentAsync(CreateArticleComment comment)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -545,7 +604,7 @@ namespace Baasic.Client.Modules.Articles
         public virtual async Task<bool> PublishAsync(object key, ArticleOptions options)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-            {   
+            {
                 var result = await client.PutAsync<ArticleOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/publish", ModuleRelativePath), key), options);
                 switch (result)
                 {
@@ -557,22 +616,6 @@ namespace Baasic.Client.Modules.Articles
                     default:
                         return false;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously unpublish the <see cref="Article" /> in the system.
-        /// </summary>
-        /// <param name="key">Key (Id or Slug).</param>
-        /// <returns>True if <see cref="Article" /> is unpublished, false otherwise.</returns>
-        public virtual async Task<bool> UnpublishAsync(object key)
-        {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-            {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/unpublish", ModuleRelativePath), key));
-                var result = await client.SendAsync(request);
-
-                return result.IsSuccessStatusCode;
             }
         }
 
@@ -764,6 +807,22 @@ namespace Baasic.Client.Modules.Articles
             {
                 var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/unspam", ModuleRelativePath), articleKey, commentId, commentReplyId));
                 var result = await client.SendAsync(request);
+                return result.IsSuccessStatusCode;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously unpublish the <see cref="Article" /> in the system.
+        /// </summary>
+        /// <param name="key">Key (Id or Slug).</param>
+        /// <returns>True if <see cref="Article" /> is unpublished, false otherwise.</returns>
+        public virtual async Task<bool> UnpublishAsync(object key)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/unpublish", ModuleRelativePath), key));
+                var result = await client.SendAsync(request);
+
                 return result.IsSuccessStatusCode;
             }
         }
