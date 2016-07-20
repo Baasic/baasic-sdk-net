@@ -26,6 +26,17 @@ namespace Baasic.Client.Membership
         /// <returns>Newly registered <see cref="User" />.</returns>
         Task<User> RegisterAsync(CreateUserDTO options);
 
+        /// <summary>
+        /// Asynchronously register new <see cref="User" /> using <see cref="CreateUserDTO" /> options.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="options">The options.</param>
+        /// <returns>Newly registered <typeparamref name="TOut" />.</returns>
+        Task<TOut> RegisterAsync<TIn, TOut>(TIn options)
+            where TIn : CreateUserDTO
+            where TOut : User;
+
         #endregion Methods
     }
 }

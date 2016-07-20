@@ -113,18 +113,36 @@ namespace Baasic.Client.Membership
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="User" /> s.</returns>
-        public virtual async Task<CollectionModelBase<User>> FindAsync(string searchQuery = DefaultSearchQuery,
+        public virtual Task<CollectionModelBase<User>> FindAsync(string searchQuery = DefaultSearchQuery,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            return FindAsync<User>(searchQuery, page, rpp, sort, embed, fields);
+        }
+
+        /// <summary>
+        /// Asynchronously find <see cref="User" /> s.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="User" />.</typeparam>
+        /// <param name="searchQuery">Search query.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="rpp">Records per page limit.</param>
+        /// <param name="sort">Sort by field.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>List of <typeparamref name="T" /> s.</returns>
+        public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
+            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields) where T : User
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
-                var result = await client.GetAsync<CollectionModelBase<User>>(uriBuilder.ToString());
+                var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {
-                    result = new CollectionModelBase<User>();
+                    result = new CollectionModelBase<T>();
                 }
                 return result;
             }
@@ -138,11 +156,23 @@ namespace Baasic.Client.Membership
         /// <returns><see cref="User" /> .</returns>
         public virtual Task<User> GetAsync(object id, string embed = DefaultEmbed)
         {
+            return GetAsync<User>(id, embed);
+        }
+
+        /// <summary>
+        /// Asynchronously gets the <see cref="User" /> by provided id.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="User" />.</typeparam>
+        /// <param name="id">The identifier.</param>
+        /// <param name="embed">The embed.</param>
+        /// <returns><typeparamref name="T" /> .</returns>
+        public virtual Task<T> GetAsync<T>(object id, string embed = DefaultEmbed) where T : User
+        {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
                 InitializeQueryString(uriBuilder, embed, "");
-                return client.GetAsync<User>(uriBuilder.ToString());
+                return client.GetAsync<T>(uriBuilder.ToString());
             }
         }
 
@@ -153,9 +183,20 @@ namespace Baasic.Client.Membership
         /// <returns>Newly created <see cref="User" /> .</returns>
         public virtual Task<NewUser> InsertAsync(NewUser content)
         {
+            return InsertAsync<NewUser>(content);
+        }
+
+        /// <summary>
+        /// Asynchronously insert the <see cref="User" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="User" />.</typeparam>
+        /// <param name="content">Resource instance.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        public virtual Task<T> InsertAsync<T>(T content) where T : NewUser
+        {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<NewUser>(client.GetApiUrl(ModuleRelativePath), content);
+                return client.PostAsync<T>(client.GetApiUrl(ModuleRelativePath), content);
             }
         }
 

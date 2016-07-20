@@ -55,6 +55,21 @@ namespace Baasic.Client.Membership
         Task<CollectionModelBase<User>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults, string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
+        /// Asynchronously find <see cref="User" /> s.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="User" />.</typeparam>
+        /// <param name="searchQuery">Search query.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="rpp">Records per page limit.</param>
+        /// <param name="sort">Sort by field.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>List of <typeparamref name="T" /> s.</returns>
+        Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
+            int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : User;
+
+        /// <summary>
         /// Asynchronously gets the <see cref="User" /> by provided id.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -63,11 +78,28 @@ namespace Baasic.Client.Membership
         Task<User> GetAsync(object id, string embed = ClientBase.DefaultEmbed);
 
         /// <summary>
+        /// Asynchronously gets the <see cref="User" /> by provided id.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="User" />.</typeparam>
+        /// <param name="id">The identifier.</param>
+        /// <param name="embed">The embed.</param>
+        /// <returns><typeparamref name="T" /> .</returns>
+        Task<T> GetAsync<T>(object id, string embed = ClientBase.DefaultEmbed) where T : User;
+
+        /// <summary>
         /// Asynchronously insert the <see cref="NewUser" /> into the system.
         /// </summary>
         /// <param name="content">Resource instance.</param>
         /// <returns>Newly created <see cref="NewUser" /> .</returns>
         Task<NewUser> InsertAsync(NewUser content);
+
+        /// <summary>
+        /// Asynchronously insert the <see cref="User" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="User" />.</typeparam>
+        /// <param name="content">Resource instance.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        Task<T> InsertAsync<T>(T content) where T : NewUser;
 
         /// <summary>
         /// Asynchronously locks the <see cref="User" /> in the system.

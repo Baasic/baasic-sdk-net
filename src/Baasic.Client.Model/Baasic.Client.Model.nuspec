@@ -16,4 +16,7 @@
       <dependency id="Baasic.Client.Common" version="[0.8.136,1.0.0)" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="bin\$configuration$\$id$.xml" target="lib\net45\" />
+  </files>
 </package>

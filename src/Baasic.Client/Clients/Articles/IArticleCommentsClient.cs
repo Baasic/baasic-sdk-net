@@ -44,6 +44,22 @@ namespace Baasic.Client.Modules.Articles
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
+        /// Finds the comments asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="searchQuery">The search query.</param>
+        /// <param name="statuses">The statuses.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="rpp">The RPP.</param>
+        /// <param name="sort">The sort.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns>Collection of <typeparamref name="T" /></returns>
+        Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
+            string statuses = "", int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : ArticleComment;
+
+        /// <summary>
         /// Flags the asynchronous.
         /// </summary>
         /// <param name="commentId">The comment identifier.</param>
@@ -60,11 +76,29 @@ namespace Baasic.Client.Modules.Articles
         Task<ArticleComment> GetAsync(SGuid commentId, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
+        /// Gets the comment asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns><typeparamref name="T" /></returns>
+        Task<T> GetAsync<T>(SGuid commentId, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : ArticleComment;
+
+        /// <summary>
         /// Inserts the comment asynchronous.
         /// </summary>
         /// <param name="comment">The comment.</param>
         /// <returns></returns>
         Task<ArticleComment> InsertCommentAsync(CreateArticleComment comment);
+
+        /// <summary>
+        /// Asynchronously insert the <see cref="CreateArticleComment" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        Task<T> InsertCommentAsync<T>(T comment);
 
         /// <summary>
         /// Marks as spam asynchronous.
@@ -115,6 +149,14 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="comment">The comment.</param>
         /// <returns></returns>
         Task<ArticleComment> UpdateCommentAsync(ArticleComment comment);
+
+        /// <summary>
+        /// Updates the comment asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Updated <typeparamref name="T" /></returns>
+        Task<T> UpdateCommentAsync<T>(T comment) where T : ArticleComment;
 
         #endregion Methods
     }

@@ -99,19 +99,38 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="embed">The embed.</param>
         /// <param name="fields">The fields.</param>
         /// <returns></returns>
-        public virtual async Task<CollectionModelBase<ArticleComment>> FindAsync(string searchQuery = DefaultSearchQuery,
+        public virtual Task<CollectionModelBase<ArticleComment>> FindAsync(string searchQuery = DefaultSearchQuery,
             string statuses = "", int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            return FindAsync<ArticleComment>(searchQuery, statuses, page, rpp, sort, embed, fields);
+        }
+
+        /// <summary>
+        /// Finds the comments asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="searchQuery">The search query.</param>
+        /// <param name="statuses">The statuses.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="rpp">The RPP.</param>
+        /// <param name="sort">The sort.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns>Collection of <typeparamref name="T" /></returns>
+        public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
+            string statuses = "", int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields) where T : ArticleComment
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
                 InitializeQueryStringPair(uriBuilder, "statuses", statuses);
-                var result = await client.GetAsync<CollectionModelBase<ArticleComment>>(uriBuilder.ToString());
+                var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {
-                    result = new CollectionModelBase<ArticleComment>();
+                    result = new CollectionModelBase<T>();
                 }
                 return result;
             }
@@ -142,11 +161,24 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual Task<ArticleComment> GetAsync(SGuid commentId, string embed = DefaultEmbed, string fields = DefaultFields)
         {
+            return GetAsync<ArticleComment>(commentId, embed, fields);
+        }
+
+        /// <summary>
+        /// Gets the comment asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns><typeparamref name="T" /></returns>
+        public virtual Task<T> GetAsync<T>(SGuid commentId, string embed = DefaultEmbed, string fields = DefaultFields) where T : ArticleComment
+        {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), commentId));
                 InitializeQueryString(uriBuilder, embed, fields);
-                return client.GetAsync<ArticleComment>(uriBuilder.ToString());
+                return client.GetAsync<T>(uriBuilder.ToString());
             }
         }
 
@@ -157,9 +189,20 @@ namespace Baasic.Client.Modules.Articles
         /// <returns>Newly created <see cref="ArticleComment" /> .</returns>
         public virtual Task<ArticleComment> InsertCommentAsync(CreateArticleComment comment)
         {
+            return InsertCommentAsync<ArticleComment>(comment);
+        }
+
+        /// <summary>
+        /// Asynchronously insert the <see cref="CreateArticleComment" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        public virtual Task<T> InsertCommentAsync<T>(T comment)
+        {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<ArticleComment>(client.GetApiUrl(ModuleRelativePath), comment);
+                return client.PostAsync<T>(client.GetApiUrl(ModuleRelativePath), comment);
             }
         }
 
@@ -269,9 +312,20 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual Task<ArticleComment> UpdateCommentAsync(ArticleComment comment)
         {
+            return UpdateCommentAsync<ArticleComment>(comment);
+        }
+
+        /// <summary>
+        /// Updates the comment asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Updated <typeparamref name="T" /></returns>
+        public virtual Task<T> UpdateCommentAsync<T>(T comment) where T : ArticleComment
+        {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<ArticleComment>(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), comment.Id), comment);
+                return client.PutAsync<T>(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), comment.Id), comment);
             }
         }
 

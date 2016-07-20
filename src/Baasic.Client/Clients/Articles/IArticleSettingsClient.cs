@@ -21,6 +21,15 @@ namespace Baasic.Client.Modules.Articles
         Task<ArticleSettings> GetAsync(string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
+        /// Asynchronously gets the <see cref="ArticleSettings" /> from the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        Task<T> GetAsync<T>(string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : ArticleSettings;
+
+        /// <summary>
         /// Asynchronously update the <see cref="ArticleSettings" /> .
         /// </summary>
         /// <param name="settings">The new or existing <see cref="ArticleSettings" /> .</param>

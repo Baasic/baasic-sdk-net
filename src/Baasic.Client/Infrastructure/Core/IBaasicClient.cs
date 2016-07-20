@@ -89,6 +89,16 @@ namespace Baasic.Client.Core
         Task<T> PostAsync<T>(string requestUri, T content);
 
         /// <summary>
+        /// Asynchronously insert the <typeparamref name="TIn" /> into the system.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <returns>Newly created <typeparamref name="TOut" /> .</returns>
+        Task<TOut> PostAsync<TIn, TOut>(string requestUri, TIn content);
+
+        /// <summary>
         /// Asynchronously insert the <typeparamref name="T" /> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
@@ -97,6 +107,17 @@ namespace Baasic.Client.Core
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
         Task<T> PostAsync<T>(string requestUri, T content, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Asynchronously insert the <typeparamref name="TIn" /> into the system.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Newly created <typeparamref name="TOut" /> .</returns>
+        Task<TOut> PostAsync<TIn, TOut>(string requestUri, TIn content, CancellationToken cancellationToken);
 
         /// <summary>
         /// Asynchronously update the <typeparamref name="TIn" /> in the system.

@@ -91,7 +91,21 @@ namespace Baasic.Client.Membership
         /// </summary>
         /// <param name="options">The options.</param>
         /// <returns>Newly registered <see cref="User" />.</returns>
-        public virtual async Task<User> RegisterAsync(CreateUserDTO options)
+        public virtual Task<User> RegisterAsync(CreateUserDTO options)
+        {
+            return RegisterAsync<CreateUserDTO, User>(options);
+        }
+
+        /// <summary>
+        /// Asynchronously register new <see cref="User" /> using <see cref="CreateUserDTO" /> options.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="options">The options.</param>
+        /// <returns>Newly registered <typeparamref name="TOut" />.</returns>
+        public virtual async Task<TOut> RegisterAsync<TIn, TOut>(TIn options)
+            where TIn : CreateUserDTO
+            where TOut : User
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
             {
@@ -103,7 +117,7 @@ namespace Baasic.Client.Membership
                 var response = await client.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
-                    return JsonFormatter.Deserialize<User>(await response.Content.ReadAsStringAsync());
+                    return JsonFormatter.Deserialize<TOut>(await response.Content.ReadAsStringAsync());
                 }
                 else
                 {

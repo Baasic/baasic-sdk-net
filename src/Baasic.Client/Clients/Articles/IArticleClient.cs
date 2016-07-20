@@ -24,9 +24,26 @@ namespace Baasic.Client.Modules.Articles
         /// <summary>
         /// Asynchronously adds the tag to article tags.
         /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleTagEntry" />.</typeparam>
+        /// <param name="articleKey">Tag will be added under the specified article id or slug.</param>
+        /// <param name="tag">The new or existing tag.</param>
+        /// <returns>If tag is added <typeparamref name="T" /> is returned, otherwise null.</returns>
+        Task<T> AddTagToArticleAsync<T>(object articleKey, string tag) where T : ArticleTagEntry;
+
+        /// <summary>
+        /// Asynchronously adds the tag to article tags.
+        /// </summary>
         /// <param name="entry">The tag entry.</param>
         /// <returns>If tag is added <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
         Task<ArticleTagEntry> AddTagToArticleAsync(ArticleTagEntry entry);
+
+        /// <summary>
+        /// Asynchronously adds the tag to article tags.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleTagEntry" />.</typeparam>
+        /// <param name="entry">The tag entry.</param>
+        /// <returns>If tag is added <see cref="ArticleTagEntry" /> is returned, otherwise null.</returns>
+        Task<T> AddTagToArticleAsync<T>(T entry) where T : ArticleTagEntry;
 
         /// <summary>
         /// Approves the comment.
@@ -122,6 +139,28 @@ namespace Baasic.Client.Modules.Articles
             string statuses = "", string tags = "", int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults, string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
+        /// Asynchronously find <see cref="Article" /> s.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Article" />.</typeparam>
+        /// <param name="searchQuery">Search query.</param>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
+        /// <param name="statuses">The article statuses.</param>
+        /// <param name="tags">The article tags.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="rpp">Records per page limit.</param>
+        /// <param name="sort">Sort by field.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>Collection of <typeparamref name="T" /> s.</returns>
+        Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
+            DateTime? startDate = null, DateTime? endDate = null,
+            string statuses = "", string tags = "",
+            int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
+            where T : Article;
+
+        /// <summary>
         /// Finds the comment replies asynchronous.
         /// </summary>
         /// <param name="articleKey">The article key.</param>
@@ -137,6 +176,25 @@ namespace Baasic.Client.Modules.Articles
         Task<CollectionModelBase<ArticleCommentReply>> FindCommentRepliesAsync(object articleKey, SGuid commentId, string searchQuery = ClientBase.DefaultSearchQuery,
             string statuses = "", int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
+
+        /// <summary>
+        /// Asynchronously finds the comment replies.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleCommentReply" />.</typeparam>
+        /// <param name="articleKey">The article key.</param>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <param name="searchQuery">The search query.</param>
+        /// <param name="statuses">The statuses.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="rpp">The RPP.</param>
+        /// <param name="sort">The sort.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns>Collection of <typeparamref name="T" />.</returns>
+        Task<CollectionModelBase<T>> FindCommentRepliesAsync<T>(object articleKey, SGuid commentId, string searchQuery = ClientBase.DefaultSearchQuery,
+            string statuses = "", int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
+            where T : ArticleCommentReply;
 
         /// <summary>
         /// Finds the comments asynchronous.
@@ -155,6 +213,22 @@ namespace Baasic.Client.Modules.Articles
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
+        /// Finds the comments asynchronous.
+        /// </summary>
+        /// <param name="articleKey">The article key.</param>
+        /// <param name="searchQuery">The search query.</param>
+        /// <param name="statuses">The statuses.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="rpp">The RPP.</param>
+        /// <param name="sort">The sort.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns>Collection of <typeparamref name="T" />.</returns>
+        Task<CollectionModelBase<T>> FindCommentsAsync<T>(object articleKey, string searchQuery = ClientBase.DefaultSearchQuery,
+            string statuses = "", int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : ArticleComment;
+
+        /// <summary>
         /// Asynchronously find <see cref="ArticleTagEntry" /> entries.
         /// </summary>
         /// <param name="articleKey">Article id or slug.</param>
@@ -168,6 +242,21 @@ namespace Baasic.Client.Modules.Articles
         Task<CollectionModelBase<ArticleTagEntry>> FindTagEntriesAsync(object articleKey, string searchQuery = ClientBase.DefaultSearchQuery,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
+
+        /// <summary>
+        /// Asynchronously find <see cref="ArticleTagEntry" /> entries.
+        /// </summary>
+        /// <param name="articleKey">Article id or slug.</param>
+        /// <param name="searchQuery">Search phrase or query.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="rpp">Records per page limit.</param>
+        /// <param name="sort">Sort by field.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>Collection of <typeparamref name="T" /> .</returns>
+        Task<CollectionModelBase<T>> FindTagEntriesAsync<T>(object articleKey, string searchQuery = ClientBase.DefaultSearchQuery,
+            int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : ArticleTagEntry;
 
         /// <summary>
         /// Flags the comment asynchronous.
@@ -196,6 +285,16 @@ namespace Baasic.Client.Modules.Articles
         Task<Article> GetAsync(object key, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
+        /// Asynchronously gets the <see cref="Article" /> by provided key.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Article" />.</typeparam>
+        /// <param name="key">Key (Id or Slug).</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns><typeparamref name="T" />.</returns>
+        Task<T> GetAsync<T>(object key, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : Article;
+
+        /// <summary>
         /// Gets the comment asynchronous.
         /// </summary>
         /// <param name="articleKey">The article key.</param>
@@ -204,6 +303,16 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="fields">The fields.</param>
         /// <returns></returns>
         Task<ArticleComment> GetCommentAsync(object articleKey, SGuid commentId, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
+
+        /// <summary>
+        /// Gets the comment asynchronous.
+        /// </summary>
+        /// <param name="articleKey">The article key.</param>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns><typeparamref name="T" />.</returns>
+        Task<T> GetCommentAsync<T>(object articleKey, SGuid commentId, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : ArticleComment;
 
         /// <summary>
         /// Gets the comment reply asynchronous.
@@ -217,6 +326,17 @@ namespace Baasic.Client.Modules.Articles
         Task<ArticleCommentReply> GetCommentReplyAsync(object articleKey, SGuid commentId, SGuid commentReplyId, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
+        /// Gets the comment reply asynchronous.
+        /// </summary>
+        /// <param name="articleKey">The article key.</param>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <param name="commentReplyId">The comment reply identifier.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns><typeparamref name="T" />.</returns>
+        Task<T> GetCommentReplyAsync<T>(object articleKey, SGuid commentId, SGuid commentReplyId, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : ArticleCommentReply;
+
+        /// <summary>
         /// Asynchronously gets the <see cref="ArticleTagEntry" /> from the system.
         /// </summary>
         /// <param name="articleKey">Article id or slug.</param>
@@ -227,11 +347,29 @@ namespace Baasic.Client.Modules.Articles
         Task<ArticleTagEntry> GetTagEntryAsync(object articleKey, object key, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
+        /// Asynchronously gets the <see cref="ArticleTagEntry" /> from the system.
+        /// </summary>
+        /// <param name="articleKey">Article id or slug.</param>
+        /// <param name="key">Key (Id or Slug).</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        Task<T> GetTagEntryAsync<T>(object articleKey, object key, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : ArticleTagEntry;
+
+        /// <summary>
         /// Asynchronously insert the <see cref="Article" /> into the system.
         /// </summary>
         /// <param name="article">The article.</param>
         /// <returns>Newly created <see cref="Article" /> .</returns>
         Task<Article> InsertAsync(Article article);
+
+        /// <summary>
+        /// Asynchronously insert the <see cref="Article" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Article" />.</typeparam>
+        /// <param name="article">The article.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        Task<T> InsertAsync<T>(T article) where T : Article;
 
         /// <summary>
         /// Inserts the comment asynchronous.
@@ -241,12 +379,35 @@ namespace Baasic.Client.Modules.Articles
         Task<ArticleComment> InsertCommentAsync(CreateArticleComment comment);
 
         /// <summary>
+        /// Asynchronously insert the <see cref="CreateArticleComment" /> into the system.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Newly created <typeparamref name="TOut" /> .</returns>
+        Task<TOut> InsertCommentAsync<TIn, TOut>(TIn comment)
+            where TIn : CreateArticleComment
+            where TOut : ArticleComment;
+
+        /// <summary>
         /// Inserts the comment reply asynchronous.
         /// </summary>
         /// <param name="articleKey">The article key.</param>
         /// <param name="comment">The comment.</param>
         /// <returns></returns>
         Task<ArticleCommentReply> InsertCommentReplyAsync(object articleKey, CreateArticleCommentReply comment);
+
+        /// <summary>
+        /// Inserts the comment reply asynchronous.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="articleKey">The article key.</param>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Newly inserted <typeparamref name="TOut" /> .</returns>
+        Task<TOut> InsertCommentReplyAsync<TIn, TOut>(object articleKey, TIn comment)
+            where TIn : CreateArticleCommentReply
+            where TOut : ArticleCommentReply;
 
         /// <summary>
         /// Marks the comment as spam asynchronous.
@@ -272,13 +433,6 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="options">The options.</param>
         /// <returns>True if <see cref="Article" /> is published, false otherwise.</returns>
         Task<bool> PublishAsync(object key, ArticleOptions options);
-
-        /// <summary>
-        /// Asynchronously unpublish the <see cref="Article" /> in the system.
-        /// </summary>
-        /// <param name="key">Key (Id or Slug).</param>
-        /// <returns>True if <see cref="Article" /> is unpublished, false otherwise.</returns>
-        Task<bool> UnpublishAsync(object key);
 
         /// <summary>
         /// Asynchronously removes all <see cref="ArticleTagEntry" /> from the system.
@@ -373,6 +527,13 @@ namespace Baasic.Client.Modules.Articles
         Task<bool> UnMarkCommentReplyAsSpam(object articleKey, SGuid commentId, SGuid commentReplyId);
 
         /// <summary>
+        /// Asynchronously unpublish the <see cref="Article" /> in the system.
+        /// </summary>
+        /// <param name="key">Key (Id or Slug).</param>
+        /// <returns>True if <see cref="Article" /> is unpublished, false otherwise.</returns>
+        Task<bool> UnpublishAsync(object key);
+
+        /// <summary>
         /// Uns the report comment asynchronous.
         /// </summary>
         /// <param name="articleKey">The article key.</param>
@@ -397,11 +558,27 @@ namespace Baasic.Client.Modules.Articles
         Task<Article> UpdateAsync(Article article);
 
         /// <summary>
+        /// Asynchronously update the <see cref="Article" /> in the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Article" />.</typeparam>
+        /// <param name="article">The article.</param>
+        /// <returns>Updated <typeparamref name="T" /> .</returns>
+        Task<T> UpdateAsync<T>(T article) where T : Article;
+
+        /// <summary>
         /// Updates the comment asynchronous.
         /// </summary>
         /// <param name="comment">The comment.</param>
         /// <returns></returns>
         Task<ArticleComment> UpdateCommentAsync(ArticleComment comment);
+
+        /// <summary>
+        /// Updates the comment asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Updated <typeparamref name="T" /> .</returns>
+        Task<T> UpdateCommentAsync<T>(T comment) where T : ArticleComment;
 
         /// <summary>
         /// Updates the comment reply asynchronous.
@@ -410,6 +587,15 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="comment">The comment.</param>
         /// <returns></returns>
         Task<ArticleCommentReply> UpdateCommentReplyAsync(object articleKey, ArticleCommentReply comment);
+
+        /// <summary>
+        /// Updates the comment reply asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="articleKey">The article key.</param>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Updated <typeparamref name="T" /> .</returns>
+        Task<T> UpdateCommentReplyAsync<T>(object articleKey, T comment) where T : ArticleCommentReply;
 
         #endregion Methods
     }

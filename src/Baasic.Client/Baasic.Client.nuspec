@@ -19,4 +19,7 @@
       <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.2,6.0.0)" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="bin\$configuration$\$id$.xml" target="lib\net45\" />
+  </files>
 </package>

@@ -57,11 +57,23 @@ namespace Baasic.Client.Modules.Articles
         /// <returns>If found <see cref="ArticleSettings" /> is returned, otherwise null.</returns>
         public virtual Task<ArticleSettings> GetAsync(string embed = DefaultEmbed, string fields = DefaultFields)
         {
+            return GetAsync<ArticleSettings>(embed, fields);
+        }
+
+        /// <summary>
+        /// Asynchronously gets the <see cref="ArticleSettings" /> from the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleComment" />.</typeparam>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        public virtual Task<T> GetAsync<T>(string embed = DefaultEmbed, string fields = DefaultFields) where T : ArticleSettings
+        {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}", ModuleRelativePath)));
                 InitializeQueryString(uriBuilder, embed, fields);
-                return client.GetAsync<ArticleSettings>(uriBuilder.ToString());
+                return client.GetAsync<T>(uriBuilder.ToString());
             }
         }
 

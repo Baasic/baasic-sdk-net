@@ -4,11 +4,8 @@ using Baasic.Client.Model;
 using Baasic.Client.Model.Articles;
 using Baasic.Client.Utility;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Baasic.Client.Modules.Articles
@@ -102,19 +99,38 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="embed">The embed.</param>
         /// <param name="fields">The fields.</param>
         /// <returns></returns>
-        public virtual async Task<CollectionModelBase<ArticleCommentReply>> FindAsync(string searchQuery = DefaultSearchQuery,
+        public virtual Task<CollectionModelBase<ArticleCommentReply>> FindAsync(string searchQuery = DefaultSearchQuery,
             string statuses = "", int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            return FindAsync<ArticleCommentReply>(searchQuery, statuses, page, rpp, sort, embed, fields);
+        }
+
+        /// <summary>
+        /// Finds the comments asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleCommentReply" />.</typeparam>
+        /// <param name="searchQuery">The search query.</param>
+        /// <param name="statuses">The statuses.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="rpp">The RPP.</param>
+        /// <param name="sort">The sort.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns></returns>
+        public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
+            string statuses = "", int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields) where T : ArticleCommentReply
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
                 InitializeQueryStringPair(uriBuilder, "statuses", statuses);
-                var result = await client.GetAsync<CollectionModelBase<ArticleCommentReply>>(uriBuilder.ToString());
+                var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {
-                    result = new CollectionModelBase<ArticleCommentReply>();
+                    result = new CollectionModelBase<T>();
                 }
                 return result;
             }
@@ -145,11 +161,24 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual Task<ArticleCommentReply> GetAsync(SGuid commentId, string embed = DefaultEmbed, string fields = DefaultFields)
         {
+            return GetAsync<ArticleCommentReply>(commentId, embed, fields);
+        }
+
+        /// <summary>
+        /// Gets the comment asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleCommentReply" />.</typeparam>
+        /// <param name="commentId">The comment identifier.</param>
+        /// <param name="embed">The embed.</param>
+        /// <param name="fields">The fields.</param>
+        /// <returns><typeparamref name="ArticleCommentReply" /></returns>
+        public virtual Task<T> GetAsync<T>(SGuid commentId, string embed = DefaultEmbed, string fields = DefaultFields) where T : ArticleCommentReply
+        {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), commentId));
                 InitializeQueryString(uriBuilder, embed, fields);
-                return client.GetAsync<ArticleCommentReply>(uriBuilder.ToString());
+                return client.GetAsync<T>(uriBuilder.ToString());
             }
         }
 
@@ -163,6 +192,20 @@ namespace Baasic.Client.Modules.Articles
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 return client.PostAsync<ArticleCommentReply>(client.GetApiUrl(ModuleRelativePath), comment);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously insert the <see cref="CreateArticleCommentReply" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleCommentReply" />.</typeparam>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        public virtual Task<T> InsertCommentAsync<T>(T comment)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                return client.PostAsync<T>(client.GetApiUrl(ModuleRelativePath), comment);
             }
         }
 
@@ -272,9 +315,20 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual Task<ArticleCommentReply> UpdateCommentAsync(ArticleCommentReply comment)
         {
+            return UpdateCommentAsync<ArticleCommentReply>(comment);
+        }
+
+        /// <summary>
+        /// Updates the comment asynchronous.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="ArticleCommentReply" />.</typeparam>
+        /// <param name="comment">The comment.</param>
+        /// <returns>Updated <typeparamref name="T" /> .</returns>
+        public virtual Task<T> UpdateCommentAsync<T>(T comment) where T : ArticleCommentReply
+        {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<ArticleCommentReply>(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), comment.Id), comment);
+                return client.PutAsync<T>(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), comment.Id), comment);
             }
         }
 

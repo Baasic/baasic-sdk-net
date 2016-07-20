@@ -226,6 +226,19 @@ namespace Baasic.Client.Core
         }
 
         /// <summary>
+        /// Asynchronously insert the <typeparamref name="TIn" /> into the system.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <returns>Newly created <typeparamref name="TOut" /> .</returns>
+        public virtual Task<TOut> PostAsync<TIn, TOut>(string requestUri, TIn content)
+        {
+            return PostAsync<TIn, TOut>(requestUri, content, new CancellationToken());
+        }
+
+        /// <summary>
         /// Asynchronously insert the <typeparamref name="T" /> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
@@ -254,6 +267,39 @@ namespace Baasic.Client.Core
 
                 //TODO: Add HAL Converter
                 return await ReadContentAsync<T>(response);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously insert the <typeparamref name="TIn" /> into the system.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the in resource.</typeparam>
+        /// <typeparam name="TOut">The type of the out resource.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Newly created <typeparamref name="TOut" /> .</returns>
+        public virtual async Task<TOut> PostAsync<TIn, TOut>(string requestUri, TIn content, CancellationToken cancellationToken)
+        {
+            HttpClient client = Client;
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
+                {
+                    Content = JsonFormatter.SerializeToHttpContent(content)
+                };
+                InitializeClientAuthorization(request);
+
+                var response = await client.SendAsync(request, cancellationToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new InvalidOperationException(response.ReasonPhrase);
+                }
+
+                this.ProlongSlidingToken();
+
+                //TODO: Add HAL Converter
+                return await ReadContentAsync<TOut>(response);
             }
         }
 
