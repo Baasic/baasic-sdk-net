@@ -13,10 +13,10 @@
     <language>en-US</language>
     <tags>Baasic, .NET, Portable, Client, Models</tags>
     <dependencies>
-      <dependency id="Baasic.Client.Common" version="[0.8.136,1.0.0)" />
+      <dependency id="Baasic.Client.Common" version="[$version$,1.0.0)" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\$id$.xml" target="lib\net45\" />
+    <!--<file src="bin\$configuration$\$id$.xml" target="lib\net45\" /> Note:VS 2015 has issue with portable library and NuGets with XMLs -->
   </files>
 </package>
