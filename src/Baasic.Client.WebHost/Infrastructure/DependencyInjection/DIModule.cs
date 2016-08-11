@@ -20,7 +20,8 @@ namespace Baasic.Client.WebHost.Infrastructure.DependencyInjection
         {
             #region Security
 
-            dependencyResolver.Register<ITokenHandler, WebSessionTokenHandler>();
+            //dependencyResolver.Register<ITokenHandler, WebSessionTokenHandler>();
+            dependencyResolver.Register<ITokenHandler, CookieTokenHandler>();
 
             #endregion Security
         }
