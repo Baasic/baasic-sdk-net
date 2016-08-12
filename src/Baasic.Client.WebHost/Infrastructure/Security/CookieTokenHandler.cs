@@ -63,15 +63,26 @@ namespace Baasic.Client.Infrastructure.Security
             {
                 try
                 {
-                    if (System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.Response != null)
+                    if (System.Web.HttpContext.Current != null)
                     {
-                        if (HttpContext.Current.Response.Cookies.AllKeys.Contains(HeaderKey))
+                        HttpCookie cookie = null;
+                        if (System.Web.HttpContext.Current.Request != null && HttpContext.Current.Request.Cookies.AllKeys.Contains(HeaderKey))
                         {
-                            var cookie = HttpContext.Current.Response.Cookies.Get(HeaderKey);
-                            if (cookie != null)
+                            cookie = HttpContext.Current.Request.Cookies.Get(HeaderKey);
+                            if (cookie != null && String.IsNullOrEmpty(cookie.Value))
                             {
-                                return DeserializeToken(cookie.Value);
+                                cookie = null;
                             }
+                        }
+
+                        if (cookie == null && System.Web.HttpContext.Current.Response != null && HttpContext.Current.Response.Cookies.AllKeys.Contains(HeaderKey))
+                        {
+                            cookie = HttpContext.Current.Response.Cookies.Get(HeaderKey);
+                        }
+
+                        if (cookie != null)
+                        {
+                            return DeserializeToken(cookie.Value);
                         }
                     }
                 }
@@ -97,6 +108,8 @@ namespace Baasic.Client.Infrastructure.Security
                 {
                     if (System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.Response != null)
                     {
+                        HttpContext.Current.Response.Cookies.Remove(HeaderKey);
+
                         var cookie = new HttpCookie(HeaderKey, SerializeToken(token));
                         cookie.HttpOnly = true;
                         cookie.Expires = DateTime.Now.AddSeconds(token.ExpiresIn.HasValue ? token.ExpiresIn.Value : (token.SlidingWindow.HasValue ? token.SlidingWindow.Value : 1200));
