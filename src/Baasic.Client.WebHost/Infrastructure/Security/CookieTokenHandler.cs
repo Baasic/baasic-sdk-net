@@ -112,7 +112,7 @@ namespace Baasic.Client.Infrastructure.Security
 
                         var cookie = new HttpCookie(HeaderKey, SerializeToken(token));
                         cookie.HttpOnly = true;
-                        cookie.Expires = DateTime.Now.AddSeconds(token.ExpiresIn.HasValue ? token.ExpiresIn.Value : (token.SlidingWindow.HasValue ? token.SlidingWindow.Value : 1200));
+                        cookie.Expires = DateTime.Now.AddSeconds((token.ExpiresIn.HasValue && token.ExpiresIn.Value > 0) ? token.ExpiresIn.Value : ((token.SlidingWindow.HasValue && token.SlidingWindow.Value > 0) ? token.SlidingWindow.Value : 7200));
                         cookie.Path = "/";
                         HttpContext.Current.Response.Cookies.Add(cookie);
                         result = true;

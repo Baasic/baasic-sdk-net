@@ -109,7 +109,6 @@ namespace Baasic.Client.Security.Token
         /// <summary>
         /// Asynchronously destroys the <see cref="IAuthenticationToken" /> .
         /// </summary>
-        /// <param name="token">Token to destroy.</param>
         /// <returns>True if <see cref="IAuthenticationToken" /> is destroyed, false otherwise.</returns>
         public async Task<bool> DestroyAsync()
         {

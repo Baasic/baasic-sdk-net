@@ -19,8 +19,6 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
     {
         #region Methods
 
-        #region Methods
-
         /// <summary>
         /// Load dependency injection bindings.
         /// </summary>
@@ -52,8 +50,6 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
 
             dependencyResolver.Register<IProfileClient, ProfileClient>();
         }
-
-        #endregion Methods
 
         #endregion Methods
     }
