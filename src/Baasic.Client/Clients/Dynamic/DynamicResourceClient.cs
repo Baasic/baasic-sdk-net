@@ -118,17 +118,17 @@ namespace Baasic.Client.Modules.DynamicResource
         }
 
         /// <summary>
-        /// Patches the asynchronous.
+        /// Patches the <see cref="T" /> asynchronous.
         /// </summary>
         /// <param name="schemaName">Name of the schema.</param>
         /// <param name="id">The identifier.</param>
         /// <param name="resource">The resource.</param>
-        /// <returns></returns>
+        /// <returns>True if updated, false otherwise.</returns>
         public Task<bool> PatchAsync<T>(string schemaName, SGuid id, T resource)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PatchAsync<T>(client.GetApiUrl(string.Format("{{0}}/{{1}}/{0}", id), ModuleRelativePath, typeof(T).Name), resource);
+                return client.PatchAsync<T>(client.GetApiUrl(string.Format("{{0}}/{{1}}/{0}", id), ModuleRelativePath, schemaName), resource);
             }
         }
 

@@ -48,13 +48,12 @@ namespace Baasic.Client.Modules.DynamicResource
         Task<T> InsertAsync(T resource);
 
         /// <summary>
-        /// Patches the asynchronous.
+        /// Patches the <see cref="T" /> asynchronous.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="schemaName">Name of the schema.</param>
         /// <param name="id">The identifier.</param>
         /// <param name="resource">The resource.</param>
-        /// <returns></returns>
+        /// <returns>True if updated, false otherwise.</returns>
         Task<bool> PatchAsync<T>(string schemaName, SGuid id, T resource);
 
         /// <summary>
