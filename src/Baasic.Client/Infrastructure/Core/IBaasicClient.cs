@@ -80,6 +80,25 @@ namespace Baasic.Client.Core
         string GetSecureApiUrl(string relativeUrl, params object[] parameters);
 
         /// <summary>
+        /// Patches the asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestUri">The request URI.</param>
+        /// <param name="content">The content.</param>
+        /// <returns></returns>
+        Task<bool> PatchAsync<T>(string requestUri, T content);
+
+        /// <summary>
+        /// Patches the asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestUri">The request URI.</param>
+        /// <param name="content">The content.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> PatchAsync<T>(string requestUri, T content, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Asynchronously insert the <typeparamref name="T" /> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>

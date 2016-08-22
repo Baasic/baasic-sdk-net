@@ -13,6 +13,22 @@ namespace Baasic.Client.Modules.DynamicResource
     public class DynamicResourceClient<T> : ClientBase, IDynamicResourceClient<T>
         where T : IModel
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicResourceClient" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="baasicClientFactory">The baasic client factory.</param>
+        public DynamicResourceClient(IClientConfiguration configuration,
+            IBaasicClientFactory baasicClientFactory)
+            : base(configuration)
+        {
+            BaasicClientFactory = baasicClientFactory;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -30,22 +46,6 @@ namespace Baasic.Client.Modules.DynamicResource
         }
 
         #endregion Properties
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicResourceClient" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="baasicClientFactory">The baasic client factory.</param>
-        public DynamicResourceClient(IClientConfiguration configuration,
-            IBaasicClientFactory baasicClientFactory)
-            : base(configuration)
-        {
-            BaasicClientFactory = baasicClientFactory;
-        }
-
-        #endregion Constructor
 
         #region Methods
 
@@ -114,6 +114,21 @@ namespace Baasic.Client.Modules.DynamicResource
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 return client.PostAsync<T>(client.GetApiUrl("{0}/{1}", ModuleRelativePath, typeof(T).Name), resource);
+            }
+        }
+
+        /// <summary>
+        /// Patches the asynchronous.
+        /// </summary>
+        /// <param name="schemaName">Name of the schema.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="resource">The resource.</param>
+        /// <returns></returns>
+        public Task<bool> PatchAsync<T>(string schemaName, SGuid id, T resource)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                return client.PatchAsync<T>(client.GetApiUrl(string.Format("{{0}}/{{1}}/{0}", id), ModuleRelativePath, typeof(T).Name), resource);
             }
         }
 
