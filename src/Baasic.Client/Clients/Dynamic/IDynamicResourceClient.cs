@@ -56,6 +56,15 @@ namespace Baasic.Client.Modules.DynamicResource
         Task<bool> PatchAsync<T>(SGuid id, T resource);
 
         /// <summary>
+        /// Patches the <see cref="T" /> asynchronous.
+        /// </summary>
+        /// <param name="schemaName">The schema name.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="resource">The resource.</param>
+        /// <returns>True if updated, false otherwise.</returns>
+        Task<bool> PatchAsync<T>(string schemaName, SGuid id, T resource);
+
+        /// <summary>
         /// Asynchronously update the <see cref="T" /> in the system.
         /// </summary>
         /// <param name="resource">The resource.</param>

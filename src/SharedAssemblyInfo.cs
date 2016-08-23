@@ -15,8 +15,8 @@
 //
 // You can specify all the values or you can default the Build and Revision Numbers by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.8.143")]
-[assembly: AssemblyFileVersion("0.8.143")]
+[assembly: AssemblyVersion("0.8.144")]
+[assembly: AssemblyFileVersion("0.8.144")]
 #if DEBUG
-[assembly: AssemblyInformationalVersion("0.8.143-alpha")]
+[assembly: AssemblyInformationalVersion("0.8.144-alpha")]
 #endif
