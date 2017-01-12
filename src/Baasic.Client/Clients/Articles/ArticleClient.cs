@@ -15,6 +15,7 @@ namespace Baasic.Client.Modules.Articles
     /// </summary>
     public class ArticleClient : ClientBase, IArticleClient
     {
+
         #region Constructors
 
         /// <summary>
@@ -1081,5 +1082,6 @@ namespace Baasic.Client.Modules.Articles
         }
 
         #endregion Methods
+
     }
 }

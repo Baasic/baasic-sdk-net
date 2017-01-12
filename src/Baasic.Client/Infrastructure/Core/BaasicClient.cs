@@ -214,6 +214,49 @@ namespace Baasic.Client.Core
         }
 
         /// <summary>
+        /// Patches the asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestUri">The request URI.</param>
+        /// <param name="content">The content.</param>
+        /// <returns></returns>
+        public Task<bool> PatchAsync<T>(string requestUri, T content)
+        {
+            return PatchAsync<T>(requestUri, content, new CancellationToken());
+        }
+
+        /// <summary>
+        /// Patches the asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestUri">The request URI.</param>
+        /// <param name="content">The content.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> PatchAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
+        {
+            HttpClient client = Client;
+            {
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), requestUri)
+                {
+                    Content = JsonFormatter.SerializeToHttpContent(content)
+                };
+                InitializeClientAuthorization(request);
+
+                var response = await client.SendAsync(request, cancellationToken);
+
+                var isValid = response.StatusCode.Equals(HttpStatusCode.OK) || response.StatusCode.Equals(HttpStatusCode.NoContent);
+
+                if (isValid)
+                {
+                    this.ProlongSlidingToken();
+                }
+
+                return isValid;
+            }
+        }
+
+        /// <summary>
         /// Asynchronously insert the <typeparamref name="T" /> into the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>

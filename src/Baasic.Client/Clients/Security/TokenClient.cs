@@ -92,15 +92,11 @@ namespace Baasic.Client.Security.Token
                 }
                 catch (Exception ex)
                 {
-                    this.Configuration.TokenHandler.Save(oldToken);
+                    this.SaveToken(oldToken);
                     throw ex;
                 }
 
-                var tokenHandler = this.Configuration.TokenHandler;
-                if (tokenHandler != null)
-                {
-                    tokenHandler.Save(token);
-                }
+                this.SaveToken(token);
 
                 return token;
             }
@@ -170,11 +166,7 @@ namespace Baasic.Client.Security.Token
 
                 var token = this.ReadToken(newToken);
 
-                var tokenHandler = this.Configuration.TokenHandler;
-                if (tokenHandler != null)
-                {
-                    tokenHandler.Save(token);
-                }
+                this.SaveToken(token);
 
                 return token;
             }
@@ -197,6 +189,20 @@ namespace Baasic.Client.Security.Token
                 token.ExpirationDate = DateTime.UtcNow.AddSeconds(token.SlidingWindow.GetValueOrDefault());
             }
             return token;
+        }
+
+        private bool SaveToken(IAuthenticationToken token)
+        {
+            if (token != null)
+            {
+                var tokenHandler = this.Configuration.TokenHandler;
+                if (tokenHandler != null)
+                {
+                    return tokenHandler.Save(token);
+                }
+            }
+
+            return false;
         }
 
         #endregion Methods
