@@ -308,7 +308,6 @@ namespace Baasic.Client.Core
 
                 this.ProlongSlidingToken();
 
-                //TODO: Add HAL Converter
                 return await ReadContentAsync<T>(response);
             }
         }
@@ -341,7 +340,6 @@ namespace Baasic.Client.Core
 
                 this.ProlongSlidingToken();
 
-                //TODO: Add HAL Converter
                 return await ReadContentAsync<TOut>(response);
             }
         }
@@ -481,7 +479,6 @@ namespace Baasic.Client.Core
                     this.ProlongSlidingToken();
                 }
 
-                //TODO: Add HAL Converter
                 return response;
             }
         }

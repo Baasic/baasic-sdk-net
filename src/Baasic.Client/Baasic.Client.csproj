@@ -83,6 +83,8 @@
     <Compile Include="Clients\Membership\UserPasswordRecoveryClient.cs" />
     <Compile Include="Clients\Membership\UserClient.cs" />
     <Compile Include="Clients\Membership\RoleClient.cs" />
+    <Compile Include="Clients\Notifications\INotificationClient.cs" />
+    <Compile Include="Clients\Notifications\NotificationClient.cs" />
     <Compile Include="Clients\Profile\IProfileClient.cs" />
     <Compile Include="Clients\Profile\ProfileClient.cs" />
     <Compile Include="Infrastructure\Core\HttpClientFactory.cs" />

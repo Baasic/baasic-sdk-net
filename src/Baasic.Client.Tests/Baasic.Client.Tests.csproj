@@ -88,6 +88,7 @@
     <Compile Include="BaasicClientTests.cs" />
     <Compile Include="Clients\Articles\ArticleClientTests.cs" />
     <Compile Include="Clients\Articles\ArticleTagClientTests.cs" />
+    <Compile Include="Clients\Notifications\NotificationClient.Tests.cs" />
     <Compile Include="Clients\Profile\ProfileClientTests.cs" />
     <Compile Include="Infrastructure\DefaultDependencyResolver.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

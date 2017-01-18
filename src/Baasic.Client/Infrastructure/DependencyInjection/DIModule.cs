@@ -5,6 +5,7 @@ using Baasic.Client.Membership;
 using Baasic.Client.Modules.Articles;
 using Baasic.Client.Modules.DynamicResource;
 using Baasic.Client.Modules.KeyValues;
+using Baasic.Client.Modules.Notifications;
 using Baasic.Client.Modules.Profile;
 using Baasic.Client.Security.Token;
 using System;
@@ -49,6 +50,8 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IUserPasswordRecoveryClient, UserPasswordRecoveryClient>();
 
             dependencyResolver.Register<IProfileClient, ProfileClient>();
+
+            dependencyResolver.Register<INotificationClient, NotificationClient>();
         }
 
         #endregion Methods
