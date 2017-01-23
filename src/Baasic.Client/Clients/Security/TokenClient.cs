@@ -2,6 +2,7 @@
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
+using Baasic.Client.Model.Security;
 using Baasic.Client.Utility;
 using System;
 using System.Collections.Generic;
@@ -67,12 +68,18 @@ namespace Baasic.Client.Security.Token
         /// </summary>
         /// <param name="username">Username.</param>
         /// <param name="password">Password.</param>
+        /// <param name="tokenOptions">The token options.</param>
         /// <returns>New <see cref="IAuthenticationToken" /> .</returns>
-        public async Task<IAuthenticationToken> CreateAsync(string username, string password)
+        public async Task<IAuthenticationToken> CreateAsync(string username, string password, TokenOptions tokenOptions = null)
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, string.Format("{0}?options=sliding", this.ModuleRelativePath)))
+                if (tokenOptions == null)
+                {
+                    tokenOptions = new TokenOptions();
+                }
+
+                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, string.Format("{0}?{1}", this.ModuleRelativePath, tokenOptions.GetOptionsCSV())))
                 {
                     Content = new FormUrlEncodedContent(new KeyValuePair<string, string>[] {
                         new KeyValuePair<string, string>("grant_type", "password"),

@@ -75,6 +75,7 @@
     <Compile Include="Membership\NewUser.cs" />
     <Compile Include="Membership\PasswordRecoveryRequestDTO.cs" />
     <Compile Include="Membership\PasswordRecoveryDTO.cs" />
+    <Compile Include="Security\TokenOptions.cs" />
     <Compile Include="Membership\UpdatePasswordDTO.cs" />
     <Compile Include="Membership\Role.cs" />
     <Compile Include="Membership\User.cs" />

@@ -3,6 +3,7 @@ using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
 using Baasic.Client.Model.Membership;
+using Baasic.Client.Model.Security;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -67,12 +68,18 @@ namespace Baasic.Client.Membership
         /// Asynchronously activates the <see cref="User" /> using activation token.
         /// </summary>
         /// <param name="activationToken">The activation token.</param>
+        /// <param name="tokenOptions">The token options.</param>
         /// <returns><see cref="IAuthenticationToken" />.</returns>
-        public virtual async Task<IAuthenticationToken> ActivateAsync(string activationToken)
+        public virtual async Task<IAuthenticationToken> ActivateAsync(string activationToken, TokenOptions tokenOptions = null)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                var response = await client.PutAsync<Newtonsoft.Json.Linq.JObject>(client.GetApiUrl(String.Format("{0}/activate/{1}", ModuleRelativePath, activationToken)), null);
+                if (tokenOptions == null)
+                {
+                    tokenOptions = new TokenOptions();
+                }
+
+                var response = await client.PutAsync<Newtonsoft.Json.Linq.JObject>(client.GetApiUrl(String.Format("{0}/activate/{1}?{2}", ModuleRelativePath, activationToken, tokenOptions.GetOptionsCSV())), null);
 
                 var token = this.ReadToken(response);
 

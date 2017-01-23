@@ -1,4 +1,5 @@
 ﻿using Baasic.Client.Infrastructure.Security;
+using Baasic.Client.Model.Security;
 using System;
 using System.Threading.Tasks;
 
@@ -16,8 +17,9 @@ namespace Baasic.Client.Security.Token
         /// </summary>
         /// <param name="username">Username.</param>
         /// <param name="password">Password.</param>
+        /// <param name="tokenOptions">The token options.</param>
         /// <returns>New <see cref="IAuthenticationToken" /> .</returns>
-        Task<IAuthenticationToken> CreateAsync(string username, string password);
+        Task<IAuthenticationToken> CreateAsync(string username, string password, TokenOptions tokenOptions = null);
 
         /// <summary>
         /// Asynchronously destroys the <see cref="IAuthenticationToken" /> .
