@@ -10,11 +10,6 @@ namespace Baasic.Client.Model.Membership
         #region Properties
 
         /// <summary>
-        /// Challenge identifier.
-        /// </summary>
-        public string ChallengeIdentifier { get; set; }
-
-        /// <summary>
         /// Recovery request challenge.
         /// </summary>
         public string ChallengeResponse { get; set; }

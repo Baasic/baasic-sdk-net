@@ -15,11 +15,6 @@ namespace Baasic.Client.Model.Membership
         public string ActivationUrl { get; set; }
 
         /// <summary>
-        /// Challenge identifier.
-        /// </summary>
-        public string ChallengeIdentifier { get; set; }
-
-        /// <summary>
         /// Recovery request challenge.
         /// </summary>
         public string ChallengeResponse { get; set; }
