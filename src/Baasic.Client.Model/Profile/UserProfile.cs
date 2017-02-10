@@ -5,7 +5,7 @@ namespace Baasic.Client.Model.Profile
 {
     public partial class UserProfile : BuiltInModelBase
     {
-        #region Class Property Declarations
+        #region Properties
 
         /// <summary>
         /// Gets or sets the about my self.
@@ -88,6 +88,12 @@ namespace Baasic.Client.Model.Profile
         }
 
         /// <summary>
+        /// Gets or sets the membership.
+        /// </summary>
+        /// <value>The membership.</value>
+        public User Membership { get; set; }
+
+        /// <summary>
         /// Gets or sets the mobile phone.
         /// </summary>
         /// <value>The mobile phone.</value>
@@ -167,6 +173,6 @@ namespace Baasic.Client.Model.Profile
             set;
         }
 
-        #endregion Class Property Declarations
+        #endregion Properties
     }
 }

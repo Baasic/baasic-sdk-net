@@ -47,6 +47,28 @@ namespace Baasic.Client.Model.Membership
         }
 
         /// <summary>
+        /// The LastActivityDate property of the Entity CoreUser <br /><br />
+        /// </summary>
+        /// <value>The last activity date.</value>
+        public virtual System.DateTime LastActivityDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the last lockout date.
+        /// </summary>
+        /// <value>The last lockout date.</value>
+        public virtual System.DateTime LastLockoutDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last login date.
+        /// </summary>
+        /// <value>The last login date.</value>
+        public virtual System.DateTime LastLoginDate { get; set; }
+
+        /// <summary>
         /// Gets the log-on name of the membership user.
         /// </summary>
         public virtual string Name
