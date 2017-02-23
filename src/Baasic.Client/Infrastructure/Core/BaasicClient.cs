@@ -139,10 +139,6 @@ namespace Baasic.Client.Core
         /// </summary>
         public void Dispose()
         {
-            if (Client != null)
-            {
-                Client.Dispose();
-            }
         }
 
         /// <summary>
