@@ -6,6 +6,9 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>Mono Ltd.</owners>
+    <projectUrl>http://www.baasic.com</projectUrl>
+    <iconUrl>http://www.baasic.com/img/baasic-logo.png</iconUrl>
+    <licenseUrl>https://github.com/Baasic/baasic-sdk-net/blob/master/LICENSE.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary />

@@ -42,6 +42,31 @@ public class AppClientConfiguration : ClientConfiguration
 
     #endregion Constructors
 }
+
+...
+
+/// <summary>
+/// Dependency Injection Module containing Baasic Client bindings.
+/// </summary>
+public partial class DIModule : IDIModule
+{
+    #region Methods
+
+    /// <summary>
+    /// Load dependency injection bindings.
+    /// </summary>
+    /// <param name="dependencyResolver"></param>
+    public virtual void Load(IDependencyResolver dependencyResolver)
+    {
+        #region Configuration
+        
+        dependencyResolver.Register<Baasic.Client.Configuration.IClientConfiguration, AppClientConfiguration>();
+
+        #endregion Configuration
+    }
+
+    #endregion Methods
+}
 ```
 
 **Note:** _To obtain a Baasic Application Identifier please create your application on [Baasic Registration](https://dashboard.baasic.com/register/) page._
