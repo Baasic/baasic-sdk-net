@@ -76,11 +76,19 @@ Baasic .NET SDK has a built-in rudimentary DI container, if you want to use more
 
 If you want to use Baasic .NET SDK inside the ASP.NET Web application then you need to install [Baasic Client WebHost](https://www.nuget.org/packages/Baasic.Client.WebHost/) in order to automatically setup Baasic token handling.
 
-## Issue reporting
+## Contributing
+
+##### Pull requests are always welcome
+
+We appreciate pull requests you make, and we'll do our best to process them as quickly as we can. Even if it's just a typo you found or any small or large issue you fixed - please do it! It will help us a lot.
+
+If your pull request is not accepted on your first try, don't be discouraged! If there's a problem with your implementation, hopefully you received feedback on what to improve.
+
+##### Issue reporting
 
 Before you create a new issue, please make sure it hasn't already been reported. In case it already exists simply add a quick _"+1"_ or _"I have the same problem"_ to the existing issue thread.
 
-## Other
+##### Other
 
 * Help us write the documentation
 * Looking for something else? Get in [touch](https://groups.google.com/forum/#!forum/baasic-baas)..
