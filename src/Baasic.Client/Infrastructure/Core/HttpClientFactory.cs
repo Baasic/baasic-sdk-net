@@ -1,4 +1,5 @@
-﻿using Baasic.Client.Infrastructure.DependencyInjection;
+﻿using Baasic.Client.Common.Infrastructure.DependencyInjection;
+using Baasic.Client.Infrastructure.DependencyInjection;
 using System;
 using System.Net.Http;
 

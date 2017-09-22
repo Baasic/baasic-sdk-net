@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Baasic.Client.Infrastructure.DependencyInjection
+namespace Baasic.Client.Common.Infrastructure.DependencyInjection
 {
     /// <summary>
     /// Dependency resolver contract.

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Baasic.Client.Common.Infrastructure.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;

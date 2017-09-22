@@ -12,6 +12,7 @@ using Baasic.Client.Security.Token;
 using Baasic.Client.Configuration;
 using Baasic.Client.Modules.DynamicResource;
 using Baasic.Client.Model;
+using Baasic.Client.Common.Infrastructure.DependencyInjection;
 
 namespace Baasic.Client.Tests.Infrastructure
 {

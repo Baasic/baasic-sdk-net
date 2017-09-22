@@ -17,6 +17,7 @@
     <tags>Baasic, .NET, Clients, Ninject</tags>
     <dependencies>
       <dependency id="Baasic.Client" version="[$version$,1.0.0)" />
+      <dependency id="Baasic.Client.Common" version="[$version$,1.0.0)" />
       <dependency id="Ninject" version="[3.2.2.0,3.3.0.0)" />
       <dependency id="Ninject.Extensions.Conventions" version="[3.2.0.0,3.3.0.0)" />
     </dependencies>

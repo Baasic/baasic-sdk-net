@@ -1,3 +1,4 @@
+using Baasic.Client.Common.Infrastructure.DependencyInjection;
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;

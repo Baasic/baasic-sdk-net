@@ -1,6 +1,6 @@
 using System;
 
-namespace Baasic.Client.Infrastructure.DependencyInjection
+namespace Baasic.Client.Common.Infrastructure.DependencyInjection
 {
     /// <summary>
     /// A loadable unit that defines bindings for your application..

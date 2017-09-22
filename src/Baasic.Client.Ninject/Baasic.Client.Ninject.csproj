@@ -61,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Baasic.Client.Common\Baasic.Client.Common.csproj">
+      <Project>{D9A9B364-8F08-4C40-A307-95C0C5D95FB9}</Project>
+      <Name>Baasic.Client.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Baasic.Client.Model\Baasic.Client.Model.csproj">
       <Project>{94197638-4537-46a5-a641-5e1b9626f2e8}</Project>
       <Name>Baasic.Client.Model</Name>
