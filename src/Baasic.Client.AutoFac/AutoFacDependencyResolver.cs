@@ -1,7 +1,10 @@
-﻿using Baasic.Client.Common.Infrastructure.DependencyInjection;
+﻿using Autofac;
+using Baasic.Client.Common.Infrastructure.DependencyInjection;
 using Baasic.Client.Infrastructure.DependencyInjection;
-using Autofac;
 using System;
+
+using System;
+
 using System.Collections.Generic;
 
 namespace Baasic.Client.AutoFac
@@ -11,18 +14,15 @@ namespace Baasic.Client.AutoFac
     /// </summary>
     public class AutofacDependencyResolver : IDependencyResolver
     {
-        private ContainerBuilder builder { get; set; }
-        
-
         #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacDependencyResolver" /> class.
         /// </summary>
-        /// <param name="container">The container.</param>
-        public AutofacDependencyResolver(IContainer container)
+        /// <param name="settings">The settings.</param>
+        public AutofacDependencyResolver(AutoFacSettings settings)
         {
-            Container = container;
+            Settings = settings;
         }
 
         #endregion Constructors
@@ -30,10 +30,10 @@ namespace Baasic.Client.AutoFac
         #region Properties
 
         /// <summary>
-        /// Gets or sets the container.
+        /// Gets the settings.
         /// </summary>
-        /// <value>The container.</value>
-        private IContainer Container { get; set; }
+        /// <value>The settings.</value>
+        protected AutoFacSettings Settings { get; private set; }
 
         #endregion Properties
 
@@ -53,7 +53,7 @@ namespace Baasic.Client.AutoFac
         /// <returns></returns>
         public object GetService(Type serviceType)
         {
-            return Container.Resolve(serviceType);
+            return Settings.Container.Resolve(serviceType);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Baasic.Client.AutoFac
         /// <returns></returns>
         public T GetService<T>()
         {
-            return Container.Resolve<T>();
+            return Settings.Container.Resolve<T>();
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Baasic.Client.AutoFac
         /// <returns></returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return Kernel.GetAll(serviceType);
+            return Settings.Container.GetAll(serviceType);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Baasic.Client.AutoFac
         /// <returns></returns>
         public IEnumerable<T> GetServices<T>()
         {
-            return Kernel.GetAll<T>();
+            return Settings.Container.GetAll<T>();
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Baasic.Client.AutoFac
         /// <exception cref="System.ArgumentNullException">modules</exception>
         public void Initialize()
         {
-            Kernel.Bind(x =>
+            Settings.Container.Bind(x =>
 {
     x.FromAssembliesMatching("Baasic.Client.dll", "Baasic.Client.*.dll")
      .SelectAllClasses()
@@ -100,7 +100,7 @@ namespace Baasic.Client.AutoFac
      .BindDefaultInterface();
 });
 
-            IEnumerable<IDIModule> modules = Kernel.GetAll<IDIModule>();
+            IEnumerable<IDIModule> modules = Settings.Container.GetAll<IDIModule>();
 
             foreach (IDIModule module in modules)
             {
@@ -115,7 +115,7 @@ namespace Baasic.Client.AutoFac
         /// <param name="activator">The activator.</param>
         public void Register(Type serviceType, Func<object> activator)
         {
-            Kernel.Rebind(serviceType).ToMethod(ctx => activator);
+            Settings.Container.Rebind(serviceType).ToMethod(ctx => activator);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Baasic.Client.AutoFac
         /// <param name="implementationType">Type of the implementation.</param>
         public void Register(Type serviceType, Type implementationType)
         {
-            Kernel.Rebind(serviceType).To(implementationType);
+            Settings.Container.Rebind(serviceType).To(implementationType);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Baasic.Client.AutoFac
         /// <param name="activator">The activator.</param>
         public void Register<T>(Func<T> activator) where T : class
         {
-            Kernel.Rebind(typeof(T)).ToMethod(ctx => activator);
+            Settings.Container.Rebind(typeof(T)).ToMethod(ctx => activator);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Baasic.Client.AutoFac
         public void Register<T, I>()
             where I : class, T
         {
-            Kernel.Rebind<T>().To<I>();
+            Settings.Container.Rebind<T>().To<I>();
         }
 
         #endregion Methods
