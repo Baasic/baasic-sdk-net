@@ -1,18 +1,14 @@
-﻿using FluentAssertions;
-using Moq;
-using Xunit;
-using Baasic.Client.Infrastructure.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Baasic.Client.Core;
-using Baasic.Client.Security.Token;
+﻿using Baasic.Client.Common.Infrastructure.DependencyInjection;
 using Baasic.Client.Configuration;
+using Baasic.Client.Core;
+using Baasic.Client.Infrastructure.DependencyInjection;
 using Baasic.Client.Modules.DynamicResource;
-using Baasic.Client.Model;
-using Baasic.Client.Common.Infrastructure.DependencyInjection;
+using Baasic.Client.Security.Token;
+using Baasic.Client.Tests.Infrastructure.Common;
+using FluentAssertions;
+using Moq;
+using System;
+using Xunit;
 
 namespace Baasic.Client.Tests.Infrastructure
 {
@@ -37,7 +33,8 @@ namespace Baasic.Client.Tests.Infrastructure
         {
             this.fixture.Target.Should().NotBeNull();
 
-            Action execute = () => { 
+            Action execute = () =>
+            {
                 var module = new DIModule();
                 module.Load(this.fixture.Target);
             };
@@ -121,7 +118,6 @@ namespace Baasic.Client.Tests.Infrastructure
             execute.ShouldNotThrow();
         }
 
-
         private class DefaultDependencyResolverFixture
         {
             public Mock<IClientConfiguration> ClientConfiguration = new Mock<IClientConfiguration>();
@@ -130,47 +126,6 @@ namespace Baasic.Client.Tests.Infrastructure
             public DefaultDependencyResolverFixture()
             {
                 Target = new DefaultDependencyResolver();
-            }
-        }
-
-
-        private class DynamicModel : IModel
-        {
-
-            public DateTime DateCreated
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public DateTime DateUpdated
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public SGuid Id
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
             }
         }
     }

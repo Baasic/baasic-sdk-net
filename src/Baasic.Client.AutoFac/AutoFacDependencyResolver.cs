@@ -1,11 +1,11 @@
 ﻿using Autofac;
 using Baasic.Client.Common.Infrastructure.DependencyInjection;
-using Baasic.Client.Infrastructure.DependencyInjection;
 using System;
-
-using System;
-
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Baasic.Client.AutoFac
 {
@@ -19,7 +19,7 @@ namespace Baasic.Client.AutoFac
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacDependencyResolver" /> class.
         /// </summary>
-        /// <param name="settings">The settings.</param>
+        /// <param name="settings">The settings for the resolver.</param>
         public AutofacDependencyResolver(AutoFacSettings settings)
         {
             Settings = settings;
@@ -30,10 +30,10 @@ namespace Baasic.Client.AutoFac
         #region Properties
 
         /// <summary>
-        /// Gets the settings.
+        /// Gets or sets the settings.
         /// </summary>
         /// <value>The settings.</value>
-        protected AutoFacSettings Settings { get; private set; }
+        private AutoFacSettings Settings { get; set; }
 
         #endregion Properties
 
@@ -73,7 +73,8 @@ namespace Baasic.Client.AutoFac
         /// <returns></returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return Settings.Container.GetAll(serviceType);
+            var genericEnumerable = typeof(IEnumerable<>).MakeGenericType(serviceType);
+            return Settings.Container.Resolve(genericEnumerable) as IEnumerable<object>;
         }
 
         /// <summary>
@@ -83,39 +84,25 @@ namespace Baasic.Client.AutoFac
         /// <returns></returns>
         public IEnumerable<T> GetServices<T>()
         {
-            return Settings.Container.GetAll<T>();
+            return Settings.Container.Resolve<IEnumerable<T>>();
         }
 
         /// <summary>
         /// Initializes the specified modules.
         /// </summary>
-        /// <exception cref="System.ArgumentNullException">modules</exception>
         public void Initialize()
         {
-            Settings.Container.Bind(x =>
-{
-    x.FromAssembliesMatching("Baasic.Client.dll", "Baasic.Client.*.dll")
-     .SelectAllClasses()
-     .InheritedFrom<IDIModule>()
-     .BindDefaultInterface();
-});
-
-            IEnumerable<IDIModule> modules = Settings.Container.GetAll<IDIModule>();
-
-            foreach (IDIModule module in modules)
-            {
-                module.Load(this);
-            }
+            LoadModules();
         }
 
         /// <summary>
-        /// Registers the specified service type.
+        /// Not possible with Autofac, use Register<T>(Func<T>).
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="activator">The activator.</param>
         public void Register(Type serviceType, Func<object> activator)
         {
-            Settings.Container.Rebind(serviceType).ToMethod(ctx => activator);
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -125,7 +112,7 @@ namespace Baasic.Client.AutoFac
         /// <param name="implementationType">Type of the implementation.</param>
         public void Register(Type serviceType, Type implementationType)
         {
-            Settings.Container.Rebind(serviceType).To(implementationType);
+            Settings.Builder.RegisterGeneric(implementationType).AsImplementedInterfaces();
         }
 
         /// <summary>
@@ -135,7 +122,7 @@ namespace Baasic.Client.AutoFac
         /// <param name="activator">The activator.</param>
         public void Register<T>(Func<T> activator) where T : class
         {
-            Settings.Container.Rebind(typeof(T)).ToMethod(ctx => activator);
+            Settings.Builder.Register<T>(ctx => activator());
         }
 
         /// <summary>
@@ -143,12 +130,47 @@ namespace Baasic.Client.AutoFac
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="I"></typeparam>
-        public void Register<T, I>()
-            where I : class, T
+        public void Register<T, I>() where I : class, T
         {
-            Settings.Container.Rebind<T>().To<I>();
+            Settings.Builder.RegisterType<I>().As<T>();
         }
 
         #endregion Methods
+
+        /// <summary>
+        /// Loads and registers modules from assembly.
+        /// </summary>
+        private void LoadModules()
+        {
+            //Get all the assemblies matching the given pattern
+            var executingAssembly = Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly();
+            var appFolder = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(executingAssembly.CodeBase).Path));
+            var assemblyPatterns = new[] { "Baasic.Client.dll", "Baasic.Client.*.dll" };
+
+            var assembliesToScan = new List<Assembly>();
+            foreach (var pattern in assemblyPatterns)
+            {
+                foreach (var file in Directory.EnumerateFiles(appFolder, pattern, SearchOption.AllDirectories))
+                {
+                    assembliesToScan.Add(Assembly.LoadFrom(file));
+                }
+            }
+
+            var assemblies = assembliesToScan.Distinct().ToArray();
+
+            //Get all IDIModule instances from the assemblies
+            var DIModules = from t in assemblies.SelectMany(x => x.GetTypes())
+                            where t.GetInterfaces().Contains(typeof(IDIModule)) && t.GetConstructor(Type.EmptyTypes) != null
+                            select Activator.CreateInstance(t) as IDIModule;
+
+            //Register the resolver instance
+            Settings.Builder.RegisterInstance<IDependencyResolver>(this);
+
+            //Load the DIModules
+            foreach (var instance in DIModules)
+            {
+                instance.Load(this);
+            }          
+        }
     }
 }

@@ -94,6 +94,8 @@
     <Compile Include="Clients\Articles\ArticleTagClientTests.cs" />
     <Compile Include="Clients\Notifications\NotificationClient.Tests.cs" />
     <Compile Include="Clients\Profile\ProfileClientTests.cs" />
+    <Compile Include="Infrastructure\AutofacDependencyResolver.Tests.cs" />
+    <Compile Include="Infrastructure\Common\DynamicModel.cs" />
     <Compile Include="Infrastructure\DefaultDependencyResolver.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Clients\Token\TokenClientTests.cs" />
