@@ -4,6 +4,7 @@ using Baasic.Client.Model;
 using Baasic.Client.Utility;
 using System;
 using System.Threading.Tasks;
+using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Modules.KeyValues
 {

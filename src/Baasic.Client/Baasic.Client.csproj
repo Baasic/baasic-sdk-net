@@ -100,17 +100,13 @@
     <Compile Include="Infrastructure\Core\BaasicClient.cs" />
     <Compile Include="Infrastructure\Core\ClientBase.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
-    <Compile Include="Configuration\IClientConfiguration.cs" />
     <Compile Include="Infrastructure\DependencyInjection\DIModule.cs" />
     <Compile Include="Clients\KeyValue\IKeyValueClient.cs" />
     <Compile Include="Clients\KeyValue\KeyValueClient.cs" />
     <Compile Include="Infrastructure\Security\AuthenticatedUser.cs" />
-    <Compile Include="Infrastructure\Security\IAuthenticatedUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\Security\AuthenticationToken.cs" />
     <Compile Include="Infrastructure\Security\DefaultTokenHandler.cs" />
-    <Compile Include="Infrastructure\Security\IAuthenticationToken.cs" />
-    <Compile Include="Infrastructure\Security\ITokenHandler.cs" />
     <Compile Include="Clients\Security\ITokenClient.cs" />
     <Compile Include="Clients\Security\TokenClient.cs" />
     <Compile Include="Utility\UrlBuilder.cs" />

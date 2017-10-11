@@ -7,6 +7,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Modules.Articles
 {

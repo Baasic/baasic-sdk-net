@@ -7,6 +7,8 @@ using Baasic.Client.Model.Security;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Baasic.Client.Common.Infrastructure.Security;
+using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Membership
 {

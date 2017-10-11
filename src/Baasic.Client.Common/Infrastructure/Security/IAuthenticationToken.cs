@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Baasic.Client.Infrastructure.Security
+namespace Baasic.Client.Common.Infrastructure.Security
 {
     /// <summary>
     /// Authentication token details.

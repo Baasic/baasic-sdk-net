@@ -1,6 +1,7 @@
 ﻿using Baasic.Client.Configuration;
 
 using System;
+using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Core
 {

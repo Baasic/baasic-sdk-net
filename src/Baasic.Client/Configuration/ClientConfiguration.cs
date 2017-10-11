@@ -1,6 +1,8 @@
 ﻿using Baasic.Client.Infrastructure.Security;
 using System;
 using System.Text;
+using Baasic.Client.Common.Infrastructure.Security;
+using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Configuration
 {

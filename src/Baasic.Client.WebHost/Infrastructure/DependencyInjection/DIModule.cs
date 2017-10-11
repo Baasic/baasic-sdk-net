@@ -3,6 +3,7 @@ using Baasic.Client.Infrastructure.DependencyInjection;
 using Baasic.Client.Infrastructure.Security;
 
 using System;
+using Baasic.Client.Common.Infrastructure.Security;
 
 namespace Baasic.Client.WebHost.Infrastructure.DependencyInjection
 {

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Web;
+using Baasic.Client.Common.Infrastructure.Security;
 
 namespace Baasic.Client.Infrastructure.Security
 {

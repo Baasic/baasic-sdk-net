@@ -18,6 +18,7 @@ using Xunit;
 using System.Threading;
 using System.Net;
 using Baasic.Client.Common.Infrastructure.DependencyInjection;
+using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Tests.Notifications
 {

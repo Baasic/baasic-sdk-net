@@ -13,6 +13,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Baasic.Client.Common.Configuration;
+using Baasic.Client.Common.Infrastructure.Security;
 
 namespace Baasic.Client.Tests
 {

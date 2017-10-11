@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Baasic.Client.Infrastructure.Security
+namespace Baasic.Client.Common.Infrastructure.Security
 {
     /// <summary>
     /// Authenticated user details.

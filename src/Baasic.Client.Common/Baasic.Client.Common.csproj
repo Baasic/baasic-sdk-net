@@ -40,9 +40,13 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\IClientConfiguration.cs" />
     <Compile Include="Extensions\EncodingExtensions.cs" />
     <Compile Include="Infrastructure\DependencyInjection\IDependencyResolver .cs" />
     <Compile Include="Infrastructure\DependencyInjection\IDIModule.cs" />
+    <Compile Include="Infrastructure\Security\IAuthenticatedUser.cs" />
+    <Compile Include="Infrastructure\Security\IAuthenticationToken.cs" />
+    <Compile Include="Infrastructure\Security\ITokenHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\SGuidConverter.cs" />
     <Compile Include="Utility\BitStream.cs" />

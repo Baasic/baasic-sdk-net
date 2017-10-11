@@ -1,8 +1,8 @@
-﻿using Baasic.Client.Infrastructure.Security;
-using System;
+﻿using System;
 using System.Text;
+using Baasic.Client.Common.Infrastructure.Security;
 
-namespace Baasic.Client.Configuration
+namespace Baasic.Client.Common.Configuration
 {
     /// <summary>
     /// Client configuration.

@@ -2,6 +2,7 @@
 using Baasic.Client.Configuration;
 using Baasic.Client.Infrastructure.DependencyInjection;
 using System;
+using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Core
 {

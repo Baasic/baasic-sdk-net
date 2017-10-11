@@ -11,6 +11,7 @@ using Baasic.Client.Modules.Profile;
 using Baasic.Client.Security.Token;
 using System;
 using System.Net.Http;
+using Baasic.Client.Common.Infrastructure.Security;
 
 namespace Baasic.Client.Infrastructure.DependencyInjection
 {

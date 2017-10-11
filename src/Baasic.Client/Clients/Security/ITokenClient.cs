@@ -2,6 +2,7 @@
 using Baasic.Client.Model.Security;
 using System;
 using System.Threading.Tasks;
+using Baasic.Client.Common.Infrastructure.Security;
 
 namespace Baasic.Client.Security.Token
 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using Baasic.Client.Common.Infrastructure.Security;
 
 namespace Baasic.Client.Infrastructure.Security
 {

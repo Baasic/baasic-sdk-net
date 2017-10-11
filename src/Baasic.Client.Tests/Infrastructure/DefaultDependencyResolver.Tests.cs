@@ -13,6 +13,7 @@ using Baasic.Client.Configuration;
 using Baasic.Client.Modules.DynamicResource;
 using Baasic.Client.Model;
 using Baasic.Client.Common.Infrastructure.DependencyInjection;
+using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Tests.Infrastructure
 {
