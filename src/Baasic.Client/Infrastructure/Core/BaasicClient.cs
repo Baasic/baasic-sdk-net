@@ -211,7 +211,7 @@ namespace Baasic.Client.Core
         /// <returns></returns>
         public string GetSecureApiUrl(string relativeUrl, params object[] parameters)
         {
-            return GetApiUrl(true, Configuration.ApplicationIdentifier, relativeUrl, parameters);
+            return GetApiUrl(true, relativeUrl, parameters);
         }
 
         /// <summary>
