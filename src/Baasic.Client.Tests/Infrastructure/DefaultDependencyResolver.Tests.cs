@@ -54,8 +54,29 @@ namespace Baasic.Client.Tests.Infrastructure
             };
             execute.ShouldNotThrow();
 
+            this.fixture.Target.Register<IDependencyResolver>(() => this.fixture.Target);
+            this.fixture.Target.Register<IClientConfiguration>(() => this.fixture.ClientConfiguration.Object);
             var expected = this.fixture.Target.GetService(typeof(IHttpClientFactory));
             expected.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void baasic_client_infrastructure_dependency_injection_get_service_error_test()
+        {
+            this.fixture.Target.Should().NotBeNull();
+
+            Action execute = () =>
+            {
+                var module = new DIModule();
+                module.Load(this.fixture.Target);
+            };
+            execute.ShouldNotThrow();
+
+            execute = () =>
+            {
+                var expected = this.fixture.Target.GetService(typeof(IHttpClientFactory));
+            };
+            execute.ShouldThrow<Exception>();
         }
 
         [Fact]
