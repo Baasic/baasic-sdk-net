@@ -1,4 +1,5 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common.Configuration;
+using Baasic.Client.Common.Infrastructure.Security;
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
@@ -6,10 +7,9 @@ using Baasic.Client.Model.Security;
 using Baasic.Client.Utility;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Infrastructure.Security;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Security.Token
 {
@@ -94,10 +94,18 @@ namespace Baasic.Client.Security.Token
                 IAuthenticationToken oldToken = this.Configuration.TokenHandler.Get();
                 this.Configuration.TokenHandler.Clear();
 
-                var response = await client.SendAsync(request);
                 try
                 {
-                    token = this.ReadToken(JsonFormatter.Deserialize<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync()));
+                    var response = await client.SendAsync(request);
+                    if (response.StatusCode.Equals(HttpStatusCode.OK) ||
+                        response.StatusCode.Equals(HttpStatusCode.Created))
+                    {
+                        token = this.ReadToken(JsonFormatter.Deserialize<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync()));
+                    }
+                    else
+                    {
+                        throw new Exception("Unable to create new token.");
+                    }
                 }
                 catch (Exception ex)
                 {

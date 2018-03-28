@@ -23,4 +23,5 @@
 
 ClearAssemblyCache.cmd
 PushNuGets.cmd
+CopyModule.cmd
 *.log
