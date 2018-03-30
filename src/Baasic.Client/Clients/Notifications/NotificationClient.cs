@@ -1,10 +1,10 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Modules.Notifications
 {
@@ -76,10 +76,25 @@ namespace Baasic.Client.Modules.Notifications
                 throw new ArgumentNullException("Channels");
             }
 
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var httpStatusCode = await client.PostAsync<Notification, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/publish/", ModuleRelativePath)), notification);
-                return httpStatusCode == HttpStatusCode.Created;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var httpStatusCode = await client.PostAsync<Notification, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/publish/", ModuleRelativePath)), notification);
+                    return httpStatusCode == HttpStatusCode.Created;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -113,10 +128,25 @@ namespace Baasic.Client.Modules.Notifications
                 }
             }
 
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var httpStatusCode = await client.PostAsync<Notification[], HttpStatusCode>(client.GetApiUrl(String.Format("{0}/publish/batch/", ModuleRelativePath)), notifications);
-                return httpStatusCode == HttpStatusCode.Created;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var httpStatusCode = await client.PostAsync<Notification[], HttpStatusCode>(client.GetApiUrl(String.Format("{0}/publish/batch/", ModuleRelativePath)), notifications);
+                    return httpStatusCode == HttpStatusCode.Created;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

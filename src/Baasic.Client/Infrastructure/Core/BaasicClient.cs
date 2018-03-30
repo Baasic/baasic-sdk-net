@@ -1,13 +1,15 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
+using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Core
 {
@@ -124,14 +126,14 @@ namespace Baasic.Client.Core
 
                 var response = await client.SendAsync(request, cancellationToken);
 
-                var isValid = response.StatusCode.Equals(HttpStatusCode.OK) || response.StatusCode.Equals(HttpStatusCode.NoContent);
-
-                if (isValid)
+                if (!response.IsSuccessStatusCode)
                 {
-                    this.ProlongSlidingToken();
+                    await ThrowExceptionAsync(requestUri, response);
                 }
 
-                return isValid;
+                this.ProlongSlidingToken();
+
+                return response.IsSuccessStatusCode;
             }
         }
 
@@ -194,7 +196,15 @@ namespace Baasic.Client.Core
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return default(T);
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.NotFound:
+                            return default(T);
+
+                        default:
+                            break;
+                    }
+                    await ThrowExceptionAsync(requestUri, response);
                 }
 
                 this.ProlongSlidingToken();
@@ -248,10 +258,12 @@ namespace Baasic.Client.Core
 
                 var isValid = response.StatusCode.Equals(HttpStatusCode.OK) || response.StatusCode.Equals(HttpStatusCode.NoContent);
 
-                if (isValid)
+                if (!response.IsSuccessStatusCode)
                 {
-                    this.ProlongSlidingToken();
+                    await ThrowExceptionAsync(new { Uri = requestUri, Content = content }, response);
                 }
+
+                this.ProlongSlidingToken();
 
                 return isValid;
             }
@@ -304,7 +316,7 @@ namespace Baasic.Client.Core
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new InvalidOperationException(response.ReasonPhrase);
+                    await ThrowExceptionAsync(new { Uri = requestUri, Content = content }, response);
                 }
 
                 this.ProlongSlidingToken();
@@ -336,7 +348,7 @@ namespace Baasic.Client.Core
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new InvalidOperationException(response.ReasonPhrase);
+                    await ThrowExceptionAsync(new { Uri = requestUri, Content = content }, response);
                 }
 
                 this.ProlongSlidingToken();
@@ -379,7 +391,7 @@ namespace Baasic.Client.Core
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new InvalidOperationException(response.ReasonPhrase);
+                    await ThrowExceptionAsync(new { Uri = requestUri, Content = content }, response);
                 }
                 this.ProlongSlidingToken();
 
@@ -423,7 +435,7 @@ namespace Baasic.Client.Core
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return default(TOut);
+                    await ThrowExceptionAsync(new { Uri = requestUri, Content = content }, response);
                 }
                 return await ReadContentAsync<TOut>(response);
             }
@@ -454,7 +466,7 @@ namespace Baasic.Client.Core
         /// <summary>
         /// Asynchronously sends HTTP request.
         /// </summary>
-        /// <typeparam name="request">HTTP request.</typeparam>
+        /// <param name="request"></param>
         /// <returns>HTTP response message.</returns>
         public virtual Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
         {
@@ -464,7 +476,7 @@ namespace Baasic.Client.Core
         /// <summary>
         /// Asynchronously sends HTTP request.
         /// </summary>
-        /// <typeparam name="request">HTTP request.</typeparam>
+        /// <param name="request"></param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>HTTP response message.</returns>
         public virtual async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -498,7 +510,7 @@ namespace Baasic.Client.Core
         /// <summary>
         /// Initialize HTTP client authorization.
         /// </summary>
-        /// <param name="client">HTTP client.</param>
+        /// <param name="request">The request.</param>
         protected virtual void InitializeClientAuthorization(HttpRequestMessage request)
         {
             var tokenHandler = this.Configuration.TokenHandler;
@@ -534,6 +546,30 @@ namespace Baasic.Client.Core
                     tokenHandler.Save(newToken);
                 }
             }
+        }
+
+        /// <summary>
+        /// Asynchronously throws the baasic client exception.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        /// <param name="response">The response.</param>
+        /// <returns></returns>
+        protected async Task ThrowExceptionAsync(object content, HttpResponseMessage response)
+        {
+            string requestInfo = "";
+            if (content != null)
+            {
+                if (content.GetType().GetTypeInfo().IsValueType)
+                {
+                    requestInfo = content.ToString();
+                }
+                else
+                {
+                    requestInfo = JsonConvert.SerializeObject(content);
+                }
+            }
+
+            throw new BaasicClientException((int)response.StatusCode, $"{response.ReasonPhrase}. Request:\"{requestInfo}\" Response:\"{await response.Content.ReadAsStringAsync()}\"");
         }
 
         #endregion Methods

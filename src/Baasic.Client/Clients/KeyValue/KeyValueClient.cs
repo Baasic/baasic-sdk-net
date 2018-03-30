@@ -1,10 +1,11 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
 using Baasic.Client.Utility;
 using System;
+using System.Net;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Modules.KeyValues
 {
@@ -13,6 +14,22 @@ namespace Baasic.Client.Modules.KeyValues
     /// </summary>
     public class KeyValueClient : ClientBase, IKeyValueClient
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeyValueClient" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="baasicClientFactory">The baasic client factory.</param>
+        public KeyValueClient(IClientConfiguration configuration,
+            IBaasicClientFactory baasicClientFactory)
+            : base(configuration)
+        {
+            BaasicClientFactory = baasicClientFactory;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -31,22 +48,6 @@ namespace Baasic.Client.Modules.KeyValues
 
         #endregion Properties
 
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="KeyValueClient" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="baasicClientFactory">The baasic client factory.</param>
-        public KeyValueClient(IClientConfiguration configuration,
-            IBaasicClientFactory baasicClientFactory)
-            : base(configuration)
-        {
-            BaasicClientFactory = baasicClientFactory;
-        }
-
-        #endregion Constructor
-
         #region Methods
 
         /// <summary>
@@ -54,11 +55,26 @@ namespace Baasic.Client.Modules.KeyValues
         /// </summary>
         /// <param name="key">Key.</param>
         /// <returns>True if <see cref="KeyValue" /> is deleted, false otherwise.</returns>
-        public virtual Task<bool> DeleteAsync(object key)
+        public virtual async Task<bool> DeleteAsync(object key)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

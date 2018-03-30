@@ -1,4 +1,5 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
 using Baasic.Client.Model.Profile;
@@ -6,7 +7,6 @@ using Baasic.Client.Utility;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Modules.Profile
 {
@@ -56,11 +56,26 @@ namespace Baasic.Client.Modules.Profile
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="UserProfile" /> is deleted, false otherwise.</returns>
-        public virtual Task<bool> DeleteAsync(object id)
+        public virtual async Task<bool> DeleteAsync(object id)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -168,19 +183,34 @@ namespace Baasic.Client.Modules.Profile
         /// <returns>True if <see cref="UserProfile" /> is successfully updated, false otherwise.</returns>
         public virtual async Task<bool> UpdateAsync(UserProfile content)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var result = await client.PutAsync<UserProfile, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
-                switch (result)
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    case System.Net.HttpStatusCode.Created:
-                    case System.Net.HttpStatusCode.NoContent:
-                    case System.Net.HttpStatusCode.OK:
-                        return true;
+                    var result = await client.PutAsync<UserProfile, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
+                    switch (result)
+                    {
+                        case System.Net.HttpStatusCode.Created:
+                        case System.Net.HttpStatusCode.NoContent:
+                        case System.Net.HttpStatusCode.OK:
+                            return true;
 
-                    default:
-                        return false;
+                        default:
+                            return false;
+                    }
                 }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

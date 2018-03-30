@@ -1,6 +1,6 @@
-﻿using Baasic.Client.Core;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Core;
 using Baasic.Client.Model;
-using System;
 using System.Threading.Tasks;
 
 namespace Baasic.Client.Modules.DynamicResource
@@ -79,21 +79,23 @@ namespace Baasic.Client.Modules.DynamicResource
         Task<T> InsertAsync(string schemaName, T resource);
 
         /// <summary>
-        /// Patches the <see cref="T" /> asynchronous.
+        /// Patches the <see cref="TIn" /> asynchronous.
         /// </summary>
+        /// <typeparam name="TInT">The type of the resource.</typeparam>
         /// <param name="id">The identifier.</param>
         /// <param name="resource">The resource.</param>
         /// <returns>True if updated, false otherwise.</returns>
-        Task<bool> PatchAsync<T>(SGuid id, T resource);
+        Task<bool> PatchAsync<TIn>(SGuid id, TIn resource);
 
         /// <summary>
-        /// Patches the <see cref="T" /> asynchronous.
+        /// Patches the <see cref="TIn" /> asynchronous.
         /// </summary>
+        /// <typeparam name="TIn">The type of the resource.</typeparam>
         /// <param name="schemaName">The schema name.</param>
         /// <param name="id">The identifier.</param>
         /// <param name="resource">The resource.</param>
         /// <returns>True if updated, false otherwise.</returns>
-        Task<bool> PatchAsync<T>(string schemaName, SGuid id, T resource);
+        Task<bool> PatchAsync<TIn>(string schemaName, SGuid id, TIn resource);
 
         /// <summary>
         /// Asynchronously update the <see cref="T" /> in the system.

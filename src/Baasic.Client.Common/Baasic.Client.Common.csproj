@@ -41,6 +41,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Configuration\IClientConfiguration.cs" />
+    <Compile Include="ErrorHandling\BaasicClientException.cs" />
     <Compile Include="Extensions\EncodingExtensions.cs" />
     <Compile Include="Infrastructure\DependencyInjection\IDependencyResolver .cs" />
     <Compile Include="Infrastructure\DependencyInjection\IDIModule.cs" />

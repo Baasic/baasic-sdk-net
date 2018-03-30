@@ -1,4 +1,5 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
 using Baasic.Client.Model.Articles;
@@ -7,7 +8,6 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Modules.Articles
 {
@@ -16,7 +16,6 @@ namespace Baasic.Client.Modules.Articles
     /// </summary>
     public class ArticleClient : ClientBase, IArticleClient
     {
-
         #region Constructors
 
         /// <summary>
@@ -112,19 +111,34 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> ApproveCommentAsync(object articleKey, SGuid commentId, ArticleCommentOptions options)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var result = await client.PutAsync<ArticleCommentOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/approve", ModuleRelativePath), articleKey, commentId), options);
-                switch (result)
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    case System.Net.HttpStatusCode.Created:
-                    case System.Net.HttpStatusCode.NoContent:
-                    case System.Net.HttpStatusCode.OK:
-                        return true;
+                    var result = await client.PutAsync<ArticleCommentOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/approve", ModuleRelativePath), articleKey, commentId), options);
+                    switch (result)
+                    {
+                        case System.Net.HttpStatusCode.Created:
+                        case System.Net.HttpStatusCode.NoContent:
+                        case System.Net.HttpStatusCode.OK:
+                            return true;
 
-                    default:
-                        return false;
+                        default:
+                            return false;
+                    }
                 }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -138,19 +152,34 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> ApproveCommentReplyAsync(object articleKey, SGuid commentId, SGuid commentReplyId, ArticleCommentOptions options)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var result = await client.PutAsync<ArticleCommentOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/approve", ModuleRelativePath), articleKey, commentId, commentReplyId), options);
-                switch (result)
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    case System.Net.HttpStatusCode.Created:
-                    case System.Net.HttpStatusCode.NoContent:
-                    case System.Net.HttpStatusCode.OK:
-                        return true;
+                    var result = await client.PutAsync<ArticleCommentOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/approve", ModuleRelativePath), articleKey, commentId, commentReplyId), options);
+                    switch (result)
+                    {
+                        case System.Net.HttpStatusCode.Created:
+                        case System.Net.HttpStatusCode.NoContent:
+                        case System.Net.HttpStatusCode.OK:
+                            return true;
 
-                    default:
-                        return false;
+                        default:
+                            return false;
+                    }
                 }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -161,11 +190,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns>True if <see cref="Article" /> is archived, false otherwise.</returns>
         public virtual async Task<bool> ArchiveAsync(object key)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/archive", ModuleRelativePath), key));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/archive", ModuleRelativePath), key));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -175,11 +219,26 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="articleKey">The article key.</param>
         /// <param name="commentId">The comment identifier.</param>
         /// <returns></returns>
-        public virtual Task<bool> DeleteAllCommentRepliesAsync(object articleKey, SGuid commentId)
+        public virtual async Task<bool> DeleteAllCommentRepliesAsync(object articleKey, SGuid commentId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies", ModuleRelativePath), articleKey, commentId));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies", ModuleRelativePath), articleKey, commentId));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -188,11 +247,26 @@ namespace Baasic.Client.Modules.Articles
         /// </summary>
         /// <param name="articleKey">The article key.</param>
         /// <returns></returns>
-        public virtual Task<bool> DeleteAllCommentsAsync(object articleKey)
+        public virtual async Task<bool> DeleteAllCommentsAsync(object articleKey)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/comments", ModuleRelativePath), articleKey));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/comments", ModuleRelativePath), articleKey));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -201,11 +275,26 @@ namespace Baasic.Client.Modules.Articles
         /// </summary>
         /// <param name="key">Key (Id or Slug).</param>
         /// <returns>True if <see cref="Article" /> is deleted, false otherwise.</returns>
-        public virtual Task<bool> DeleteAsync(object key)
+        public virtual async Task<bool> DeleteAsync(object key)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), key));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -215,11 +304,26 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="articleKey">The article key.</param>
         /// <param name="commentId">The comment identifier.</param>
         /// <returns></returns>
-        public virtual Task<bool> DeleteCommentAsync(object articleKey, SGuid commentId)
+        public virtual async Task<bool> DeleteCommentAsync(object articleKey, SGuid commentId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}", ModuleRelativePath), articleKey, commentId));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}", ModuleRelativePath), articleKey, commentId));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -230,11 +334,26 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="commentId">The comment identifier.</param>
         /// <param name="commentReplyId">The comment reply identifier.</param>
         /// <returns></returns>
-        public virtual Task<bool> DeleteCommentReplyAsync(object articleKey, SGuid commentId, SGuid commentReplyId)
+        public virtual async Task<bool> DeleteCommentReplyAsync(object articleKey, SGuid commentId, SGuid commentReplyId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}", ModuleRelativePath), articleKey, commentId, commentReplyId));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}", ModuleRelativePath), articleKey, commentId, commentReplyId));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -473,11 +592,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> FlagCommentAsync(object articleKey, SGuid commentId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/flag", ModuleRelativePath), articleKey, commentId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/flag", ModuleRelativePath), articleKey, commentId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -490,11 +624,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> FlagCommentReplyAsync(object articleKey, SGuid commentId, SGuid commentReplyId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/flag", ModuleRelativePath), articleKey, commentId, commentReplyId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/flag", ModuleRelativePath), articleKey, commentId, commentReplyId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -718,11 +867,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> MarkCommentAsSpamAsync(object articleKey, SGuid commentId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/spam", ModuleRelativePath), articleKey, commentId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/spam", ModuleRelativePath), articleKey, commentId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -735,11 +899,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> MarkCommentReplyAsSpamAsync(object articleKey, SGuid commentId, SGuid commentReplyId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/spam", ModuleRelativePath), articleKey, commentId, commentReplyId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/spam", ModuleRelativePath), articleKey, commentId, commentReplyId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -751,19 +930,34 @@ namespace Baasic.Client.Modules.Articles
         /// <returns>True if <see cref="Article" /> is published, false otherwise.</returns>
         public virtual async Task<bool> PublishAsync(object key, ArticleOptions options)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var result = await client.PutAsync<ArticleOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/publish", ModuleRelativePath), key), options);
-                switch (result)
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    case System.Net.HttpStatusCode.Created:
-                    case System.Net.HttpStatusCode.NoContent:
-                    case System.Net.HttpStatusCode.OK:
-                        return true;
+                    var result = await client.PutAsync<ArticleOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/publish", ModuleRelativePath), key), options);
+                    switch (result)
+                    {
+                        case System.Net.HttpStatusCode.Created:
+                        case System.Net.HttpStatusCode.NoContent:
+                        case System.Net.HttpStatusCode.OK:
+                            return true;
 
-                    default:
-                        return false;
+                        default:
+                            return false;
+                    }
                 }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -772,11 +966,26 @@ namespace Baasic.Client.Modules.Articles
         /// </summary>
         /// <param name="articleKey">Article id or slug used to remove tags.</param>
         /// <returns>True if <see cref="ArticleTagEntry" /> s are removed, false otherwise.</returns>
-        public virtual Task<bool> RemoveAllTagsFromArticleAsync(object articleKey)
+        public virtual async Task<bool> RemoveAllTagsFromArticleAsync(object articleKey)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/tags", ModuleRelativePath), articleKey));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/tags", ModuleRelativePath), articleKey));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -786,11 +995,26 @@ namespace Baasic.Client.Modules.Articles
         /// <param name="articleKey">Article id or slug to used to remove tag.</param>
         /// <param name="key">Key (Id or Slug).</param>
         /// <returns>True if <see cref="TAgEntry" /> is removed, otherwise false.</returns>
-        public virtual Task<bool> RemoveTagFromArticleAsync(object articleKey, object key)
+        public virtual async Task<bool> RemoveTagFromArticleAsync(object articleKey, object key)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/tags/{{1}}", ModuleRelativePath), articleKey, key));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/tags/{{1}}", ModuleRelativePath), articleKey, key));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -803,19 +1027,34 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> ReportCommentAsync(object articleKey, SGuid commentId, ArticleCommentOptions options)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var result = await client.PutAsync<ArticleCommentOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/report", ModuleRelativePath), articleKey, commentId), options);
-                switch (result)
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    case System.Net.HttpStatusCode.Created:
-                    case System.Net.HttpStatusCode.NoContent:
-                    case System.Net.HttpStatusCode.OK:
-                        return true;
+                    var result = await client.PutAsync<ArticleCommentOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/report", ModuleRelativePath), articleKey, commentId), options);
+                    switch (result)
+                    {
+                        case System.Net.HttpStatusCode.Created:
+                        case System.Net.HttpStatusCode.NoContent:
+                        case System.Net.HttpStatusCode.OK:
+                            return true;
 
-                    default:
-                        return false;
+                        default:
+                            return false;
+                    }
                 }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -829,19 +1068,34 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> ReportCommentReplyAsync(object articleKey, SGuid commentId, SGuid commentReplyId, ArticleCommentOptions options)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var result = await client.PutAsync<ArticleCommentOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/report", ModuleRelativePath), articleKey, commentId, commentReplyId), options);
-                switch (result)
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    case System.Net.HttpStatusCode.Created:
-                    case System.Net.HttpStatusCode.NoContent:
-                    case System.Net.HttpStatusCode.OK:
-                        return true;
+                    var result = await client.PutAsync<ArticleCommentOptions, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/report", ModuleRelativePath), articleKey, commentId, commentReplyId), options);
+                    switch (result)
+                    {
+                        case System.Net.HttpStatusCode.Created:
+                        case System.Net.HttpStatusCode.NoContent:
+                        case System.Net.HttpStatusCode.OK:
+                            return true;
 
-                    default:
-                        return false;
+                        default:
+                            return false;
+                    }
                 }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -852,11 +1106,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns>True if <see cref="Article" /> is restored, false otherwise.</returns>
         public virtual async Task<bool> RestoreAsync(object key)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/restore", ModuleRelativePath), key));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/restore", ModuleRelativePath), key));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -868,11 +1137,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> UnApproveCommentAsync(object articleKey, SGuid commentId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/unapprove", ModuleRelativePath), articleKey, commentId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/unapprove", ModuleRelativePath), articleKey, commentId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -885,11 +1169,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> UnApproveCommentReplyAsync(object articleKey, SGuid commentId, SGuid commentReplyId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/unapprove", ModuleRelativePath), articleKey, commentId, commentReplyId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/unapprove", ModuleRelativePath), articleKey, commentId, commentReplyId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -901,11 +1200,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> UnFlagCommentAsync(object articleKey, SGuid commentId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/unflag", ModuleRelativePath), articleKey, commentId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/unflag", ModuleRelativePath), articleKey, commentId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -918,11 +1232,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> UnFlagCommentReplyAsync(object articleKey, SGuid commentId, SGuid commentReplyId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/unflag", ModuleRelativePath), articleKey, commentId, commentReplyId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/unflag", ModuleRelativePath), articleKey, commentId, commentReplyId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -934,11 +1263,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> UnMarkCommentAsSpamAsync(object articleKey, SGuid commentId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/unspam", ModuleRelativePath), articleKey, commentId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/unspam", ModuleRelativePath), articleKey, commentId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -951,11 +1295,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> UnMarkCommentReplyAsSpam(object articleKey, SGuid commentId, SGuid commentReplyId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/unspam", ModuleRelativePath), articleKey, commentId, commentReplyId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/unspam", ModuleRelativePath), articleKey, commentId, commentReplyId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -966,12 +1325,27 @@ namespace Baasic.Client.Modules.Articles
         /// <returns>True if <see cref="Article" /> is unpublished, false otherwise.</returns>
         public virtual async Task<bool> UnpublishAsync(object key)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/unpublish", ModuleRelativePath), key));
-                var result = await client.SendAsync(request);
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/unpublish", ModuleRelativePath), key));
+                    var result = await client.SendAsync(request);
 
-                return result.IsSuccessStatusCode;
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -983,11 +1357,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> UnReportCommentAsync(object articleKey, SGuid commentId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/unreport", ModuleRelativePath), articleKey, commentId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/unreport", ModuleRelativePath), articleKey, commentId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -1000,11 +1389,26 @@ namespace Baasic.Client.Modules.Articles
         /// <returns></returns>
         public virtual async Task<bool> UnReportCommentReplyAsync(object articleKey, SGuid commentId, SGuid commentReplyId)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/unreport", ModuleRelativePath), articleKey, commentId, commentReplyId));
-                var result = await client.SendAsync(request);
-                return result.IsSuccessStatusCode;
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(String.Format("{0}/{{0}}/comments/{{1}}/replies/{{2}}/unreport", ModuleRelativePath), articleKey, commentId, commentReplyId));
+                    var result = await client.SendAsync(request);
+                    return result.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -1083,6 +1487,5 @@ namespace Baasic.Client.Modules.Articles
         }
 
         #endregion Methods
-
     }
 }

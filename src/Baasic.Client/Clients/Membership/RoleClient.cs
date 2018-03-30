@@ -1,11 +1,12 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
 using Baasic.Client.Model.Membership;
 using Baasic.Client.Utility;
 using System;
+using System.Net;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Membership
 {
@@ -14,6 +15,22 @@ namespace Baasic.Client.Membership
     /// </summary>
     public class RoleClient : ClientBase, IRoleClient
     {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleClient" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="baasicClientFactory">The baasic client factory.</param>
+        public RoleClient(IClientConfiguration configuration,
+            IBaasicClientFactory baasicClientFactory)
+            : base(configuration)
+        {
+            BaasicClientFactory = baasicClientFactory;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -32,22 +49,6 @@ namespace Baasic.Client.Membership
 
         #endregion Properties
 
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleClient" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="baasicClientFactory">The baasic client factory.</param>
-        public RoleClient(IClientConfiguration configuration,
-            IBaasicClientFactory baasicClientFactory)
-            : base(configuration)
-        {
-            BaasicClientFactory = baasicClientFactory;
-        }
-
-        #endregion Constructor
-
         #region Methods
 
         /// <summary>
@@ -55,11 +56,26 @@ namespace Baasic.Client.Membership
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="UserProfile" /> is deleted, false otherwise.</returns>
-        public virtual Task<bool> DeleteAsync(object id)
+        public virtual async Task<bool> DeleteAsync(object id)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

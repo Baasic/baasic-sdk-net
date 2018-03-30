@@ -1,10 +1,13 @@
-﻿using Baasic.Client.Model;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Model;
 using System;
 
 namespace Baasic.Client.Tests.Infrastructure.Common
 {
     public class DynamicModel : IModel
     {
+        #region Properties
+
         public DateTime DateCreated
         {
             get
@@ -40,5 +43,7 @@ namespace Baasic.Client.Tests.Infrastructure.Common
                 throw new NotImplementedException();
             }
         }
+
+        #endregion Properties
     }
 }

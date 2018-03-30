@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Baasic.Client.Base62
+namespace Baasic.Client.Common.Base62
 {
     /// <summary>
     /// Utility that read and write bits in byte array

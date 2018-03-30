@@ -1,6 +1,6 @@
 using System;
 
-namespace Baasic.Client
+namespace Baasic.Client.Common
 {
     /// <summary>
     /// Represents a globally unique identifier (GUID) with a shorter string value Base62 Encoded.

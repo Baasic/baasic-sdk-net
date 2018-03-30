@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Baasic.Client.Common;
+using System;
 
 namespace Baasic.Client.Model.Articles
 {

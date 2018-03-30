@@ -1,10 +1,11 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
 using Baasic.Client.Utility;
 using System;
+using System.Net;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Modules.DynamicResource
 {
@@ -55,11 +56,26 @@ namespace Baasic.Client.Modules.DynamicResource
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>True if dynamic resource is deleted, false otherwise.</returns>
-        public virtual Task<bool> DeleteAsync(SGuid id)
+        public virtual async Task<bool> DeleteAsync(SGuid id)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{1}/{{0}}", ModuleRelativePath, typeof(T).Name), id));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{1}/{{0}}", ModuleRelativePath, typeof(T).Name), id));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -159,28 +175,45 @@ namespace Baasic.Client.Modules.DynamicResource
         }
 
         /// <summary>
-        /// Patches the <see cref="T" /> asynchronous.
+        /// Patches the <see cref="TIn" /> asynchronous.
         /// </summary>
+        /// <typeparam name="TIn">The type of the resource.</typeparam>
         /// <param name="id">The identifier.</param>
         /// <param name="resource">The resource.</param>
         /// <returns>True if updated, false otherwise.</returns>
-        public Task<bool> PatchAsync<T>(SGuid id, T resource)
+        public Task<bool> PatchAsync<TIn>(SGuid id, TIn resource)
         {
-            return this.PatchAsync<T>(typeof(T).Name, id, resource);
+            return this.PatchAsync<TIn>(typeof(TIn).Name, id, resource);
         }
 
         /// <summary>
-        /// Patches the <see cref="T" /> asynchronous.
+        /// Patches the <see cref="TIn" /> asynchronous.
         /// </summary>
+        /// <typeparam name="TIn">The type of the resource.</typeparam>
         /// <param name="schemaName">The schema name.</param>
         /// <param name="id">The identifier.</param>
         /// <param name="resource">The resource.</param>
         /// <returns>True if updated, false otherwise.</returns>
-        public Task<bool> PatchAsync<T>(string schemaName, SGuid id, T resource)
+        public async Task<bool> PatchAsync<TIn>(string schemaName, SGuid id, TIn resource)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.PatchAsync<T>(client.GetApiUrl(string.Format("{{0}}/{{1}}/{0}", id), ModuleRelativePath, schemaName), resource);
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.PatchAsync<TIn>(client.GetApiUrl(string.Format("{{0}}/{{1}}/{0}", id), ModuleRelativePath, schemaName), resource);
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

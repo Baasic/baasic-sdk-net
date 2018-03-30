@@ -1,4 +1,5 @@
-﻿using Baasic.Client.Core;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Core;
 using Baasic.Client.Model;
 using Baasic.Client.Model.Articles;
 using System;
