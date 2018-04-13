@@ -5,7 +5,7 @@
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mono Ltd.")]
 [assembly: AssemblyProduct("Baasic .NET SDK")]
-[assembly: AssemblyCopyright("Copyright © 2017")]
+[assembly: AssemblyCopyright("Copyright © 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,7 +31,7 @@ static internal class AssemblyInfo
     /// <summary>
     /// The version
     /// </summary>
-    internal const string Version = "0.8.158";
+    internal const string Version = "0.8.159";
 
     #endregion Fields
 }

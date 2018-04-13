@@ -25,3 +25,4 @@ ClearAssemblyCache.cmd
 PushNuGets.cmd
 CopyModule.cmd
 *.log
+src/.vs/
