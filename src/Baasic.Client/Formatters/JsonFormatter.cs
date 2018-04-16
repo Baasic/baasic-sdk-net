@@ -5,7 +5,6 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Text;
 
 namespace Baasic.Client.Formatters
@@ -142,7 +141,7 @@ namespace Baasic.Client.Formatters
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            var content = new ObjectContent(obj.GetType(), obj, new JsonMediaTypeFormatter());
+            var content = new StringContent(this.Serialize(obj), defaultEncoding);
 
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json")
             {
