@@ -98,14 +98,16 @@ namespace Baasic.Client.Security.Token
                 try
                 {
                     var response = await client.SendAsync(request);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+
                     if (response.StatusCode.Equals(HttpStatusCode.OK) ||
                         response.StatusCode.Equals(HttpStatusCode.Created))
                     {
-                        token = this.ReadToken(JsonFormatter.Deserialize<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync()));
+                        token = this.ReadToken(JsonFormatter.Deserialize<Newtonsoft.Json.Linq.JObject>(responseContent));
                     }
                     else
                     {
-                        throw new Exception("Unable to create new token.");
+                        throw new BaasicClientException((long)response.StatusCode, "Unable to create new token.", new Exception(responseContent));
                     }
                 }
                 catch (Exception ex)
