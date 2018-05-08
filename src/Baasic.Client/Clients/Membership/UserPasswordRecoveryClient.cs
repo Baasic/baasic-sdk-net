@@ -1,11 +1,12 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Model.Membership;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Membership
 {
@@ -32,50 +33,6 @@ namespace Baasic.Client.Membership
         }
 
         #endregion Constructors
-
-        #region Methods
-
-        /// <summary>
-        /// Asynchronously recovery password using <see cref="PasswordRecoveryDTO" /> options.
-        /// </summary>
-        /// <param name="options">The options.</param>
-        /// <returns>True if password is recovered, false otherwise.</returns>
-        public virtual async Task<bool> PasswordRecoveryAsync(PasswordRecoveryDTO options)
-        {
-            using (var client = this.BaasicClientFactory.Create(this.Configuration))
-            {
-                var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(true, this.ModuleRelativePath))
-                {
-                    Content = JsonFormatter.SerializeToHttpContent(options)
-                };
-
-                var response = await client.SendAsync(request);
-
-                return response.IsSuccessStatusCode;
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously request a new password recovery using <see cref="PasswordRecoveryRequestDTO" /> options.
-        /// </summary>
-        /// <param name="options">The options.</param>
-        /// <returns>True if password recovery request is valid, false otherwise.</returns>
-        public virtual async Task<bool> RequestPasswordRecoveryAsync(PasswordRecoveryRequestDTO options)
-        {
-            using (var client = this.BaasicClientFactory.Create(this.Configuration))
-            {
-                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, this.ModuleRelativePath))
-                {
-                    Content = JsonFormatter.SerializeToHttpContent(options)
-                };
-
-                var response = await client.SendAsync(request);
-
-                return response.IsSuccessStatusCode;
-            }
-        }
-
-        #endregion Methods
 
         #region Properties
 
@@ -104,5 +61,79 @@ namespace Baasic.Client.Membership
         }
 
         #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Asynchronously recovery password using <see cref="PasswordRecoveryDTO" /> options.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        /// <returns>True if password is recovered, false otherwise.</returns>
+        public virtual async Task<bool> PasswordRecoveryAsync(PasswordRecoveryDTO options)
+        {
+            try
+            {
+                using (var client = this.BaasicClientFactory.Create(this.Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(true, this.ModuleRelativePath))
+                    {
+                        Content = JsonFormatter.SerializeToHttpContent(options)
+                    };
+
+                    var response = await client.SendAsync(request);
+
+                    return response.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously request a new password recovery using <see cref="PasswordRecoveryRequestDTO" /> options.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        /// <returns>True if password recovery request is valid, false otherwise.</returns>
+        public virtual async Task<bool> RequestPasswordRecoveryAsync(PasswordRecoveryRequestDTO options)
+        {
+            try
+            {
+                using (var client = this.BaasicClientFactory.Create(this.Configuration))
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, this.ModuleRelativePath))
+                    {
+                        Content = JsonFormatter.SerializeToHttpContent(options)
+                    };
+
+                    var response = await client.SendAsync(request);
+
+                    return response.IsSuccessStatusCode;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        #endregion Methods
     }
 }

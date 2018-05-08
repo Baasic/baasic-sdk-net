@@ -9,6 +9,8 @@ namespace Baasic.Client.Formatters
     /// </summary>
     public interface IJsonFormatter
     {
+        #region Methods
+
         /// <summary>
         /// Deserilzes object from JSON string.
         /// </summary>
@@ -45,5 +47,7 @@ namespace Baasic.Client.Formatters
         /// <param name="obj">Object to serialize.</param>
         /// <returns>HttpContent.</returns>
         HttpContent SerializeToHttpContent(object obj);
+
+        #endregion Methods
     }
 }

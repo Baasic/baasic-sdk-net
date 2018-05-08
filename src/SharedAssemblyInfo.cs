@@ -5,7 +5,7 @@
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mono Ltd.")]
 [assembly: AssemblyProduct("Baasic .NET SDK")]
-[assembly: AssemblyCopyright("Copyright © 2017")]
+[assembly: AssemblyCopyright("Copyright © 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -15,8 +15,23 @@
 //
 // You can specify all the values or you can default the Build and Revision Numbers by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.8.156")]
-[assembly: AssemblyFileVersion("0.8.156")]
+[assembly: AssemblyVersion(AssemblyInfo.Version)]
+[assembly: AssemblyFileVersion(AssemblyInfo.Version)]
 #if DEBUG
-[assembly: AssemblyInformationalVersion("0.8.156-alpha")]
+[assembly: AssemblyInformationalVersion(AssemblyInfo.Version + "-alpha")]
 #endif
+
+/// <summary>
+/// Assembly info.
+/// </summary>
+static internal class AssemblyInfo
+{
+    #region Fields
+
+    /// <summary>
+    /// The version
+    /// </summary>
+    internal const string Version = "0.8.162";
+
+    #endregion Fields
+}

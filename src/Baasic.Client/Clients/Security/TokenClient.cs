@@ -1,4 +1,6 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
+using Baasic.Client.Common.Infrastructure.Security;
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
@@ -6,10 +8,9 @@ using Baasic.Client.Model.Security;
 using Baasic.Client.Utility;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Infrastructure.Security;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Security.Token
 {
@@ -94,10 +95,20 @@ namespace Baasic.Client.Security.Token
                 IAuthenticationToken oldToken = this.Configuration.TokenHandler.Get();
                 this.Configuration.TokenHandler.Clear();
 
-                var response = await client.SendAsync(request);
                 try
                 {
-                    token = this.ReadToken(JsonFormatter.Deserialize<Newtonsoft.Json.Linq.JObject>(await response.Content.ReadAsStringAsync()));
+                    var response = await client.SendAsync(request);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+
+                    if (response.StatusCode.Equals(HttpStatusCode.OK) ||
+                        response.StatusCode.Equals(HttpStatusCode.Created))
+                    {
+                        token = this.ReadToken(JsonFormatter.Deserialize<Newtonsoft.Json.Linq.JObject>(responseContent));
+                    }
+                    else
+                    {
+                        throw new BaasicClientException((long)response.StatusCode, "Unable to create new token.", new Exception(responseContent));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -117,28 +128,43 @@ namespace Baasic.Client.Security.Token
         /// <returns>True if <see cref="IAuthenticationToken" /> is destroyed, false otherwise.</returns>
         public async Task<bool> DestroyAsync()
         {
-            using (var client = this.BaasicClientFactory.Create(this.Configuration))
+            try
             {
-                var token = this.Configuration.TokenHandler.Get();
-
-                if (token != null)
+                using (var client = this.BaasicClientFactory.Create(this.Configuration))
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Delete, client.GetApiUrl(true, this.ModuleRelativePath))
-                    {
-                        Content = JsonFormatter.SerializeToHttpContent(new { Type = token.Scheme, Token = token.Token })
-                    };
+                    var token = this.Configuration.TokenHandler.Get();
 
-                    var response = await client.SendAsync(request);
-
-                    var tokenHandler = this.Configuration.TokenHandler;
-                    if (tokenHandler != null)
+                    if (token != null)
                     {
-                        tokenHandler.Clear();
+                        var request = new HttpRequestMessage(HttpMethod.Delete, client.GetApiUrl(true, this.ModuleRelativePath))
+                        {
+                            Content = JsonFormatter.SerializeToHttpContent(new { Type = token.Scheme, Token = token.Token })
+                        };
+
+                        var response = await client.SendAsync(request);
+
+                        var tokenHandler = this.Configuration.TokenHandler;
+                        if (tokenHandler != null)
+                        {
+                            tokenHandler.Clear();
+                        }
+                        return true;
                     }
-                    return true;
                 }
+                return false;
             }
-            return false;
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         /// <summary>

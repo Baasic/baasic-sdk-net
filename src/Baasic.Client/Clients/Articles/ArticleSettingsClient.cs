@@ -1,11 +1,11 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model.Articles;
 using Baasic.Client.Utility;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Modules.Articles
 {
@@ -85,19 +85,34 @@ namespace Baasic.Client.Modules.Articles
         /// <returns>True if successfully updated <see cref="ArticleSettings" />.</returns>
         public virtual async Task<bool> UpdateAsync(ArticleSettings settings)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var result = await client.PutAsync<ArticleSettings, HttpStatusCode>(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, settings.Id)), settings);
-                switch (result)
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    case System.Net.HttpStatusCode.Created:
-                    case System.Net.HttpStatusCode.NoContent:
-                    case System.Net.HttpStatusCode.OK:
-                        return true;
+                    var result = await client.PutAsync<ArticleSettings, HttpStatusCode>(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, settings.Id)), settings);
+                    switch (result)
+                    {
+                        case System.Net.HttpStatusCode.Created:
+                        case System.Net.HttpStatusCode.NoContent:
+                        case System.Net.HttpStatusCode.OK:
+                            return true;
 
-                    default:
-                        return false;
+                        default:
+                            return false;
+                    }
                 }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

@@ -50,7 +50,7 @@ namespace Baasic.Client.Token.Tests
             var handler = new Mock<HttpMessageHandler>();
             handler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).Returns(async (HttpRequestMessage request, CancellationToken cancellationToken) =>
             {
-                request.RequestUri.AbsoluteUri.Should().Be(tokenEndPoint);
+                request.RequestUri.AbsoluteUri.Should().Contain(tokenEndPoint);
                 request.Content.Headers.ContentType.MediaType.Should().Be("application/x-www-form-urlencoded");
                 request.Method.Should().Be(HttpMethod.Post);
 
@@ -87,14 +87,6 @@ namespace Baasic.Client.Token.Tests
             clientConfiguration.Setup(p => p.SecureBaseAddress).Returns("https://api.baasic.com/v1");
             clientConfiguration.Setup(p => p.BaseAddress).Returns("http://api.baasic.com/v1");
 
-            var target = new TokenClient(clientConfiguration.Object, baasicClientFactory.Object, new JsonFormatter());
-
-            var token = await target.CreateAsync(username, password);
-
-            token.IsValid.Should().BeTrue();
-            token.Scheme.Should().Be("bearer");
-            token.Token.Should().Be("accessToken");
-
             var mockTokenHandler = new Mock<ITokenHandler>();
             mockTokenHandler.Setup(h => h.Save(It.IsAny<IAuthenticationToken>())).Returns((IAuthenticationToken tokenToSave) =>
             {
@@ -104,8 +96,15 @@ namespace Baasic.Client.Token.Tests
 
                 return true;
             });
-
             clientConfiguration.Setup(p => p.TokenHandler).Returns(mockTokenHandler.Object);
+
+            var target = new TokenClient(clientConfiguration.Object, baasicClientFactory.Object, new JsonFormatter());
+
+            var token = await target.CreateAsync(username, password);
+
+            token.IsValid.Should().BeTrue();
+            token.Scheme.Should().Be("bearer");
+            token.Token.Should().Be("accessToken");
 
             target = new TokenClient(clientConfiguration.Object, baasicClientFactory.Object, new JsonFormatter());
 

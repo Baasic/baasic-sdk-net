@@ -74,7 +74,7 @@ namespace Baasic.Client.Tests.Notifications
             Notification notification = new Notification();
             notification.TemplateId = "T1";
             
-            Action execute = () => { if (this.fixture.Target.PublishAsync(notification).Result); };
+            Action execute = () => { if (this.fixture.Target.PublishAsync(notification).Result) { }; };
             execute.ShouldThrow<ArgumentNullException>();
 
             notification.TemplateId = "";

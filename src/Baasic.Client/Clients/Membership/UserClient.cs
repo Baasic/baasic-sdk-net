@@ -1,4 +1,5 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
 using Baasic.Client.Model.Membership;
@@ -6,7 +7,6 @@ using Baasic.Client.Utility;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Membership
 {
@@ -56,11 +56,26 @@ namespace Baasic.Client.Membership
         /// </summary>
         /// <param name="userName">Name of the user.</param>
         /// <returns>True if <see cref="User" /> is approved, false otherwise.</returns>
-        public virtual Task<bool> ApproveUserAsync(string userName)
+        public virtual async Task<bool> ApproveUserAsync(string userName)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/approve/{{0}}", ModuleRelativePath), userName));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/approve/{{0}}", ModuleRelativePath), userName));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -69,11 +84,26 @@ namespace Baasic.Client.Membership
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="User" /> is deleted, false otherwise.</returns>
-        public virtual Task<bool> DeleteAsync(object id)
+        public virtual async Task<bool> DeleteAsync(object id)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -82,11 +112,26 @@ namespace Baasic.Client.Membership
         /// </summary>
         /// <param name="userName">Name of the user.</param>
         /// <returns>True if <see cref="User" /> is disapproved, false otherwise.</returns>
-        public virtual Task<bool> DisapproveUserAsync(string userName)
+        public virtual async Task<bool> DisapproveUserAsync(string userName)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/disapprove/{{0}}", ModuleRelativePath), userName));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/disapprove/{{0}}", ModuleRelativePath), userName));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -96,11 +141,26 @@ namespace Baasic.Client.Membership
         /// <param name="userName">Name of the user.</param>
         /// <param name="providerName">Name of the provider.</param>
         /// <returns>True if <see cref="User" /> is disconnected from social login provider, false otherwise.</returns>
-        public virtual Task<bool> DisconnectSNProviderAsync(string userName, string providerName)
+        public virtual async Task<bool> DisconnectSNProviderAsync(string userName, string providerName)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/social-login/{{0}}/{{1}}", ModuleRelativePath), userName, providerName));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/social-login/{{0}}/{{1}}", ModuleRelativePath), userName, providerName));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -206,11 +266,26 @@ namespace Baasic.Client.Membership
         /// </summary>
         /// <param name="userName">Name of the user.</param>
         /// <returns>True if <see cref="User" /> is locked, false otherwise.</returns>
-        public virtual Task<bool> LockUserAsync(string userName)
+        public virtual async Task<bool> LockUserAsync(string userName)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/lock", ModuleRelativePath), userName));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/lock", ModuleRelativePath), userName));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -219,11 +294,26 @@ namespace Baasic.Client.Membership
         /// </summary>
         /// <param name="userName">Name of the user.</param>
         /// <returns>True if <see cref="User" /> is unlocked, false otherwise.</returns>
-        public virtual Task<bool> UnlockUserAsync(string userName)
+        public virtual async Task<bool> UnlockUserAsync(string userName)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/unlock", ModuleRelativePath), userName));
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/unlock", ModuleRelativePath), userName));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -234,19 +324,34 @@ namespace Baasic.Client.Membership
         /// <returns>True if <see cref="User" /> is updated, false otherwise.</returns>
         public virtual async Task<bool> UpdateAsync(User content)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                var result = await client.PutAsync<User, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
-                switch (result)
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    case System.Net.HttpStatusCode.Created:
-                    case System.Net.HttpStatusCode.NoContent:
-                    case System.Net.HttpStatusCode.OK:
-                        return true;
+                    var result = await client.PutAsync<User, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, content.Id)), content);
+                    switch (result)
+                    {
+                        case System.Net.HttpStatusCode.Created:
+                        case System.Net.HttpStatusCode.NoContent:
+                        case System.Net.HttpStatusCode.OK:
+                            return true;
 
-                    default:
-                        return false;
+                        default:
+                            return false;
+                    }
                 }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -258,9 +363,24 @@ namespace Baasic.Client.Membership
         /// <returns>True if <see cref="User" /> password is updated, false otherwise.</returns>
         public virtual async Task<bool> UpdatePasswordAsync(string userName, UpdatePasswordDTO recoveryParams)
         {
-            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            try
             {
-                return await client.PutAsync<UpdatePasswordDTO, bool>(client.GetApiUrl(String.Format("{0}/{1}/change-password", ModuleRelativePath, userName)), recoveryParams);
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.PutAsync<UpdatePasswordDTO, bool>(client.GetApiUrl(String.Format("{0}/{1}/change-password", ModuleRelativePath, userName)), recoveryParams);
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

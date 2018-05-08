@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.IO;
 
-namespace Baasic.Client
+namespace Baasic.Client.Common
 {
     /// <summary>
     /// <see cref="SGuid" /> JSON converter.

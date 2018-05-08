@@ -115,7 +115,7 @@ namespace Baasic.Client.Tests
             BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object, jsonFormatter);
             target.Should().NotBeNull();
 
-            Action execute = () => { if (target.DeleteAsync(target.GetApiUrl("/module/{0}", 0)).Result) ; };
+            Action execute = () => { if (target.DeleteAsync(target.GetApiUrl("/module/{0}", 0)).Result) { }; };
             execute.ShouldThrow<HttpRequestException>();
 
             var expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 1));
@@ -154,7 +154,7 @@ namespace Baasic.Client.Tests
             BaasicClient target = new BaasicClient(clientConfiguration.Object, httpClientFactory.Object, jsonFormatter);
             target.Should().NotBeNull();
 
-            Action execute = () => { if (target.DeleteAsync(target.GetApiUrl("/module/{0}", 0), new CancellationToken()).Result) ; };
+            Action execute = () => { if (target.DeleteAsync(target.GetApiUrl("/module/{0}", 0), new CancellationToken()).Result) { }; };
             execute.ShouldThrow<HttpRequestException>();
 
             var expected = await target.DeleteAsync(target.GetApiUrl("/module/{0}", 1), new CancellationToken());

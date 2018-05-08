@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Baasic.Client.Common;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -125,14 +126,22 @@ namespace Baasic.Client.Formatters
         /// <returns>HttpContent.</returns>
         public HttpContent SerializeToHttpContent(object obj)
         {
-            var content = new PushStreamContent((stream, httpContent, transportContext) =>
-                {
-                    using (var writer = new StreamWriter(stream, defaultEncoding))
-                    {
-                        this.serializer.Serialize(writer, obj);
-                    }
-                }
-            );
+            //Note: Issue related to WebAPI and PushStreamContent https://forums.asp.net/t/1978292.aspx?Web+api+2+1+does+not+work+with+a+chunked+request
+            //var content = new PushStreamContent((stream, httpContent, transportContext) =>
+            //    {
+            //        using (var writer = new StreamWriter(stream, defaultEncoding))
+            //        {
+            //            this.serializer.Serialize(writer, obj);
+            //        }
+            //    }
+            //);
+
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            var content = new StringContent(this.Serialize(obj), defaultEncoding);
 
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json")
             {

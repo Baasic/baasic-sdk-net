@@ -1,9 +1,8 @@
-﻿using Baasic.Client.Base62;
-using System;
+﻿using Baasic.Client.Common.Base62;
 using System.IO;
 using System.Text;
 
-namespace Baasic.Client
+namespace Baasic.Client.Common
 {
     /// <summary>
     /// Encoding extensions.
