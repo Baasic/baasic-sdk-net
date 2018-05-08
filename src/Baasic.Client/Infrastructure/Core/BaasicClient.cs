@@ -383,7 +383,7 @@ namespace Baasic.Client.Core
             {
                 var request = new HttpRequestMessage(HttpMethod.Put, requestUri)
                 {
-                    Content = JsonFormatter.SerializeToHttpContent(content)
+                    Content = content != null ? JsonFormatter.SerializeToHttpContent(content) : null
                 };
                 InitializeClientAuthorization(request);
 
