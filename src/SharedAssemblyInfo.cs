@@ -31,7 +31,7 @@ static internal class AssemblyInfo
     /// <summary>
     /// The version
     /// </summary>
-    internal const string Version = "0.8.162";
+    internal const string Version = "0.8.163";
 
     #endregion Fields
 }
