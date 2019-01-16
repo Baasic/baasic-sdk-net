@@ -1,126 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{94197638-4537-46A5-A641-5E1B9626F2E8}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Baasic.Client.Model</RootNamespace>
+    <TargetFrameworks>net461;net462;net47;net471;net472;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2</TargetFrameworks>
     <AssemblyName>Baasic.Client.Model</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <RootNamespace>Baasic.Client.Model</RootNamespace>
+    <Authors>Mono Ltd.</Authors>
+    <Company>Mono Ltd.</Company>
+    <Product>Baasic .NET SDK</Product>
+    <AssemblyVersion>0.8.163</AssemblyVersion>
+    <Description>Baasic .NET SDK Library</Description>
+    <Copyright>Copyright © 2018</Copyright>
+    <FileVersion>0.8.163</FileVersion>
+    <Version>0.8.163</Version>
+    <PackageProjectUrl>http://www.baasic.com</PackageProjectUrl>
+    <PackageIconUrl>http://www.baasic.com/img/baasic-logo.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/Baasic/baasic-sdk-net/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>Baasic;.NET;Portable;Clients;Models</PackageTags>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Baasic.Client.Model.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\portable-net45+win8+wp8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Articles\ArticleCommentStatus.cs" />
-    <Compile Include="Articles\ArticleOptions.cs" />
-    <Compile Include="Articles\ArticleSettings.cs" />
-    <Compile Include="Articles\ArticleStatus.cs" />
-    <Compile Include="Articles\ArticleTagEntry.cs" />
-    <Compile Include="Articles\ArticleTag.cs" />
-    <Compile Include="Articles\ArticleCommentOptions.cs" />
-    <Compile Include="Articles\ArticleCommentReply.cs" />
-    <Compile Include="Articles\CreateArticleComment.cs" />
-    <Compile Include="Articles\CreateArticleCommentReply.cs" />
-    <Compile Include="Articles\Rating.cs" />
-    <Compile Include="Articles\ArticleComment.cs" />
-    <Compile Include="Articles\Author.cs" />
-    <Compile Include="Articles\Article.cs" />
-    <Compile Include="Dynamic\Owner.cs" />
-    <Compile Include="Dynamic\DynamicSchema.cs" />
-    <Compile Include="ICollectionModel.cs" />
-    <Compile Include="IBuiltInModel.cs" />
-    <Compile Include="IModel.cs" />
-    <Compile Include="KeyValue\KeyValue.cs" />
-    <Compile Include="BuiltInModelBase.cs" />
-    <Compile Include="Membership\CreateUserDTO.cs" />
-    <Compile Include="Membership\NewUser.cs" />
-    <Compile Include="Membership\PasswordRecoveryRequestDTO.cs" />
-    <Compile Include="Membership\PasswordRecoveryDTO.cs" />
-    <Compile Include="Security\TokenOptions.cs" />
-    <Compile Include="Membership\UpdatePasswordDTO.cs" />
-    <Compile Include="Membership\Role.cs" />
-    <Compile Include="Membership\User.cs" />
-    <Compile Include="ACL\AccessPolicy.cs" />
-    <Compile Include="ACL\AccessAction.cs" />
-    <Compile Include="Notifications\Notification.cs" />
-    <Compile Include="Profile\Company.cs" />
-    <Compile Include="Profile\Organization.cs" />
-    <Compile Include="Profile\Skill.cs" />
-    <Compile Include="Profile\UserEducation.cs" />
-    <Compile Include="Profile\UserProfile.cs" />
-    <Compile Include="Profile\UserSkill.cs" />
-    <Compile Include="Profile\UserWork.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CollectionModelBase.cs" />
-    <Compile Include="ModelBase.cs" />
-    <Compile Include="ValueSet\ValueSetItem.cs" />
-    <Compile Include="ValueSet\ValueSet.cs" />
+    <ProjectReference Include="..\Baasic.Client.Common\Baasic.Client.Common.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Baasic.Client.Common\Baasic.Client.Common.csproj">
-      <Project>{d9a9b364-8f08-4c40-a307-95c0c5d95fb9}</Project>
-      <Name>Baasic.Client.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Baasic.Client.Model.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

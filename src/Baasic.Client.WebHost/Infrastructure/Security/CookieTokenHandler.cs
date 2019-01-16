@@ -1,8 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using Baasic.Client.Common.Infrastructure.Security;
+using System;
 using System.Threading;
+
+#if NET461 || NET462
+
+using System.Linq;
 using System.Web;
-using Baasic.Client.Common.Infrastructure.Security;
+
+#else
+using Microsoft.AspNetCore.Http;
+#endif
 
 namespace Baasic.Client.Infrastructure.Security
 {
@@ -22,6 +29,15 @@ namespace Baasic.Client.Infrastructure.Security
 
         #endregion Fields
 
+#if !(NET461 || NET462)
+        private readonly IHttpContextAccessor contextAccessor;
+
+        public CookieTokenHandler(IHttpContextAccessor contextAccessor)
+        {
+            this.contextAccessor = contextAccessor;
+        }
+#endif
+
         #region Methods
 
         /// <summary>
@@ -35,6 +51,7 @@ namespace Baasic.Client.Infrastructure.Security
                 bool result = false;
                 try
                 {
+#if NET461 || NET462
                     if (System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.Response != null)
                     {
                         var cookie = new HttpCookie(HeaderKey, "");
@@ -44,6 +61,18 @@ namespace Baasic.Client.Infrastructure.Security
                         HttpContext.Current.Response.Cookies.Add(cookie);
                         result = true;
                     }
+#else
+                    if (contextAccessor.HttpContext?.Response != null)
+                    {
+                        contextAccessor.HttpContext.Response.Cookies.Append(HeaderKey, "", new CookieOptions
+                        {
+                            HttpOnly = true,
+                            Expires = DateTime.Now.AddDays(-1d),
+                            Path = "/"
+                        });
+                        result = true;
+                    }
+#endif
                 }
                 finally
                 {
@@ -64,6 +93,7 @@ namespace Baasic.Client.Infrastructure.Security
             {
                 try
                 {
+#if NET461 || NET462
                     if (System.Web.HttpContext.Current != null)
                     {
                         HttpCookie cookie = null;
@@ -86,6 +116,26 @@ namespace Baasic.Client.Infrastructure.Security
                             return DeserializeToken(cookie.Value);
                         }
                     }
+#else
+                    if (contextAccessor.HttpContext != null)
+                    {
+                        string cookie = null;
+                        if (contextAccessor.HttpContext.Request != null && contextAccessor.HttpContext.Request.Cookies.Keys.Contains(HeaderKey))
+                        {
+                            cookie = contextAccessor.HttpContext.Request.Cookies[HeaderKey];
+                        }
+
+                        if (cookie == null && contextAccessor.HttpContext != null && GetCookieValueFromResponse(contextAccessor.HttpContext.Response, HeaderKey) != null)
+                        {
+                            cookie = GetCookieValueFromResponse(contextAccessor.HttpContext.Response, HeaderKey);
+                        }
+
+                        if (cookie != null)
+                        {
+                            return DeserializeToken(cookie);
+                        }
+                    }
+#endif
                 }
                 finally
                 {
@@ -107,6 +157,7 @@ namespace Baasic.Client.Infrastructure.Security
                 var result = false;
                 try
                 {
+#if NET461 || NET462
                     if (System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.Response != null)
                     {
                         HttpContext.Current.Response.Cookies.Remove(HeaderKey);
@@ -118,6 +169,20 @@ namespace Baasic.Client.Infrastructure.Security
                         HttpContext.Current.Response.Cookies.Add(cookie);
                         result = true;
                     }
+#else
+                    if (contextAccessor.HttpContext?.Response != null)
+                    {
+                        contextAccessor.HttpContext.Response.Cookies.Delete(HeaderKey);
+
+                        contextAccessor.HttpContext.Response.Cookies.Append(HeaderKey, SerializeToken(token), new CookieOptions
+                        {
+                            HttpOnly = true,
+                            Expires = DateTime.Now.AddSeconds((token.ExpiresIn.HasValue && token.ExpiresIn.Value > 0) ? token.ExpiresIn.Value : ((token.SlidingWindow.HasValue && token.SlidingWindow.Value > 0) ? token.SlidingWindow.Value : 7200)),
+                            Path = "/"
+                        });
+                        result = true;
+                    }
+#endif
                 }
                 finally
                 {
@@ -149,5 +214,20 @@ namespace Baasic.Client.Infrastructure.Security
         }
 
         #endregion Methods
+
+#if !(NET461 || NET462)
+        private string GetCookieValueFromResponse(HttpResponse response, string cookieName)
+        {
+            foreach (var headers in response.Headers.Values)
+                foreach (var header in headers)
+                    if (header.StartsWith(cookieName))
+                    {
+                        var p1 = header.IndexOf('=');
+                        var p2 = header.IndexOf(';');
+                        return header.Substring(p1 + 1, p2 - p1 - 1);
+                    }
+            return null;
+        }
+#endif
     }
 }
