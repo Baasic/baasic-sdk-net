@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;net462;net47;net471;net472;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2</TargetFrameworks>
+    <AssemblyName>Baasic.Client.Tests</AssemblyName>
+    <RootNamespace>Baasic.Client.Tests</RootNamespace>
+    <Authors>Mono Ltd.</Authors>
+    <Company>Mono Ltd.</Company>
+    <Product>Baasic .NET SDK</Product>
+    <AssemblyVersion>0.8.163</AssemblyVersion>
+    <Description>Baasic .NET SDK Library</Description>
+    <Copyright>Copyright © 2018</Copyright>
+    <FileVersion>0.8.163</FileVersion>
+    <Version>0.8.163</Version>
+    <PackageProjectUrl>http://www.baasic.com</PackageProjectUrl>
+    <PackageIconUrl>http://www.baasic.com/img/baasic-logo.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/Baasic/baasic-sdk-net/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>Baasic;.NET;Portable;Clients;Tests</PackageTags>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="Moq" Version="4.10.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Baasic.Client.AutoFac\Baasic.Client.AutoFac.csproj" />
+    <ProjectReference Include="..\Baasic.Client.Common\Baasic.Client.Common.csproj" />
+    <ProjectReference Include="..\Baasic.Client.Model\Baasic.Client.Model.csproj" />
+    <ProjectReference Include="..\Baasic.Client\Baasic.Client.csproj" />
+  </ItemGroup>
+
+</Project>
