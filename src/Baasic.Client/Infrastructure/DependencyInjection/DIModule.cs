@@ -56,6 +56,7 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<INotificationClient, NotificationClient>();
 
             dependencyResolver.Register<IPageClient, PageClient>();
+            dependencyResolver.Register<IPageStatusClient, PageStatusClient>();
             dependencyResolver.Register<IPageFileClient, PageFileClient>();
             dependencyResolver.Register<IMenuClient, MenuClient>();
             dependencyResolver.Register<INavigationClient, NavigationClient>();

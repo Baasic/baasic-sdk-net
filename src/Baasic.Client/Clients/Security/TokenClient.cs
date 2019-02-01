@@ -82,7 +82,7 @@ namespace Baasic.Client.Security.Token
                     tokenOptions = new TokenOptions();
                 }
 
-                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, string.Format("{0}?{1}", this.ModuleRelativePath, tokenOptions.GetOptionsCSV())))
+                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(string.Format("{0}?{1}", this.ModuleRelativePath, tokenOptions.GetOptionsCSV())))
                 {
                     Content = new FormUrlEncodedContent(new KeyValuePair<string, string>[] {
                         new KeyValuePair<string, string>("grant_type", "password"),
@@ -136,7 +136,7 @@ namespace Baasic.Client.Security.Token
 
                     if (token != null)
                     {
-                        var request = new HttpRequestMessage(HttpMethod.Delete, client.GetApiUrl(true, this.ModuleRelativePath))
+                        var request = new HttpRequestMessage(HttpMethod.Delete, client.GetApiUrl(this.ModuleRelativePath))
                         {
                             Content = JsonFormatter.SerializeToHttpContent(new { Type = token.Scheme, Token = token.Token })
                         };
@@ -176,7 +176,7 @@ namespace Baasic.Client.Security.Token
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
             {
-                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(true, this.ModuleRelativePath));
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(this.ModuleRelativePath));
                 InitializeQueryString(uriBuilder, embed, string.Empty);
                 return await client.GetAsync<AuthenticatedUser>(uriBuilder.ToString());
             }
@@ -193,7 +193,7 @@ namespace Baasic.Client.Security.Token
             {
                 var oldToken = this.Configuration.TokenHandler.Get();
 
-                var newToken = await client.PutAsync<Newtonsoft.Json.Linq.JObject>(client.GetApiUrl(true, this.ModuleRelativePath), Newtonsoft.Json.Linq.JObject.FromObject(new
+                var newToken = await client.PutAsync<Newtonsoft.Json.Linq.JObject>(client.GetApiUrl(this.ModuleRelativePath), Newtonsoft.Json.Linq.JObject.FromObject(new
                 {
                     token = oldToken.Token,
                     type = oldToken.Scheme

@@ -11,26 +11,16 @@ namespace Baasic.Client.Model.CMS
         #region Properties
 
         /// <summary>
-        /// Gets or sets the acl.
+        /// Gets or sets author identifier.
         /// </summary>
-        /// <value>The acl.</value>
-        public string Acl { get; set; }
+        /// <value>The author identifier.</value>
+        public SGuid AuthorId { get; set; }
 
         /// <summary>
         /// Gets or sets the content.
         /// </summary>
         /// <value>The content.</value>
         public string Content { get; set; }
-
-        /// <summary>
-        /// The Description property of the Page.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// The Json property of the Page.
-        /// </summary>
-        public string Json { get; set; }
 
         /// <summary>
         /// Gets or sets the language identifier.
@@ -42,12 +32,29 @@ namespace Baasic.Client.Model.CMS
         /// Gets or sets the layout.
         /// </summary>
         /// <value>The layout.</value>
-        public String Layout { get; set; }
+        public string Layout { get; set; }
 
         /// <summary>
         /// The Name property of the Page.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the page status.
+        /// </summary>
+        /// <value>The page status.</value>
+        public PageStatus PageStatus { get; set; }
+
+        /// <summary>
+        /// Gets or sets the page status identifier.
+        /// </summary>
+        /// <value>The page status identifier.</value>
+        public SGuid PageStatusId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the sort index.
+        /// </summary>
+        public int SortIndex { get; set; }
 
         /// <summary>
         /// Gets or sets the template.
@@ -59,6 +66,11 @@ namespace Baasic.Client.Model.CMS
         /// Gets or sets the concurrency time stamp.
         /// </summary>
         public DateTime TimeStamp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the URL for SEO.

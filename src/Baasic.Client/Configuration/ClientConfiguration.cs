@@ -1,8 +1,7 @@
-﻿using Baasic.Client.Infrastructure.Security;
+﻿using Baasic.Client.Common.Configuration;
+using Baasic.Client.Common.Infrastructure.Security;
 using System;
 using System.Text;
-using Baasic.Client.Common.Infrastructure.Security;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Configuration
 {
@@ -38,8 +37,8 @@ namespace Baasic.Client.Configuration
         private string _defaultMediaType;
 
         private TimeSpan _defaultTimeout = TimeSpan.FromSeconds(30);
-
         private string _secureBaseAddress;
+        private bool _useSsl = true;
 
         #endregion Fields
 
@@ -163,6 +162,21 @@ namespace Baasic.Client.Configuration
         {
             get;
             protected set;
+        }
+
+        /// <summary>
+        /// Gets or sets the use ssl.
+        /// </summary>
+        public bool UseSsl
+        {
+            get
+            {
+                return _useSsl;
+            }
+            set
+            {
+                _useSsl = value;
+            }
         }
 
         /// <summary>
