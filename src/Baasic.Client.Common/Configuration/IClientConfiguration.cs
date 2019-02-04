@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Baasic.Client.Common.Infrastructure.Security;
+using System;
 using System.Text;
-using Baasic.Client.Common.Infrastructure.Security;
 
 namespace Baasic.Client.Common.Configuration
 {
@@ -63,6 +63,14 @@ namespace Baasic.Client.Common.Configuration
         /// Token handler.
         /// </summary>
         ITokenHandler TokenHandler
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the use ssl.
+        /// </summary>
+        bool UseSsl
         {
             get;
         }

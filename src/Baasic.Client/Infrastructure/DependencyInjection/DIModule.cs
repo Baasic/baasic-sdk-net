@@ -1,4 +1,6 @@
+using Baasic.Client.Clients.CMS;
 using Baasic.Client.Common.Infrastructure.DependencyInjection;
+using Baasic.Client.Common.Infrastructure.Security;
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
@@ -9,9 +11,7 @@ using Baasic.Client.Modules.KeyValues;
 using Baasic.Client.Modules.Notifications;
 using Baasic.Client.Modules.Profile;
 using Baasic.Client.Security.Token;
-using System;
 using System.Net.Http;
-using Baasic.Client.Common.Infrastructure.Security;
 
 namespace Baasic.Client.Infrastructure.DependencyInjection
 {
@@ -54,6 +54,12 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IProfileClient, ProfileClient>();
 
             dependencyResolver.Register<INotificationClient, NotificationClient>();
+
+            dependencyResolver.Register<IPageClient, PageClient>();
+            dependencyResolver.Register<IPageStatusClient, PageStatusClient>();
+            dependencyResolver.Register<IPageFileClient, PageFileClient>();
+            dependencyResolver.Register<IMenuClient, MenuClient>();
+            dependencyResolver.Register<INavigationClient, NavigationClient>();
         }
 
         #endregion Methods
