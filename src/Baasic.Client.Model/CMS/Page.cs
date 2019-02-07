@@ -52,6 +52,12 @@ namespace Baasic.Client.Model.CMS
         public SGuid PageStatusId { get; set; }
 
         /// <summary>
+        /// Gets or sets the publish on.
+        /// </summary>
+        /// <value>The publish on.</value>
+        public DateTime? PublishOn { get; set; }
+
+        /// <summary>
         /// Gets or sets the sort index.
         /// </summary>
         public int SortIndex { get; set; }
