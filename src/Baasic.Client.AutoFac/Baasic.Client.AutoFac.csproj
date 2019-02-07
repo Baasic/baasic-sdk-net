@@ -7,17 +7,18 @@
     <Authors>Mono Ltd.</Authors>
     <Company>Mono Ltd.</Company>
     <Product>Baasic .NET SDK</Product>
-    <AssemblyVersion>0.8.163</AssemblyVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
     <Description>Baasic .NET SDK AutoFac Library</Description>
     <Copyright>Copyright © 2018</Copyright>
-    <FileVersion>0.8.163</FileVersion>
-    <Version>0.8.163</Version>
+    <FileVersion>1.0.0</FileVersion>
+    <Version>1.0.0</Version>
     <PackageProjectUrl>http://www.baasic.com</PackageProjectUrl>
     <PackageIconUrl>http://www.baasic.com/img/baasic-logo.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/Baasic/baasic-sdk-net/blob/master/LICENSE.txt</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>Baasic;.NET;Portable;Clients;Autofac</PackageTags>
     <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
