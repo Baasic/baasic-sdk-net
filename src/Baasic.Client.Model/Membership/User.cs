@@ -96,6 +96,33 @@ namespace Baasic.Client.Model.Membership
             set;
         }
 
+        /// <summary>
+        /// Gets the display name.
+        /// </summary>
+        public virtual string DisplayName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the first name.
+        /// </summary>
+        public string FirstName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the last name.
+        /// </summary>
+        public string LastName
+        {
+            get;
+            set;
+        }
+
         #endregion Properties
     }
 }

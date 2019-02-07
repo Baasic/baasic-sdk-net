@@ -152,7 +152,7 @@ namespace Baasic.Client.Core
         /// <returns></returns>
         public string GetApiUrl(string relativeUrl, params object[] parameters)
         {
-            return GetApiUrl(false, relativeUrl, parameters);
+            return GetApiUrl(Configuration.UseSsl, relativeUrl, parameters);
         }
 
         /// <summary>
