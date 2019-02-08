@@ -11,6 +11,12 @@ namespace Baasic.Client.Model.CMS
         #region Properties
 
         /// <summary>
+        /// Gets or sets the author.
+        /// </summary>
+        /// <value>The author.</value>
+        public PageAuthor Author { get; set; }
+
+        /// <summary>
         /// Gets or sets author identifier.
         /// </summary>
         /// <value>The author identifier.</value>
