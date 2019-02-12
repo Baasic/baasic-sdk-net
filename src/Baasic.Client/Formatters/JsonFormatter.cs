@@ -41,6 +41,7 @@ namespace Baasic.Client.Formatters
 
             serializerSettings.Converters.Add(new IsoDateTimeConverter());
             serializerSettings.Converters.Add(new SGuidConverter());
+            serializerSettings.Converters.Add(new NullableSGuidConverter());
 
             this.serializer = JsonSerializer.Create(serializerSettings);
         }

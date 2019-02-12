@@ -152,6 +152,22 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
         Task<T[]> UpdateAsync<T>(T[] navigations) where T : Navigation;
 
+        /// <summary>
+        /// Asynchronously updates the collection of <see cref="Navigation" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
+        /// <param name="navigations">Resource instance.</param>
+        /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
+        Task UpdateMenuNavigationAsync(Guid menuId, Navigation[] navigations);
+
+        /// <summary>
+        /// Asynchronously updates the collection of <see cref="Navigation" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
+        /// <param name="navigations">Resource instance.</param>
+        /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
+        Task UpdateMenuNavigationAsync<T>(Guid menuId, T[] navigations) where T : Navigation;
+
         #endregion Methods
     }
 }
