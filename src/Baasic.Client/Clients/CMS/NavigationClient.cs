@@ -326,7 +326,7 @@ namespace Baasic.Client.Clients.CMS
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync(client.GetApiUrl(String.Format("{0}/override/{1}/batch", ModuleRelativePath, menuId)), navigations);
+                return client.PutAsync(client.GetApiUrl(String.Format("{0}/batch/menu/{1}", ModuleRelativePath, menuId)), navigations);
             }
         }
 

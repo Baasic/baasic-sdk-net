@@ -14,6 +14,13 @@ namespace Baasic.Client.Clients.CMS
         #region Methods
 
         /// <summary>
+        /// Asynchronously deletes the collection <see cref="Page" /> from the system.
+        /// </summary>
+        /// <param name="ids">The collection of identifiers.</param>
+        /// <returns>True if the collection <see cref="Page" /> is deleted, false otherwise.</returns>
+        Task<bool> BulkDeleteAsync(object ids);
+
+        /// <summary>
         /// Asynchronously deletes the <see cref="Page" /> from the system.
         /// </summary>
         /// <param name="id">The identifier.</param>
