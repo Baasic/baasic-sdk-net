@@ -1,9 +1,8 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common.Configuration;
 using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Core
 {
@@ -29,6 +28,23 @@ namespace Baasic.Client.Core
         /// <param name="requestUri">Request URI.</param>
         /// <returns>True if object is deleted, false otherwise.</returns>
         Task<bool> DeleteAsync(string requestUri);
+
+        /// <summary>
+        /// Asynchronously deletes the object from the system.
+        /// </summary>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <returns>True if object is deleted, false otherwise.</returns>
+        Task<bool> DeleteAsync<T>(string requestUri, T content);
+
+        /// <summary>
+        /// Asynchronously deletes the object from the system.
+        /// </summary>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>True if object is deleted, false otherwise.</returns>
+        Task<bool> DeleteAsync<T>(string requestUri, T content, CancellationToken cancellationToken);
 
         /// <summary>
         /// Asynchronously deletes the object from the system.
