@@ -305,6 +305,31 @@ namespace Baasic.Client.Clients.CMS
             }
         }
 
+        /// <summary>
+        /// Asynchronously updates the collection of <see cref="Navigation" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
+        /// <param name="navigations">Resource instance.</param>
+        /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
+        public virtual Task UpdateMenuNavigationAsync(Guid menuId, Navigation[] navigations)
+        {
+            return UpdateMenuNavigationAsync<Navigation>(menuId, navigations);
+        }
+
+        /// <summary>
+        /// Asynchronously updates the collection of <see cref="Navigation" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
+        /// <param name="navigations">Resource instance.</param>
+        /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
+        public virtual Task UpdateMenuNavigationAsync<T>(Guid menuId, T[] navigations) where T : Navigation
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                return client.PutAsync(client.GetApiUrl(String.Format("{0}/batch/menu/{1}", ModuleRelativePath, menuId)), navigations);
+            }
+        }
+
         #endregion Methods
     }
 }

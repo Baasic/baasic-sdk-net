@@ -11,6 +11,12 @@ namespace Baasic.Client.Model.CMS
         #region Properties
 
         /// <summary>
+        /// Gets or sets the author.
+        /// </summary>
+        /// <value>The author.</value>
+        public PageAuthor Author { get; set; }
+
+        /// <summary>
         /// Gets or sets author identifier.
         /// </summary>
         /// <value>The author identifier.</value>
@@ -50,6 +56,12 @@ namespace Baasic.Client.Model.CMS
         /// </summary>
         /// <value>The page status identifier.</value>
         public SGuid PageStatusId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the publish on.
+        /// </summary>
+        /// <value>The publish on.</value>
+        public DateTime? PublishOn { get; set; }
 
         /// <summary>
         /// Gets or sets the sort index.

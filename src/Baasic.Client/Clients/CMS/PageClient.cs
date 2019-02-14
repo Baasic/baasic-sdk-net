@@ -80,6 +80,34 @@ namespace Baasic.Client.Clients.CMS
         }
 
         /// <summary>
+        /// Asynchronously deletes the collection <see cref="Page" /> from the system.
+        /// </summary>
+        /// <param name="ids">The collection of identifiers.</param>
+        /// <returns>True if the collection <see cref="Page" /> is deleted, false otherwise.</returns>
+        public virtual Task<bool> BulkDeleteAsync(object ids)
+        {
+            try
+            {
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return client.DeleteAsync(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), ids);
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return Task.FromResult(false);
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Asynchronously find <see cref="Page" /> s.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
@@ -108,13 +136,17 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
+        /// <param name="url">The url.</param>
+        /// <param name="template">The template.</param>
+        /// <param name="pageStatusIds">The page status ids.</param>
         /// <returns>List of <see cref="Page" /> s.</returns>
         public virtual Task<CollectionModelBase<Page>> FindAsync(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
-            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields,
+            string url = null, string template = null, string pageStatusIds = null)
         {
-            return FindAsync<Page>(searchQuery, from, to, ids, page, rpp, sort, embed, fields);
+            return FindAsync<Page>(searchQuery, from, to, ids, page, rpp, sort, embed, fields, url, template, pageStatusIds);
         }
 
         /// <summary>
@@ -131,11 +163,15 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
+        /// <param name="url">The url.</param>
+        /// <param name="template">The template.</param>
+        /// <param name="pageStatusIds">The page status ids.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
-            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields,
+            string url = null, string template = null, string pageStatusIds = null)
             where T : Page
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
@@ -145,6 +181,9 @@ namespace Baasic.Client.Clients.CMS
                 InitializeQueryStringPair(uriBuilder, "from", from);
                 InitializeQueryStringPair(uriBuilder, "to", to);
                 InitializeQueryStringPair(uriBuilder, "ids", ids);
+                InitializeQueryStringPair(uriBuilder, "url", url);
+                InitializeQueryStringPair(uriBuilder, "template", template);
+                InitializeQueryStringPair(uriBuilder, "pageStatusIds", pageStatusIds);
                 var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {

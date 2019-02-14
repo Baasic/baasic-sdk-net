@@ -138,6 +138,47 @@ namespace Baasic.Client.Core
         }
 
         /// <summary>
+        /// Asynchronously deletes the object from the system.
+        /// </summary>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <returns>True if object is deleted, false otherwise.</returns>
+        public virtual Task<bool> DeleteAsync<T>(string requestUri, T content)
+        {
+            return DeleteAsync<T>(requestUri, content, new CancellationToken());
+        }
+
+        /// <summary>
+        /// Asynchronously deletes the object from the system.
+        /// </summary>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="content">Resource instance.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>True if object is deleted, false otherwise.</returns>
+        public virtual async Task<bool> DeleteAsync<T>(string requestUri, T content, CancellationToken cancellationToken)
+        {
+            HttpClient client = Client;
+            {
+                var request = new HttpRequestMessage(HttpMethod.Delete, requestUri)
+                {
+                    Content = JsonFormatter.SerializeToHttpContent(content)
+                };
+                InitializeClientAuthorization(request);
+
+                var response = await client.SendAsync(request, cancellationToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    await ThrowExceptionAsync(new { Uri = requestUri, Content = content }, response);
+                }
+
+                this.ProlongSlidingToken();
+
+                return response.IsSuccessStatusCode;
+            }
+        }
+
+        /// <summary>
         /// Dispose.
         /// </summary>
         public void Dispose()
