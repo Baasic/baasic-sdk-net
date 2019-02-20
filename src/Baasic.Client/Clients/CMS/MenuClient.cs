@@ -118,7 +118,7 @@ namespace Baasic.Client.Clients.CMS
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync(searchQuery, null, null, null, page, rpp, sort, embed, fields);
+            return FindAsync(searchQuery, null, null, null, null, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -128,6 +128,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The from date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="positions">The menu positions.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -136,10 +137,10 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>List of <see cref="Menu" /> s.</returns>
         public virtual Task<CollectionModelBase<Menu>> FindAsync(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null,
-            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string positions = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync<Menu>(searchQuery, from, to, ids, page, rpp, sort, embed, fields);
+            return FindAsync<Menu>(searchQuery, from, to, ids, positions, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -150,6 +151,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="positions">The menu positions.</param>
         /// <param name="tags">The article tags.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
@@ -159,7 +161,7 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null,
-            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string positions = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
             where T : Menu
         {
@@ -169,6 +171,7 @@ namespace Baasic.Client.Clients.CMS
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
                 InitializeQueryStringPair(uriBuilder, "from", from);
                 InitializeQueryStringPair(uriBuilder, "to", to);
+                InitializeQueryStringPair(uriBuilder, "positions", positions);
                 InitializeQueryStringPair(uriBuilder, "ids", ids);
                 var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
@@ -213,10 +216,11 @@ namespace Baasic.Client.Clients.CMS
         /// Asynchronously insert the <see cref="Menu" /> into the system.
         /// </summary>
         /// <param name="navigations">Resource instance.</param>
+        /// <param name="forcePositionsUpdate">True if menu needs to be saved on position no matter of existing menus.</param>
         /// <returns>Newly created <see cref="Menu" /> .</returns>
-        public virtual Task<Menu> InsertAsync(Menu menu)
+        public virtual Task<Menu> InsertAsync(Menu menu, bool? forcePositionsUpdate = null)
         {
-            return InsertAsync<Menu>(menu);
+            return InsertAsync<Menu>(menu, forcePositionsUpdate);
         }
 
         /// <summary>
@@ -224,12 +228,15 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="Menu" />.</typeparam>
         /// <param name="menu">Resource instance.</param>
+        /// <param name="forcePositionsUpdate">True if menu needs to be saved on position no matter of existing menus.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T> InsertAsync<T>(T menu) where T : Menu
+        public virtual Task<T> InsertAsync<T>(T menu, bool? forcePositionsUpdate = null) where T : Menu
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T>(client.GetApiUrl(ModuleRelativePath), menu);
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
+                InitializeQueryStringPair(uriBuilder, "forcePositionsUpdate", forcePositionsUpdate);
+                return client.PostAsync<T>(uriBuilder.ToString(), menu);
             }
         }
 
@@ -261,10 +268,11 @@ namespace Baasic.Client.Clients.CMS
         /// Asynchronously update the <see cref="Menu" /> in the system.
         /// </summary>
         /// <param name="page">Resource instance.</param>
+        /// <param name="forcePositionsUpdate">True if menu needs to be saved on position no matter of existing menus.</param>
         /// <returns>True if <see cref="Menu" /> is successfully updated, false otherwise.</returns>
-        public virtual Task<bool> UpdateAsync(Menu menu)
+        public virtual Task<bool> UpdateAsync(Menu menu, bool? forcePositionsUpdate = null)
         {
-            return UpdateAsync<Menu>(menu);
+            return UpdateAsync<Menu>(menu, forcePositionsUpdate);
         }
 
         /// <summary>
@@ -272,14 +280,17 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="Menu" />.</typeparam>
         /// <param name="menu">Resource instance.</param>
+        /// <param name="forcePositionsUpdate">True if menu needs to be saved on position no matter of existing menus.</param>
         /// <returns>True if <typeparamref name="T" /> is successfully updated, false otherwise.</returns>
-        public virtual async Task<bool> UpdateAsync<T>(T menu) where T : Menu
+        public virtual async Task<bool> UpdateAsync<T>(T menu, bool? forcePositionsUpdate = null) where T : Menu
         {
             try
             {
                 using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    var result = await client.PutAsync<Menu, HttpStatusCode>(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, menu.Id)), menu);
+                    UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, menu.Id)));
+                    InitializeQueryStringPair(uriBuilder, "forcePositionsUpdate", forcePositionsUpdate);
+                    var result = await client.PutAsync<Menu, HttpStatusCode>(uriBuilder.ToString(), menu);
                     switch (result)
                     {
                         case System.Net.HttpStatusCode.Created:
