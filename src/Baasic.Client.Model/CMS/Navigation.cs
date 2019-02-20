@@ -17,6 +17,18 @@ namespace Baasic.Client.Model.CMS
         public string Caption { get; set; }
 
         /// <summary>
+        /// Gets or sets the css.
+        /// </summary>
+        /// <value>The css.</value>
+        public string Css { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>The description.</value>
+        public string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the type of the item.
         /// </summary>
         /// <value>The type of the item. [0 - container, 1 - page, 2 - link]</value>
@@ -62,6 +74,18 @@ namespace Baasic.Client.Model.CMS
         /// </summary>
         /// <value>The core navigation.</value>
         public Navigation ParentNavigation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the sort index.
+        /// </summary>
+        /// <value>The sort index.</value>
+        public int SortIndex { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        /// <value>The title.</value>
+        public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the URL.

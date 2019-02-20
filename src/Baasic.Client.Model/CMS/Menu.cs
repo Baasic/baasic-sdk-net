@@ -10,11 +10,6 @@ namespace Baasic.Client.Model.CMS
         #region Properties
 
         /// <summary>
-        /// The Json property of the Menu.
-        /// </summary>
-        public string Json { get; set; }
-
-        /// <summary>
         /// The Name property of the Menu.
         /// </summary>
         public string Name { get; set; }
@@ -26,10 +21,10 @@ namespace Baasic.Client.Model.CMS
         public IEnumerable<Navigation> Navigations { get; set; }
 
         /// <summary>
-        /// Gets or sets the position.
+        /// Gets or sets the menu positions.
         /// </summary>
-        /// <value>The position.</value>
-        public string Position { get; set; }
+        /// <value>The menu positions.</value>
+        public IEnumerable<MenuPosition> Positions { get; set; }
 
         #endregion Properties
     }

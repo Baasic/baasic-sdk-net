@@ -17,8 +17,15 @@ namespace Baasic.Client.Clients.CMS
         /// Asynchronously deletes the <see cref="Navigation" /> from the system.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>True if <see cref="Page" /> is deleted, false otherwise.</returns>
+        /// <returns>True if <see cref="Navigation" /> is deleted, false otherwise.</returns>
         Task<bool> DeleteAsync(object id);
+
+        /// <summary>
+        /// Asynchronously deletes the <see cref="Navigation" /> from the system assigned to specific <see cref="Menu" />.
+        /// </summary>
+        /// <param name="menuId">The <see cref="Menu" /> identifier.</param>
+        /// <returns>True if <see cref="Navigation" /> is deleted, false otherwise.</returns>
+        Task<bool> DeleteByMenuAsync(object menuId);
 
         /// <summary>
         /// Asynchronously find <see cref="Navigation" /> s.

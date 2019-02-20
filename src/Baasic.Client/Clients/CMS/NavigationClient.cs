@@ -80,6 +80,34 @@ namespace Baasic.Client.Clients.CMS
         }
 
         /// <summary>
+        /// Asynchronously deletes the <see cref="Navigation" /> from the system assigned to specific <see cref="Menu" />.
+        /// </summary>
+        /// <param name="menuId">The <see cref="Menu" /> identifier.</param>
+        /// <returns>True if <see cref="Navigation" /> is deleted, false otherwise.</returns>
+        public virtual async Task<bool> DeleteByMenuAsync(object menuId)
+        {
+            try
+            {
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/menu/{{0}}", ModuleRelativePath), menuId));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Asynchronously find <see cref="Navigation" /> s.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
