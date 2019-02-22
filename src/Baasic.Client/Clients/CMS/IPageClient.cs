@@ -138,6 +138,13 @@ namespace Baasic.Client.Clients.CMS
         Task<T[]> InsertAsync<T>(T[] pages) where T : Page;
 
         /// <summary>
+        /// Asynchronously checks the URL uniqness.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>True if url is unique</returns>
+        Task<bool> IsUrlUniqueAsync(string url);
+
+        /// <summary>
         /// Asynchronously update the <see cref="Page" /> in the system.
         /// </summary>
         /// <param name="page">Resource instance.</param>

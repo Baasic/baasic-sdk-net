@@ -80,35 +80,6 @@ namespace Baasic.Client.Clients.CMS
         }
 
         /// <summary>
-        /// Asynchronously checks the URL uniqness.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns>True if url is unique</returns>
-        public virtual async Task<bool> CheckUrlUniqnessAsync(string url)
-        {
-            try
-            {
-                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-                {
-                    await client.GetAsync<ModelBase>(client.GetApiUrl(string.Format("", ModuleRelativePath), url));
-                    return true;
-                }
-            }
-            catch (BaasicClientException ex)
-            {
-                if (ex.ErrorCode == (int)HttpStatusCode.Conflict)
-                {
-                    return false;
-                }
-                throw;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
         /// Asynchronously deletes the <see cref="Page" /> from the system.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -297,6 +268,37 @@ namespace Baasic.Client.Clients.CMS
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 return client.PostAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), pages);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously checks the URL uniqness.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>True if url is unique</returns>
+        public virtual async Task<bool> IsUrlUniqueAsync(string url)
+        {
+            try
+            {
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(string.Format("{0}/unique/url", ModuleRelativePath), url));
+                    InitializeQueryStringPair(uriBuilder, "url", url);
+                    await client.GetAsync<bool>(uriBuilder.ToString());
+                    return true;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.Conflict)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
