@@ -52,34 +52,6 @@ namespace Baasic.Client.Clients.CMS
         #region Methods
 
         /// <summary>
-        /// Asynchronously deletes the <see cref="Page" /> from the system.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>True if <see cref="Page" /> is deleted, false otherwise.</returns>
-        public virtual async Task<bool> DeleteAsync(object id)
-        {
-            try
-            {
-                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
-                {
-                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
-                }
-            }
-            catch (BaasicClientException ex)
-            {
-                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
-                {
-                    return false;
-                }
-                throw;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
         /// Asynchronously deletes the collection <see cref="Page" /> from the system.
         /// </summary>
         /// <param name="ids">The collection of identifiers.</param>
@@ -98,6 +70,63 @@ namespace Baasic.Client.Clients.CMS
                 if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
                 {
                     return Task.FromResult(false);
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously checks the URL uniqness.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>True if url is unique</returns>
+        public virtual async Task<bool> CheckUrlUniqnessAsync(string url)
+        {
+            try
+            {
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    await client.GetAsync<ModelBase>(client.GetApiUrl(string.Format("", ModuleRelativePath), url));
+                    return true;
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.Conflict)
+                {
+                    return false;
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously deletes the <see cref="Page" /> from the system.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>True if <see cref="Page" /> is deleted, false otherwise.</returns>
+        public virtual async Task<bool> DeleteAsync(object id)
+        {
+            try
+            {
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return false;
                 }
                 throw;
             }
