@@ -213,6 +213,80 @@ namespace Baasic.Client.Clients.CMS
         }
 
         /// <summary>
+        /// Asynchronously gets the collection of <see cref="Navigation" /> from the system ordered in a tree structure.
+        /// </summary>
+        /// <param name="menuId">The <see cref="Menu" /> identifier.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found <see cref="Navigation" /> is returned, otherwise null.</returns>
+        public virtual Task<CollectionModelBase<Navigation>> GetTreeAsync(object menuId, string embed = DefaultEmbed, string fields = DefaultFields)
+        {
+            return GetTreeAsync<Navigation>(menuId, embed, fields);
+        }
+
+        /// <summary>
+        /// Asynchronously gets the collection of <see cref="Navigation" /> from the system ordered in a tree structure.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
+        /// <param name="menuId">The <see cref="Menu" /> identifier.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        public virtual async Task<CollectionModelBase<T>> GetTreeAsync<T>(object menuId, string embed = DefaultEmbed, string fields = DefaultFields) where T : Navigation
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/tree/{{0}}", ModuleRelativePath), menuId));
+                InitializeQueryString(uriBuilder, embed, fields);
+                var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
+                if (result == null)
+                {
+                    result = new CollectionModelBase<T>();
+                }
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously gets the collection of <see cref="Navigation" /> from the system ordered in a tree structure.
+        /// </summary>
+        /// <param name="position">The position of <see cref="Menu" /></param>
+        /// <param name="languageId">The <see cref="Menu" /> language.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found collection of <see cref="Navigation" /> is returned, otherwise null.</returns>
+        public virtual Task<CollectionModelBase<Navigation>> GetTreeAsync(string position, object languageId = null, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
+        {
+            return GetTreeAsync<Navigation>(position, languageId, embed, fields);
+        }
+
+        /// <summary>
+        /// Asynchronously gets the collection of <see cref="Navigation" /> from the system ordered in a tree structure.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
+        /// <param name="position">The position of <see cref="Menu" /></param>
+        /// <param name="languageId">The <see cref="Menu" /> language.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        public virtual async Task<CollectionModelBase<T>> GetTreeAsync<T>(string position, object languageId = null, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : Navigation
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/tree", ModuleRelativePath)));
+                InitializeQueryString(uriBuilder, embed, fields);
+                InitializeQueryStringPair(uriBuilder, "position", position);
+                InitializeQueryStringPair(uriBuilder, "languageId", languageId);
+                var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
+                if (result == null)
+                {
+                    result = new CollectionModelBase<T>();
+                }
+                return result;
+            }
+        }
+
+        /// <summary>
         /// Asynchronously insert the <see cref="Navigation" /> into the system.
         /// </summary>
         /// <param name="navigation">Resource instance.</param>

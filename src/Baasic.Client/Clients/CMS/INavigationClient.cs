@@ -100,6 +100,46 @@ namespace Baasic.Client.Clients.CMS
         Task<T> GetAsync<T>(object id, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : Navigation;
 
         /// <summary>
+        /// Asynchronously gets the collection of <see cref="Navigation" /> from the system ordered in a tree structure.
+        /// </summary>
+        /// <param name="menuId">The <see cref="Menu" /> identifier.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found collection <see cref="Navigation" /> is returned, otherwise null.</returns>
+        Task<CollectionModelBase<Navigation>> GetTreeAsync(object menuId, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
+
+        /// <summary>
+        /// Asynchronously gets the collection of <see cref="Navigation" /> from the system ordered in a tree structure.
+        /// </summary>
+        /// <param name="position">The position of <see cref="Menu" /></param>
+        /// <param name="languageId">The <see cref="Menu" /> language.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found collection of <see cref="Navigation" /> is returned, otherwise null.</returns>
+        Task<CollectionModelBase<Navigation>> GetTreeAsync(string position, object languageId = null, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
+
+        /// <summary>
+        /// Asynchronously gets the collection of <see cref="Navigation" /> from the system ordered in a tree structure.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
+        /// <param name="menuId">The <see cref="Menu" /> identifier.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        Task<CollectionModelBase<T>> GetTreeAsync<T>(object menuId, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : Navigation;
+
+        /// <summary>
+        /// Asynchronously gets the collection of <see cref="Navigation" /> from the system ordered in a tree structure.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
+        /// <param name="position">The position of <see cref="Menu" /></param>
+        /// <param name="languageId">The <see cref="Menu" /> language.</param>
+        /// <param name="embed">Embed related resources.</param>
+        /// <param name="fields">The fields to include in response.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        Task<CollectionModelBase<T>> GetTreeAsync<T>(string position, object languageId = null, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : Navigation;
+
+        /// <summary>
         /// Asynchronously insert the <see cref="Navigation" /> into the system.
         /// </summary>
         /// <param name="navigation">Resource instance.</param>
