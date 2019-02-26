@@ -60,6 +60,10 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IPageFileClient, PageFileClient>();
             dependencyResolver.Register<IMenuClient, MenuClient>();
             dependencyResolver.Register<INavigationClient, NavigationClient>();
+
+            dependencyResolver.Register<IBlogClient, BlogClient>();
+            dependencyResolver.Register<IBlogPostClient, BlogPostClient>();
+            //dependencyResolver.Register<IBlogPostStatusClient, BlogPostStatusClient>();
         }
 
         #endregion Methods

@@ -119,7 +119,7 @@ namespace Baasic.Client.Clients.CMS
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync(searchQuery, null, null, null, null, page, rpp, sort, embed, fields);
+            return FindAsync(searchQuery, null, null, null, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -137,11 +137,10 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="BlogPost" /> s.</returns>
         public virtual Task<CollectionModelBase<BlogPost>> FindAsync(string searchQuery = DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
-            string positions = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            DateTime? from = null, DateTime? to = null, string ids = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync<BlogPost>(searchQuery, from, to, ids, positions, page, rpp, sort, embed, fields);
+            return FindAsync<BlogPost>(searchQuery, from, to, ids, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -161,8 +160,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
-            string positions = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            DateTime? from = null, DateTime? to = null, string ids = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
             where T : BlogPost
         {
@@ -172,7 +170,6 @@ namespace Baasic.Client.Clients.CMS
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
                 InitializeQueryStringPair(uriBuilder, "from", from);
                 InitializeQueryStringPair(uriBuilder, "to", to);
-                InitializeQueryStringPair(uriBuilder, "positions", positions);
                 InitializeQueryStringPair(uriBuilder, "ids", ids);
                 var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
@@ -216,14 +213,11 @@ namespace Baasic.Client.Clients.CMS
         /// <summary>
         /// Asynchronously insert the <see cref="BlogPost" /> into the system.
         /// </summary>
-        /// <param name="navigations">Resource instance.</param>
-        /// <param name="forcePositionsUpdate">
-        /// True if BlogPost needs to be saved on position no matter of existing BlogPosts.
-        /// </param>
+        /// <param name="BlogPost">The blog post.</param>
         /// <returns>Newly created <see cref="BlogPost" /> .</returns>
-        public virtual Task<BlogPost> InsertAsync(BlogPost BlogPost, bool? forcePositionsUpdate = null)
+        public virtual Task<BlogPost> InsertAsync(BlogPost BlogPost)
         {
-            return InsertAsync<BlogPost>(BlogPost, forcePositionsUpdate);
+            return InsertAsync<BlogPost>(BlogPost);
         }
 
         /// <summary>
@@ -231,16 +225,12 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
         /// <param name="BlogPost">Resource instance.</param>
-        /// <param name="forcePositionsUpdate">
-        /// True if BlogPost needs to be saved on position no matter of existing BlogPosts.
-        /// </param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T> InsertAsync<T>(T BlogPost, bool? forcePositionsUpdate = null) where T : BlogPost
+        public virtual Task<T> InsertAsync<T>(T BlogPost) where T : BlogPost
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
-                InitializeQueryStringPair(uriBuilder, "forcePositionsUpdate", forcePositionsUpdate);
                 return client.PostAsync<T>(uriBuilder.ToString(), BlogPost);
             }
         }
@@ -272,14 +262,11 @@ namespace Baasic.Client.Clients.CMS
         /// <summary>
         /// Asynchronously update the <see cref="BlogPost" /> in the system.
         /// </summary>
-        /// <param name="page">Resource instance.</param>
-        /// <param name="forcePositionsUpdate">
-        /// True if BlogPost needs to be saved on position no matter of existing BlogPosts.
-        /// </param>
+        /// <param name="BlogPost">The blog post.</param>
         /// <returns>True if <see cref="BlogPost" /> is successfully updated, false otherwise.</returns>
-        public virtual Task<bool> UpdateAsync(BlogPost BlogPost, bool? forcePositionsUpdate = null)
+        public virtual Task<bool> UpdateAsync(BlogPost BlogPost)
         {
-            return UpdateAsync<BlogPost>(BlogPost, forcePositionsUpdate);
+            return UpdateAsync<BlogPost>(BlogPost);
         }
 
         /// <summary>
@@ -287,24 +274,20 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
         /// <param name="BlogPost">Resource instance.</param>
-        /// <param name="forcePositionsUpdate">
-        /// True if BlogPost needs to be saved on position no matter of existing BlogPosts.
-        /// </param>
         /// <returns>True if <typeparamref name="T" /> is successfully updated, false otherwise.</returns>
-        public virtual async Task<bool> UpdateAsync<T>(T BlogPost, bool? forcePositionsUpdate = null) where T : BlogPost
+        public virtual async Task<bool> UpdateAsync<T>(T BlogPost) where T : BlogPost
         {
             try
             {
                 using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
                     UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, BlogPost.Id)));
-                    InitializeQueryStringPair(uriBuilder, "forcePositionsUpdate", forcePositionsUpdate);
                     var result = await client.PutAsync<BlogPost, HttpStatusCode>(uriBuilder.ToString(), BlogPost);
                     switch (result)
                     {
-                        case System.Net.HttpStatusCode.Created:
-                        case System.Net.HttpStatusCode.NoContent:
-                        case System.Net.HttpStatusCode.OK:
+                        case HttpStatusCode.Created:
+                        case HttpStatusCode.NoContent:
+                        case HttpStatusCode.OK:
                             return true;
 
                         default:

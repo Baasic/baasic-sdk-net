@@ -45,7 +45,6 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The from date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
-        /// <param name="positions">The Blog positions.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -53,8 +52,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="Blog" /> s.</returns>
         Task<CollectionModelBase<Blog>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
-            string positions = null, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            DateTime? from = null, DateTime? to = null, string ids = null, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
@@ -65,8 +63,6 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
-        /// <param name="positions">The Blog positions.</param>
-        /// <param name="tags">The article tags.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -74,8 +70,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
-            string positions = null, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            DateTime? from = null, DateTime? to = null, string ids = null, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
             where T : Blog;
 
@@ -101,19 +96,17 @@ namespace Baasic.Client.Clients.CMS
         /// <summary>
         /// Asynchronously insert the <see cref="Blog" /> into the system.
         /// </summary>
-        /// <param name="navigations">Resource instance.</param>
-        /// <param name="forcePositionsUpdate">True if Blog needs to be saved on position no matter of existing Blogs.</param>
+        /// <param name="Blog">The blog.</param>
         /// <returns>Newly created <see cref="Blog" /> .</returns>
-        Task<Blog> InsertAsync(Blog Blog, bool? forcePositionsUpdate = null);
+        Task<Blog> InsertAsync(Blog Blog);
 
         /// <summary>
         /// Asynchronously insert the <see cref="Blog" /> into the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="Blog" />.</typeparam>
         /// <param name="Blog">Resource instance.</param>
-        /// <param name="forcePositionsUpdate">True if Blog needs to be saved on position no matter of existing Blogs.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        Task<T> InsertAsync<T>(T Blog, bool? forcePositionsUpdate = null) where T : Blog;
+        Task<T> InsertAsync<T>(T Blog) where T : Blog;
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="Blog" /> into the system.
@@ -133,19 +126,17 @@ namespace Baasic.Client.Clients.CMS
         /// <summary>
         /// Asynchronously update the <see cref="Blog" /> in the system.
         /// </summary>
-        /// <param name="page">Resource instance.</param>
-        /// <param name="forcePositionsUpdate">True if Blog needs to be saved on position no matter of existing Blogs.</param>
+        /// <param name="Blog">The blog.</param>
         /// <returns>True if <see cref="Blog" /> is successfully updated, false otherwise.</returns>
-        Task<bool> UpdateAsync(Blog Blog, bool? forcePositionsUpdate = null);
+        Task<bool> UpdateAsync(Blog Blog);
 
         /// <summary>
         /// Asynchronously update the <see cref="Blog" /> in the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="Blog" />.</typeparam>
         /// <param name="Blog">Resource instance.</param>
-        /// <param name="forcePositionsUpdate">True if Blog needs to be saved on position no matter of existing Blogs.</param>
         /// <returns>True if <typeparamref name="T" /> is successfully updated, false otherwise.</returns>
-        Task<bool> UpdateAsync<T>(T Blog, bool? forcePositionsUpdate = null) where T : Blog;
+        Task<bool> UpdateAsync<T>(T Blog) where T : Blog;
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="Blog" /> into the system.
