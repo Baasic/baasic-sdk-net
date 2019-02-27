@@ -33,6 +33,8 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IHttpClientFactory, Baasic.Client.Core.HttpClientFactory>();
             dependencyResolver.Register<IBaasicClient, BaasicClient>();
             dependencyResolver.Register<IBaasicClientFactory, BaasicClientFactory>();
+            dependencyResolver.Register<IBaasicPlatformClient, BaasicPlatformClient>();
+            dependencyResolver.Register<IBaasicPlatformClientFactory, BaasicPlatformClientFactory>();
             dependencyResolver.Register<IJsonFormatter, JsonFormatter>();
 
             dependencyResolver.Register<ITokenHandler, DefaultTokenHandler>();
