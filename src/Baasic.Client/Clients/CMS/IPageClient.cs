@@ -47,6 +47,8 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="searchQuery">Search query.</param>
         /// <param name="from">The from date.</param>
         /// <param name="to">The to date.</param>
+        /// <param name="publishedFrom">The published from date.</param>
+        /// <param name="publishedTo">The published to date.</param>
         /// <param name="ids">The file ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
@@ -58,7 +60,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="pageStatusIds">The page status ids.</param>
         /// <returns>List of <see cref="Page" /> s.</returns>
         Task<CollectionModelBase<Page>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
+            DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string ids = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields,
             string url = null, string template = null, string pageStatusIds = null);
@@ -70,6 +72,8 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="searchQuery">Search query.</param>
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
+        /// <param name="publishedFrom">The published from date.</param>
+        /// <param name="publishedTo">The published to date.</param>
         /// <param name="ids">The file ids.</param>
         /// <param name="tags">The article tags.</param>
         /// <param name="page">Page number.</param>
@@ -82,7 +86,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="pageStatusIds">The page status ids.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
+            DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string ids = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields,
             string url = null, string template = null, string pageStatusIds = null)
