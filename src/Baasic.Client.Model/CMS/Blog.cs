@@ -27,7 +27,7 @@ namespace Baasic.Client.Model.CMS
         /// Gets or sets the language identifier.
         /// </summary>
         /// <value>The language identifier.</value>
-        public SGuid LanguageId { get; set; }
+        public SGuid? LanguageId { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
