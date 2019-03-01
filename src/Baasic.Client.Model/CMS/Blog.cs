@@ -2,6 +2,10 @@
 
 namespace Baasic.Client.Model.CMS
 {
+    /// <summary>
+    /// Blog model.
+    /// </summary>
+    /// <seealso cref="Baasic.Client.Model.BuiltInModelBase" />
     public class Blog : BuiltInModelBase
     {
         #region Properties

@@ -1,5 +1,9 @@
 ﻿namespace Baasic.Client.Model.CMS
 {
+    /// <summary>
+    /// Blog owner.
+    /// </summary>
+    /// <seealso cref="Baasic.Client.Model.ModelBase" />
     public class BlogOwner : ModelBase
     {
         #region Properties
