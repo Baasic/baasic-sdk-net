@@ -18,10 +18,28 @@ namespace Baasic.Client.Model.CMS
         public PageAuthor Author { get; set; }
 
         /// <summary>
+        /// Gets or sets the author identifier.
+        /// </summary>
+        /// <value>The author identifier.</value>
+        public SGuid AuthorId { get; set; }
+
+        /// <summary>
         /// Gets or sets the blog identifier.
         /// </summary>
         /// <value>The blog identifier.</value>
         public SGuid BlogId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the blog post status.
+        /// </summary>
+        /// <value>The blog post status.</value>
+        public BlogPostStatus BlogPostStatus { get; set; }
+
+        /// <summary>
+        /// Gets or sets the blog post status identifier.
+        /// </summary>
+        /// <value>The blog post status identifier.</value>
+        public SGuid BlogPostStatusId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [comments allowed].
@@ -45,13 +63,7 @@ namespace Baasic.Client.Model.CMS
         /// Gets or sets the featured image identifier.
         /// </summary>
         /// <value>The featured image identifier.</value>
-        public SGuid FeaturedImageId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the json.
-        /// </summary>
-        /// <value>The json.</value>
-        public string Json { get; set; }
+        public SGuid? FeaturedImageId { get; set; }
 
         /// <summary>
         /// Gets or sets the publish on.
@@ -60,16 +72,10 @@ namespace Baasic.Client.Model.CMS
         public DateTime PublishOn { get; set; }
 
         /// <summary>
-        /// Gets or sets the language identifier.
+        /// Gets or sets the template.
         /// </summary>
-        /// <value>The language identifier.</value>
-        public SGuid LanguageId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the status.
-        /// </summary>
-        /// <value>The status.</value>
-        public BlogPostStatus Status { get; set; }
+        /// <value>The template.</value>
+        public string Template { get; set; }
 
         /// <summary>
         /// Gets or sets the title.

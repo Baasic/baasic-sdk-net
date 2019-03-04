@@ -11,12 +11,12 @@
         public string Abrv { get; set; }
 
         /// <summary>
-        /// The Json property of the address type.
+        /// The Description property of the blog post status.
         /// </summary>
-        public string Json { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
-        /// The Name property of the address type.
+        /// The Name property of the blog post status.
         /// </summary>
         public string Name { get; set; }
 
