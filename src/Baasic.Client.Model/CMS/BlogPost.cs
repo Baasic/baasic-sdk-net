@@ -12,10 +12,10 @@ namespace Baasic.Client.Model.CMS
         #region Properties
 
         /// <summary>
-        /// Gets or sets the author.
+        /// Gets or sets the post author.
         /// </summary>
-        /// <value>The author.</value>
-        public BlogOwner Author { get; set; }
+        /// <value>The post author.</value>
+        public PageAuthor Author { get; set; }
 
         /// <summary>
         /// Gets or sets the blog identifier.
@@ -58,6 +58,12 @@ namespace Baasic.Client.Model.CMS
         /// </summary>
         /// <value>The publish on.</value>
         public DateTime PublishOn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the language identifier.
+        /// </summary>
+        /// <value>The language identifier.</value>
+        public SGuid LanguageId { get; set; }
 
         /// <summary>
         /// Gets or sets the status.

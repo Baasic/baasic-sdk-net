@@ -121,7 +121,7 @@ namespace Baasic.Client.Clients.CMS
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync(searchQuery, null, null, null, null, null, page, rpp, sort, embed, fields);
+            return FindAsync(searchQuery, null, null, null, null, null, null, null, null, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -133,22 +133,22 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="publishedFrom">The published from date.</param>
         /// <param name="publishedTo">The published to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="url">The url.</param>
+        /// <param name="template">The template.</param>
+        /// <param name="pageStatusIds">The page status ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <param name="url">The url.</param>
-        /// <param name="template">The template.</param>
-        /// <param name="pageStatusIds">The page status ids.</param>
         /// <returns>List of <see cref="Page" /> s.</returns>
         public virtual Task<CollectionModelBase<Page>> FindAsync(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string ids = null,
+            string url = null, string template = null, string pageStatusIds = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
-            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields,
-            string url = null, string template = null, string pageStatusIds = null)
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync<Page>(searchQuery, from, to, publishedFrom, publishedTo, ids, page, rpp, sort, embed, fields, url, template, pageStatusIds);
+            return FindAsync<Page>(searchQuery, from, to, publishedFrom, publishedTo, ids, url, template, pageStatusIds, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -161,21 +161,20 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="publishedFrom">The published from date.</param>
         /// <param name="publishedTo">The published to date.</param>
         /// <param name="ids">The file ids.</param>
-        /// <param name="tags">The article tags.</param>
+        /// <param name="url">The url.</param>
+        /// <param name="template">The template.</param>
+        /// <param name="pageStatusIds">The page status ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <param name="url">The url.</param>
-        /// <param name="template">The template.</param>
-        /// <param name="pageStatusIds">The page status ids.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string ids = null,
+            string url = null, string template = null, string pageStatusIds = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
-            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields,
-            string url = null, string template = null, string pageStatusIds = null)
+            string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
             where T : Page
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
