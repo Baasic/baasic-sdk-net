@@ -1,27 +1,27 @@
 ﻿using Baasic.Client.Core;
 using Baasic.Client.Model;
-using Baasic.Client.Model.CMS;
+using Baasic.Client.Model.Profile;
 using System;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.Clients.CMS
+namespace Baasic.Client.Clients.Profile
 {
     /// <summary>
-    /// The page status client contract.
+    /// The language client contract.
     /// </summary>
-    public interface IPageStatusClient
+    public interface ILanguageClient
     {
         #region Methods
 
         /// <summary>
-        /// Asynchronously deletes the <see cref="PageStatus" /> from the system.
+        /// Asynchronously deletes the <see cref="Language" /> from the system.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>True if <see cref="PageStatus" /> is deleted, false otherwise.</returns>
+        /// <returns>True if <see cref="Language" /> is deleted, false otherwise.</returns>
         Task<bool> DeleteAsync(object id);
 
         /// <summary>
-        /// Asynchronously find <see cref="PageStatus" /> s.
+        /// Asynchronously find <see cref="Language" /> s.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
         /// <param name="page">Page number.</param>
@@ -29,13 +29,13 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>List of <see cref="PageStatus" /> s.</returns>
-        Task<CollectionModelBase<PageStatus>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
+        /// <returns>List of <see cref="Language" /> s.</returns>
+        Task<CollectionModelBase<Language>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
-        /// Asynchronously find <see cref="PageStatus" /> s.
+        /// Asynchronously find <see cref="Language" /> s.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
         /// <param name="from">The from date.</param>
@@ -46,16 +46,16 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>List of <see cref="PageStatus" /> s.</returns>
-        Task<CollectionModelBase<PageStatus>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
+        /// <returns>List of <see cref="Language" /> s.</returns>
+        Task<CollectionModelBase<Language>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
-        /// Asynchronously find <see cref="PageStatus" /> s.
+        /// Asynchronously find <see cref="Language" /> s.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="PageStatus" />.</typeparam>
+        /// <typeparam name="T">Type of extended <see cref="Language" />.</typeparam>
         /// <param name="searchQuery">Search query.</param>
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
@@ -71,78 +71,86 @@ namespace Baasic.Client.Clients.CMS
             DateTime? from = null, DateTime? to = null, string ids = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
-            where T : PageStatus;
+            where T : Language;
 
         /// <summary>
-        /// Asynchronously gets the <see cref="PageStatus" /> from the system.
+        /// Asynchronously gets the <see cref="Language" /> from the system.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>If found <see cref="PageStatus" /> is returned, otherwise null.</returns>
-        Task<PageStatus> GetAsync(object key, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
+        /// <returns>If found <see cref="Language" /> is returned, otherwise null.</returns>
+        Task<Language> GetAsync(object key, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
-        /// Asynchronously gets the <see cref="PageStatus" /> from the system.
+        /// Asynchronously gets the <see cref="Language" /> from the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="PageStatus" />.</typeparam>
+        /// <typeparam name="T">Type of extended <see cref="Language" />.</typeparam>
         /// <param name="id">The identifier.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
-        Task<T> GetAsync<T>(object id, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : PageStatus;
+        Task<T> GetAsync<T>(object id, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields) where T : Language;
 
         /// <summary>
-        /// Asynchronously insert the <see cref="PageStatus" /> into the system.
+        /// Asynchronously insert the <see cref="Language" /> into the system.
         /// </summary>
-        /// <param name="pageStatus">Resource instance.</param>
-        /// <returns>Newly created <see cref="PageStatus" /> .</returns>
-        Task<PageStatus> InsertAsync(PageStatus pageStatus);
+        /// <param name="language">Resource instance.</param>
+        /// <returns>Newly created <see cref="Language" /> .</returns>
+        Task<Language> InsertAsync(Language language);
 
         /// <summary>
-        /// Asynchronously insert the <see cref="PageStatus" /> into the system.
+        /// Asynchronously insert the <see cref="Language" /> into the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="PageStatus" />.</typeparam>
-        /// <param name="pageStatus">Resource instance.</param>
+        /// <typeparam name="T">Type of extended <see cref="Language" />.</typeparam>
+        /// <param name="language">Resource instance.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        Task<T> InsertAsync<T>(T pageStatus) where T : PageStatus;
+        Task<T> InsertAsync<T>(T language) where T : Language;
 
         /// <summary>
-        /// Asynchronously insert the collection of <see cref="PageStatus" /> into the system.
+        /// Asynchronously insert the collection of <see cref="Language" /> into the system.
         /// </summary>
-        /// <param name="pageStatuses">Resource instance.</param>
-        /// <returns>Collection of newly created <see cref="PageStatus" /> .</returns>
-        Task<PageStatus[]> InsertAsync(PageStatus[] pageStatuses);
+        /// <param name="language">Resource instance.</param>
+        /// <returns>Collection of newly created <see cref="Language" /> .</returns>
+        Task<Language[]> InsertAsync(Language[] language);
 
         /// <summary>
-        /// Asynchronously insert the collection of <see cref="PageStatus" /> into the system.
+        /// Asynchronously insert the collection of <see cref="Language" /> into the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="PageStatus" />.</typeparam>
-        /// <param name="pageStatuses">Resource instance.</param>
+        /// <typeparam name="T">Type of extended <see cref="Language" />.</typeparam>
+        /// <param name="languages">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] pageStatuses) where T : PageStatus;
+        Task<T[]> InsertAsync<T>(T[] languages) where T : Language;
 
         /// <summary>
-        /// Asynchronously update the <see cref="PageStatus" /> in the system.
+        /// Asynchronously update the <see cref="Language" /> in the system.
         /// </summary>
-        /// <param name="pageStatus">Resource instance.</param>
-        /// <returns>True if <see cref="PageStatus" /> is successfully updated, false otherwise.</returns>
-        Task<bool> UpdateAsync(PageStatus pageStatus);
+        /// <param name="language">Resource instance.</param>
+        /// <returns>True if <see cref="Language" /> is successfully updated, false otherwise.</returns>
+        Task<bool> UpdateAsync(Language language);
 
         /// <summary>
-        /// Asynchronously update the <see cref="PageStatus" /> in the system.
+        /// Asynchronously update the <see cref="Language" /> in the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="PageStatus" />.</typeparam>
-        /// <param name="pageStatus">Resource instance.</param>
+        /// <typeparam name="T">Type of extended <see cref="Language" />.</typeparam>
+        /// <param name="language">Resource instance.</param>
         /// <returns>True if <typeparamref name="T" /> is successfully updated, false otherwise.</returns>
-        Task<bool> UpdateAsync<T>(T pageStatus) where T : PageStatus;
+        Task<bool> UpdateAsync<T>(T language) where T : Language;
 
         /// <summary>
-        /// Asynchronously updates the collection of <see cref="PageStatus" /> into the system.
+        /// Asynchronously updates the collection of <see cref="Language" /> into the system.
         /// </summary>
-        /// <param name="pageStatuses">Resource instance.</param>
-        /// <returns>Collection of updated <see cref="PageStatus" /> .</returns>
-        Task<PageStatus[]> UpdateAsync(PageStatus[] pageStatuses);
+        /// <param name="languages">Resource instance.</param>
+        /// <returns>Collection of updated <see cref="Language" /> .</returns>
+        Task<Language[]> UpdateAsync(Language[] languages);
+
+        /// <summary>
+        /// Asynchronously updates the collection of <see cref="Language" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Language" />.</typeparam>
+        /// <param name="languages">Resource instance.</param>
+        /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
+        Task<T[]> UpdateAsync<T>(T[] languages) where T : Language;
 
         #endregion Methods
     }
