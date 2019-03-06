@@ -8,8 +8,6 @@ namespace Baasic.Client.Model.CMS
     /// </summary>
     public class Page : BuiltInModelBase
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the author.
         /// </summary>
@@ -89,7 +87,5 @@ namespace Baasic.Client.Model.CMS
         /// </summary>
         /// <value>The URL.</value>
         public string Url { get; set; }
-
-        #endregion Properties
     }
 }

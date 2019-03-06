@@ -1,7 +1,7 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Utility;
 using System;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Core
 {
@@ -52,6 +52,19 @@ namespace Baasic.Client.Core
 
         #endregion Fields
 
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientBase" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        public ClientBase(IClientConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         /// <summary>
@@ -69,19 +82,6 @@ namespace Baasic.Client.Core
         protected abstract string ModuleRelativePath { get; }
 
         #endregion Properties
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientBase" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public ClientBase(IClientConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        #endregion Constructor
 
         #region Methods
 
@@ -143,7 +143,16 @@ namespace Baasic.Client.Core
 
             if (value != null)
             {
-                string strValue = value.ToString();
+                string strValue;
+                if (value is DateTime)
+                {
+                    // convert date object to ISO string format
+                    strValue = ((DateTime)value).ToISOString();
+                }
+                else
+                {
+                    strValue = value.ToString();
+                }
                 if (String.IsNullOrWhiteSpace(strValue))
                 {
                     return;
