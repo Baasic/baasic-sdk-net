@@ -1,4 +1,5 @@
-﻿using Baasic.Client.Common.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Utility;
 using System;
 
@@ -146,7 +147,7 @@ namespace Baasic.Client.Core
                 if (value is DateTime)
                 {
                     // convert date object to ISO string format
-                    strValue = ((DateTime)value).ToUniversalTime().ToString("o");
+                    strValue = ((DateTime)value).ToISOString();
                 }
                 else
                 {

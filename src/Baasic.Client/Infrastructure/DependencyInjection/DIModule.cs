@@ -1,4 +1,5 @@
 using Baasic.Client.Clients.CMS;
+using Baasic.Client.Clients.Profile;
 using Baasic.Client.Common.Infrastructure.DependencyInjection;
 using Baasic.Client.Common.Infrastructure.Security;
 using Baasic.Client.Core;
@@ -52,6 +53,7 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IUserPasswordRecoveryClient, UserPasswordRecoveryClient>();
 
             dependencyResolver.Register<IProfileClient, ProfileClient>();
+            dependencyResolver.Register<ILanguageClient, LanguageClient>();
 
             dependencyResolver.Register<INotificationClient, NotificationClient>();
 
