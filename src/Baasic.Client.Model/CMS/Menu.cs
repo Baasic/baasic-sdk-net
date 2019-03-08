@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Model.Profile;
+using System.Collections.Generic;
 
 namespace Baasic.Client.Model.CMS
 {
@@ -8,6 +10,16 @@ namespace Baasic.Client.Model.CMS
     public class Menu : BuiltInModelBase
     {
         #region Properties
+
+        /// <summary>
+        /// Gets the language property of Menu.
+        /// </summary>
+        public Language Language { get; set; }
+
+        /// <summary>
+        /// Gets language identifier property of Menu.
+        /// </summary>
+        public SGuid LanguageId { get; set; }
 
         /// <summary>
         /// The Name property of the Menu.

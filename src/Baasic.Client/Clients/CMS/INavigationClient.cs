@@ -48,6 +48,9 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The from date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="url">The url.</param>
+        /// <param name="menuId">The menu id.</param>
+        /// <param name="pageIds">The page ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -56,6 +59,7 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>List of <see cref="Navigation" /> s.</returns>
         Task<CollectionModelBase<Navigation>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null,
+            string url = null, string menuId = null, string pageIds = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
@@ -67,7 +71,9 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
-        /// <param name="tags">The article tags.</param>
+        /// <param name="url">The url.</param>
+        /// <param name="menuId">The menu id.</param>
+        /// <param name="pageIds">The page ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -76,6 +82,7 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null,
+            string url = null, string menuId = null, string pageIds = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
             where T : Navigation;

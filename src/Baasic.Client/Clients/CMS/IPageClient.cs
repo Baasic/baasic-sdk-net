@@ -53,6 +53,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="url">The url.</param>
         /// <param name="template">The template.</param>
         /// <param name="pageStatusIds">The page status ids.</param>
+        /// <param name="languageIds">The language ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -61,7 +62,7 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>List of <see cref="Page" /> s.</returns>
         Task<CollectionModelBase<Page>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string ids = null,
-            string url = null, string template = null, string pageStatusIds = null,
+            string url = null, string template = null, string pageStatusIds = null, string languageIds = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
@@ -78,6 +79,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="url">The url.</param>
         /// <param name="template">The template.</param>
         /// <param name="pageStatusIds">The page status ids.</param>
+        /// <param name="languageIds">The language ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -86,7 +88,7 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string ids = null,
-            string url = null, string template = null, string pageStatusIds = null,
+            string url = null, string template = null, string pageStatusIds = null, string languageIds = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
             where T : Page;

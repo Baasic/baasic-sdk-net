@@ -8,6 +8,8 @@ namespace Baasic.Client.Model.CMS
     /// </summary>
     public class Page : BuiltInModelBase
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the author.
         /// </summary>
@@ -30,7 +32,7 @@ namespace Baasic.Client.Model.CMS
         /// Gets or sets the language identifier.
         /// </summary>
         /// <value>The language identifier.</value>
-        public SGuid? LanguageId { get; set; }
+        public SGuid LanguageId { get; set; }
 
         /// <summary>
         /// Gets or sets the layout.
@@ -87,5 +89,7 @@ namespace Baasic.Client.Model.CMS
         /// </summary>
         /// <value>The URL.</value>
         public string Url { get; set; }
+
+        #endregion Properties
     }
 }

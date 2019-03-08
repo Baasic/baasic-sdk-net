@@ -121,7 +121,7 @@ namespace Baasic.Client.Clients.CMS
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync(searchQuery, null, null, null, page, rpp, sort, embed, fields);
+            return FindAsync(searchQuery, null, null, null, null, null, null, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -131,6 +131,9 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The from date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="url">The url.</param>
+        /// <param name="menuId">The menu id.</param>
+        /// <param name="pageIds">The page ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -139,10 +142,11 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>List of <see cref="Navigation" /> s.</returns>
         public virtual Task<CollectionModelBase<Navigation>> FindAsync(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null,
+            string url = null, string menuId = null, string pageIds = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync<Navigation>(searchQuery, from, to, ids, page, rpp, sort, embed, fields);
+            return FindAsync<Navigation>(searchQuery, from, to, ids, url, menuId, pageIds, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -153,7 +157,9 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
-        /// <param name="tags">The article tags.</param>
+        /// <param name="url">The url.</param>
+        /// <param name="menuId">The menu id.</param>
+        /// <param name="pageIds">The page ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -162,6 +168,7 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null,
+            string url = null, string menuId = null, string pageIds = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
             where T : Navigation
@@ -173,6 +180,9 @@ namespace Baasic.Client.Clients.CMS
                 InitializeQueryStringPair(uriBuilder, "from", from);
                 InitializeQueryStringPair(uriBuilder, "to", to);
                 InitializeQueryStringPair(uriBuilder, "ids", ids);
+                InitializeQueryStringPair(uriBuilder, "url", url);
+                InitializeQueryStringPair(uriBuilder, "menuId", menuId);
+                InitializeQueryStringPair(uriBuilder, "pageIds", pageIds);
                 var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {
