@@ -42,7 +42,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         protected override string ModuleRelativePath
         {
-            get { return "cms/blogs"; }
+            get { return "blog/blogs"; }
         }
 
         #endregion Properties
