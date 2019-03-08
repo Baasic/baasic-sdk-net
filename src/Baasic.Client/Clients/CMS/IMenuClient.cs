@@ -49,6 +49,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
         /// <param name="positions">The menu positions.</param>
+        /// <param name="languageIds">The language ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -56,8 +57,8 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="Menu" /> s.</returns>
         Task<CollectionModelBase<Menu>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
-            string positions = null, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            DateTime? from = null, DateTime? to = null, string ids = null, string positions = null,
+            string languageIds = null, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
@@ -69,6 +70,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
         /// <param name="positions">The menu positions.</param>
+        /// <param name="languageIds">The language ids.</param>
         /// <param name="tags">The article tags.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
@@ -77,8 +79,8 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
-            string positions = null, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            DateTime? from = null, DateTime? to = null, string ids = null, string positions = null,
+            string languageIds = null, int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
             where T : Menu;
 
