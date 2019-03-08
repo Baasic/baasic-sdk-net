@@ -10,8 +10,8 @@
     <AssemblyVersion>1.1.2</AssemblyVersion>
     <Description>Baasic .NET SDK Library</Description>
     <Copyright>Copyright © 2018</Copyright>
-    <FileVersion>1.1.2</FileVersion>
-    <Version>1.1.2-alpha10</Version>
+    <FileVersion>1.1.3</FileVersion>
+    <Version>1.1.3</Version>
     <PackageProjectUrl>http://www.baasic.com</PackageProjectUrl>
     <PackageIconUrl>http://www.baasic.com/img/baasic-logo.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/Baasic/baasic-sdk-net/blob/master/LICENSE.txt</PackageLicenseUrl>
