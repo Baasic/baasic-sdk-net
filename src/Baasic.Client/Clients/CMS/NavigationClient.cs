@@ -52,6 +52,34 @@ namespace Baasic.Client.Clients.CMS
         #region Methods
 
         /// <summary>
+        /// Asynchronously deletes the collection <see cref="Navigation" /> from the system.
+        /// </summary>
+        /// <param name="ids">The collection of identifiers.</param>
+        /// <returns>True if the collection <see cref="Navigation" /> is deleted, false otherwise.</returns>
+        public virtual Task<bool> BulkDeleteAsync(object ids)
+        {
+            try
+            {
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return client.DeleteAsync(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), ids);
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return Task.FromResult(false);
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Asynchronously deletes the <see cref="Navigation" /> from the system.
         /// </summary>
         /// <param name="id">The identifier.</param>
