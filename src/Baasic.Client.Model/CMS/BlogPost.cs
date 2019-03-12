@@ -1,5 +1,6 @@
 ﻿using Baasic.Client.Common;
 using System;
+using System.Collections.Generic;
 
 namespace Baasic.Client.Model.CMS
 {
@@ -40,6 +41,12 @@ namespace Baasic.Client.Model.CMS
         /// </summary>
         /// <value>The blog post status identifier.</value>
         public SGuid BlogPostStatusId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the blog tags.
+        /// </summary>
+        /// <value>The blog tags.</value>
+        public IEnumerable<BlogTag> BlogTags { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [comments allowed].
