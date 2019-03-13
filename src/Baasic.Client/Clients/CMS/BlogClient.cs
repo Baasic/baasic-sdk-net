@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 
 namespace Baasic.Client.Clients.CMS
 {
+    /// <summary>
+    /// Blog client.
+    /// </summary>
+    /// <seealso cref="Baasic.Client.Core.ClientBase" />
+    /// <seealso cref="Baasic.Client.Clients.CMS.IBlogClient" />
     public class BlogClient : ClientBase, IBlogClient
     {
         #region Constructors
@@ -215,76 +220,76 @@ namespace Baasic.Client.Clients.CMS
         /// <summary>
         /// Asynchronously insert the <see cref="Blog" /> into the system.
         /// </summary>
-        /// <param name="Blog"></param>
+        /// <param name="blog">The blog.</param>
         /// <returns>Newly created <see cref="Blog" /> .</returns>
-        public virtual Task<Blog> InsertAsync(Blog Blog)
+        public virtual Task<Blog> InsertAsync(Blog blog)
         {
-            return InsertAsync<Blog>(Blog);
+            return InsertAsync<Blog>(blog);
         }
 
         /// <summary>
         /// Asynchronously insert the <see cref="Blog" /> into the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="Blog" />.</typeparam>
-        /// <param name="Blog">Resource instance.</param>
+        /// <param name="blog">The blog.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T> InsertAsync<T>(T Blog) where T : Blog
+        public virtual Task<T> InsertAsync<T>(T blog) where T : Blog
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
-                return client.PostAsync<T>(uriBuilder.ToString(), Blog);
+                return client.PostAsync<T>(uriBuilder.ToString(), blog);
             }
         }
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="Blog" /> into the system.
         /// </summary>
-        /// <param name="Blogs">Resource instance.</param>
+        /// <param name="blogs">The blogs.</param>
         /// <returns>Collection of newly created <see cref="Blog" /> .</returns>
-        public virtual Task<Blog[]> InsertAsync(Blog[] Blogs)
+        public virtual Task<Blog[]> InsertAsync(Blog[] blogs)
         {
-            return InsertAsync<Blog>(Blogs);
+            return InsertAsync<Blog>(blogs);
         }
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="Blog" /> into the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="Blog" />.</typeparam>
-        /// <param name="Blogs">Resource instance.</param>
+        /// <param name="blogs">The blogs.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] Blogs) where T : Blog
+        public virtual Task<T[]> InsertAsync<T>(T[] blogs) where T : Blog
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), Blogs);
+                return client.PostAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogs);
             }
         }
 
         /// <summary>
         /// Asynchronously update the <see cref="Blog" /> in the system.
         /// </summary>
-        /// <param name="Blog"></param>
+        /// <param name="blog">The blog.</param>
         /// <returns>True if <see cref="Blog" /> is successfully updated, false otherwise.</returns>
-        public virtual Task<bool> UpdateAsync(Blog Blog)
+        public virtual Task<bool> UpdateAsync(Blog blog)
         {
-            return UpdateAsync<Blog>(Blog);
+            return UpdateAsync<Blog>(blog);
         }
 
         /// <summary>
         /// Asynchronously update the <see cref="Blog" /> in the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="Blog" />.</typeparam>
-        /// <param name="Blog">Resource instance.</param>
+        /// <param name="blog">The blog.</param>
         /// <returns>True if <typeparamref name="T" /> is successfully updated, false otherwise.</returns>
-        public virtual async Task<bool> UpdateAsync<T>(T Blog) where T : Blog
+        public virtual async Task<bool> UpdateAsync<T>(T blog) where T : Blog
         {
             try
             {
                 using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, Blog.Id)));
-                    var result = await client.PutAsync<Blog, HttpStatusCode>(uriBuilder.ToString(), Blog);
+                    UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, blog.Id)));
+                    var result = await client.PutAsync<Blog, HttpStatusCode>(uriBuilder.ToString(), blog);
                     switch (result)
                     {
                         case HttpStatusCode.Created:
@@ -314,24 +319,24 @@ namespace Baasic.Client.Clients.CMS
         /// <summary>
         /// Asynchronously updates the collection of <see cref="Blog" /> into the system.
         /// </summary>
-        /// <param name="Blogs">Resource instance.</param>
+        /// <param name="blogs">The blogs.</param>
         /// <returns>Collection of updated <see cref="Blog" /> .</returns>
-        public virtual Task<Blog[]> UpdateAsync(Blog[] Blogs)
+        public virtual Task<Blog[]> UpdateAsync(Blog[] blogs)
         {
-            return UpdateAsync<Blog>(Blogs);
+            return UpdateAsync<Blog>(blogs);
         }
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="Blog" /> into the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="Blog" />.</typeparam>
-        /// <param name="Blogs">Resource instance.</param>
+        /// <param name="blogs">The blogs.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> UpdateAsync<T>(T[] Blogs) where T : Blog
+        public virtual Task<T[]> UpdateAsync<T>(T[] blogs) where T : Blog
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), Blogs);
+                return client.PutAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogs);
             }
         }
 
