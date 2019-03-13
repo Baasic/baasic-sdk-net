@@ -115,62 +115,62 @@ namespace Baasic.Client.Clients.CMS
         /// <summary>
         /// Asynchronously insert the <see cref="BlogPost" /> into the system.
         /// </summary>
-        /// <param name="BlogPost">The blog post.</param>
+        /// <param name="blogPost">The blog post.</param>
         /// <returns>Newly created <see cref="BlogPost" /> .</returns>
-        Task<BlogPost> InsertAsync(BlogPost BlogPost);
+        Task<BlogPost> InsertAsync(BlogPost blogPost);
 
         /// <summary>
         /// Asynchronously insert the <see cref="BlogPost" /> into the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
-        /// <param name="BlogPost">Resource instance.</param>
+        /// <param name="blogPost">The blog post.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        Task<T> InsertAsync<T>(T BlogPost) where T : BlogPost;
+        Task<T> InsertAsync<T>(T blogPost) where T : BlogPost;
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="BlogPost" /> into the system.
         /// </summary>
-        /// <param name="BlogPosts">Resource instance.</param>
+        /// <param name="blogPost">The blog post.</param>
         /// <returns>Collection of newly created <see cref="BlogPost" /> .</returns>
-        Task<BlogPost[]> InsertAsync(BlogPost[] BlogPosts);
+        Task<BlogPost[]> InsertAsync(BlogPost[] blogPost);
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="BlogPost" /> into the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
-        /// <param name="BlogPosts">Resource instance.</param>
+        /// <param name="blogPost">The blog post.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] BlogPosts) where T : BlogPost;
+        Task<T[]> InsertAsync<T>(T[] blogPost) where T : BlogPost;
 
         /// <summary>
         /// Asynchronously update the <see cref="BlogPost" /> in the system.
         /// </summary>
-        /// <param name="BlogPost">The blog post.</param>
+        /// <param name="blogPost">The blog post.</param>
         /// <returns>True if <see cref="BlogPost" /> is successfully updated, false otherwise.</returns>
-        Task<bool> UpdateAsync(BlogPost BlogPost);
+        Task<bool> UpdateAsync(BlogPost blogPost);
 
         /// <summary>
         /// Asynchronously update the <see cref="BlogPost" /> in the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
-        /// <param name="BlogPost">Resource instance.</param>
+        /// <param name="blogPost">The blog post.</param>
         /// <returns>True if <typeparamref name="T" /> is successfully updated, false otherwise.</returns>
-        Task<bool> UpdateAsync<T>(T BlogPost) where T : BlogPost;
+        Task<bool> UpdateAsync<T>(T blogPost) where T : BlogPost;
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="BlogPost" /> into the system.
         /// </summary>
-        /// <param name="BlogPosts">Resource instance.</param>
+        /// <param name="blogPost">The blog post.</param>
         /// <returns>Collection of updated <see cref="BlogPost" /> .</returns>
-        Task<BlogPost[]> UpdateAsync(BlogPost[] BlogPosts);
+        Task<BlogPost[]> UpdateAsync(BlogPost[] blogPost);
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="BlogPost" /> into the system.
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
-        /// <param name="BlogPosts">Resource instance.</param>
+        /// <param name="blogPost">The blog post.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        Task<T[]> UpdateAsync<T>(T[] BlogPosts) where T : BlogPost;
+        Task<T[]> UpdateAsync<T>(T[] blogPost) where T : BlogPost;
 
         #endregion Methods
     }
