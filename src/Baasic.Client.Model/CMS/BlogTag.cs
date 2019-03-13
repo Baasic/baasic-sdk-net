@@ -3,7 +3,7 @@
     /// <summary>
     /// Blog tag model.
     /// </summary>
-    public class BlogTag
+    public class BlogTag : BuiltInModelBase
     {
         #region Properties
 

@@ -67,6 +67,7 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IBlogPostClient, BlogPostClient>();
             dependencyResolver.Register<IBlogPostStatusClient, BlogPostStatusClient>();
             dependencyResolver.Register<IBlogPostFileClient, BlogPostFileClient>();
+            dependencyResolver.Register<IBlogTagClient, BlogTagClient>();
         }
 
         #endregion Methods

@@ -10,21 +10,16 @@ using System.Threading.Tasks;
 
 namespace Baasic.Client.Clients.CMS
 {
-    /// <summary>
-    /// Blogpost client.
-    /// </summary>
-    /// <seealso cref="Baasic.Client.Core.ClientBase" />
-    /// <seealso cref="Baasic.Client.Clients.CMS.IBlogPostClient" />
-    public class BlogPostClient : ClientBase, IBlogPostClient
+    public class BlogTagClient : ClientBase, IBlogTagClient
     {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BlogPostClient" /> class.
+        /// Initializes a new instance of the <see cref="BlogTagClient" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="baasicClientFactory">The baasic client factory.</param>
-        public BlogPostClient(
+        public BlogTagClient(
             IClientConfiguration configuration,
             IBaasicClientFactory baasicClientFactory)
             : base(configuration)
@@ -47,7 +42,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         protected override string ModuleRelativePath
         {
-            get { return "blog/blog-posts"; }
+            get { return "blog/blog-tags"; }
         }
 
         #endregion Properties
@@ -55,10 +50,10 @@ namespace Baasic.Client.Clients.CMS
         #region Methods
 
         /// <summary>
-        /// Asynchronously deletes the collection <see cref="BlogPost" /> from the system.
+        /// Asynchronously deletes the collection <see cref="BlogTag" /> from the system.
         /// </summary>
         /// <param name="ids">The collection of identifiers.</param>
-        /// <returns>True if the collection <see cref="BlogPost" /> is deleted, false otherwise.</returns>
+        /// <returns>True if the collection <see cref="BlogTag" /> is deleted, false otherwise.</returns>
         public virtual Task<bool> BulkDeleteAsync(object ids)
         {
             try
@@ -83,10 +78,10 @@ namespace Baasic.Client.Clients.CMS
         }
 
         /// <summary>
-        /// Asynchronously deletes the <see cref="BlogPost" /> from the system.
+        /// Asynchronously deletes the <see cref="BlogTag" /> from the system.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>True if <see cref="BlogPost" /> is deleted, false otherwise.</returns>
+        /// <returns>True if <see cref="BlogTag" /> is deleted, false otherwise.</returns>
         public virtual async Task<bool> DeleteAsync(object id)
         {
             try
@@ -111,7 +106,7 @@ namespace Baasic.Client.Clients.CMS
         }
 
         /// <summary>
-        /// Asynchronously find <see cref="BlogPost" /> s.
+        /// Asynchronously find <see cref="BlogTag" /> s.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
         /// <param name="page">Page number.</param>
@@ -119,56 +114,43 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>List of <see cref="BlogPost" /> s.</returns>
-        public virtual Task<CollectionModelBase<BlogPost>> FindAsync(string searchQuery = DefaultSearchQuery,
+        /// <returns>List of <see cref="BlogTag" /> s.</returns>
+        public virtual Task<CollectionModelBase<BlogTag>> FindAsync(string searchQuery = DefaultSearchQuery,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync(searchQuery, null, null, null, null, null, null, null, null, null, page, rpp, sort, embed, fields);
+            return FindAsync(searchQuery, null, null, null, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
-        /// Asynchronously find <see cref="BlogPost" /> s.
+        /// Asynchronously find <see cref="BlogTag" /> s.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
         /// <param name="from">The from date.</param>
         /// <param name="to">The to date.</param>
-        /// <param name="publishedFrom">The published from date.</param>
-        /// <param name="publishedTo">The published to date.</param>
         /// <param name="ids">The file ids.</param>
-        /// <param name="url">The url.</param>
-        /// <param name="template">The template.</param>
-        /// <param name="blogPostStatusIds">The blog status ids.</param>
-        /// <param name="languageIds">The language ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>List of <see cref="BlogPost" /> s.</returns>
-        public virtual Task<CollectionModelBase<BlogPost>> FindAsync(string searchQuery = DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null,
-            string ids = null, string url = null, string template = null, string blogPostStatusIds = null, string languageIds = null,
+        /// <returns>List of <see cref="BlogTag" /> s.</returns>
+        public virtual Task<CollectionModelBase<BlogTag>> FindAsync(string searchQuery = DefaultSearchQuery,
+            DateTime? from = null, DateTime? to = null, string ids = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync<BlogPost>(searchQuery, from, to, publishedFrom, publishedTo, ids, url, template, blogPostStatusIds, languageIds, page, rpp, sort, embed, fields);
+            return FindAsync<BlogTag>(searchQuery, from, to, ids, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
-        /// Asynchronously find <see cref="BlogPost" /> s.
+        /// Asynchronously find <see cref="BlogTag" /> s.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
+        /// <typeparam name="T">Type of extended <see cref="BlogTag" />.</typeparam>
         /// <param name="searchQuery">Search query.</param>
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
-        /// <param name="publishedFrom">The published from date.</param>
-        /// <param name="publishedTo">The published to date.</param>
         /// <param name="ids">The file ids.</param>
-        /// <param name="url">The url.</param>
-        /// <param name="template">The template.</param>
-        /// <param name="blogPostStatusIds">The blog post status ids.</param>
-        /// <param name="languageIds">The language ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -176,11 +158,10 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string ids = null,
-            string url = null, string template = null, string blogPostStatusIds = null, string languageIds = null,
+            DateTime? from = null, DateTime? to = null, string ids = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
-            where T : BlogPost
+            where T : BlogTag
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
@@ -188,13 +169,7 @@ namespace Baasic.Client.Clients.CMS
                 InitializeQueryString(uriBuilder, searchQuery, page, rpp, sort, embed, fields);
                 InitializeQueryStringPair(uriBuilder, "from", from);
                 InitializeQueryStringPair(uriBuilder, "to", to);
-                InitializeQueryStringPair(uriBuilder, "publishedFrom", publishedFrom);
-                InitializeQueryStringPair(uriBuilder, "publishedTo", publishedTo);
                 InitializeQueryStringPair(uriBuilder, "ids", ids);
-                InitializeQueryStringPair(uriBuilder, "url", url);
-                InitializeQueryStringPair(uriBuilder, "template", template);
-                InitializeQueryStringPair(uriBuilder, "blogPostStatusIds", blogPostStatusIds);
-                InitializeQueryStringPair(uriBuilder, "languageIds", languageIds);
                 var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {
@@ -205,26 +180,26 @@ namespace Baasic.Client.Clients.CMS
         }
 
         /// <summary>
-        /// Asynchronously gets the <see cref="BlogPost" /> from the system.
+        /// Asynchronously gets the <see cref="BlogTag" /> from the system.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
-        /// <returns>If found <see cref="BlogPost" /> is returned, otherwise null.</returns>
-        public virtual Task<BlogPost> GetAsync(object key, string embed = DefaultEmbed, string fields = DefaultFields)
+        /// <returns>If found <see cref="BlogTag" /> is returned, otherwise null.</returns>
+        public virtual Task<BlogTag> GetAsync(object key, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return GetAsync<BlogPost>(key, embed, fields);
+            return GetAsync<BlogTag>(key, embed, fields);
         }
 
         /// <summary>
-        /// Asynchronously gets the <see cref="BlogPost" /> from the system.
+        /// Asynchronously gets the <see cref="BlogTag" /> from the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
+        /// <typeparam name="T">Type of extended <see cref="BlogTag" />.</typeparam>
         /// <param name="id">The identifier.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
-        public virtual Task<T> GetAsync<T>(object id, string embed = DefaultEmbed, string fields = DefaultFields) where T : BlogPost
+        public virtual Task<T> GetAsync<T>(object id, string embed = DefaultEmbed, string fields = DefaultFields) where T : BlogTag
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
@@ -235,78 +210,78 @@ namespace Baasic.Client.Clients.CMS
         }
 
         /// <summary>
-        /// Asynchronously insert the <see cref="BlogPost" /> into the system.
+        /// Asynchronously insert the <see cref="BlogTag" /> into the system.
         /// </summary>
-        /// <param name="blogPost">The blog post.</param>
-        /// <returns>Newly created <see cref="BlogPost" /> .</returns>
-        public virtual Task<BlogPost> InsertAsync(BlogPost blogPost)
+        /// <param name="blogTag">The blog tag.</param>
+        /// <returns>Newly created <see cref="BlogTag" /> .</returns>
+        public virtual Task<BlogTag> InsertAsync(BlogTag blogTag)
         {
-            return InsertAsync<BlogPost>(blogPost);
+            return InsertAsync<BlogTag>(blogTag);
         }
 
         /// <summary>
-        /// Asynchronously insert the <see cref="BlogPost" /> into the system.
+        /// Asynchronously insert the <see cref="BlogTag" /> into the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
-        /// <param name="blogPost">The blog post.</param>
+        /// <typeparam name="T">Type of extended <see cref="BlogTag" />.</typeparam>
+        /// <param name="blogTag">The blogTag.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T> InsertAsync<T>(T blogPost) where T : BlogPost
+        public virtual Task<T> InsertAsync<T>(T blogTag) where T : BlogTag
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(ModuleRelativePath));
-                return client.PostAsync<T>(uriBuilder.ToString(), blogPost);
+                return client.PostAsync<T>(uriBuilder.ToString(), blogTag);
             }
         }
 
         /// <summary>
-        /// Asynchronously insert the collection of <see cref="BlogPost" /> into the system.
+        /// Asynchronously insert the collection of <see cref="BlogTag" /> into the system.
         /// </summary>
-        /// <param name="blogPost">The blog post.</param>
-        /// <returns>Collection of newly created <see cref="BlogPost" /> .</returns>
-        public virtual Task<BlogPost[]> InsertAsync(BlogPost[] blogPost)
+        /// <param name="blogTags">The blogTags.</param>
+        /// <returns>Collection of newly created <see cref="BlogTag" /> .</returns>
+        public virtual Task<BlogTag[]> InsertAsync(BlogTag[] blogTags)
         {
-            return InsertAsync<BlogPost>(blogPost);
+            return InsertAsync<BlogTag>(blogTags);
         }
 
         /// <summary>
-        /// Asynchronously insert the collection of <see cref="BlogPost" /> into the system.
+        /// Asynchronously insert the collection of <see cref="BlogTag" /> into the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
-        /// <param name="blogPost">The blog post.</param>
+        /// <typeparam name="T">Type of extended <see cref="BlogTag" />.</typeparam>
+        /// <param name="blogTags">The blogTags.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] blogPost) where T : BlogPost
+        public virtual Task<T[]> InsertAsync<T>(T[] blogTags) where T : BlogTag
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogPost);
+                return client.PostAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogTags);
             }
         }
 
         /// <summary>
-        /// Asynchronously update the <see cref="BlogPost" /> in the system.
+        /// Asynchronously update the <see cref="BlogTag" /> in the system.
         /// </summary>
-        /// <param name="blogPost">The blog post.</param>
-        /// <returns>True if <see cref="BlogPost" /> is successfully updated, false otherwise.</returns>
-        public virtual Task<bool> UpdateAsync(BlogPost blogPost)
+        /// <param name="blogTag">The blogTag.</param>
+        /// <returns>True if <see cref="BlogTag" /> is successfully updated, false otherwise.</returns>
+        public virtual Task<bool> UpdateAsync(BlogTag blogTag)
         {
-            return UpdateAsync<BlogPost>(blogPost);
+            return UpdateAsync<BlogTag>(blogTag);
         }
 
         /// <summary>
-        /// Asynchronously update the <see cref="BlogPost" /> in the system.
+        /// Asynchronously update the <see cref="BlogTag" /> in the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
-        /// <param name="blogPost">The blog post.</param>
+        /// <typeparam name="T">Type of extended <see cref="BlogTag" />.</typeparam>
+        /// <param name="blogTag">The blogTag.</param>
         /// <returns>True if <typeparamref name="T" /> is successfully updated, false otherwise.</returns>
-        public virtual async Task<bool> UpdateAsync<T>(T blogPost) where T : BlogPost
+        public virtual async Task<bool> UpdateAsync<T>(T blogTag) where T : BlogTag
         {
             try
             {
                 using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, blogPost.Id)));
-                    var result = await client.PutAsync<BlogPost, HttpStatusCode>(uriBuilder.ToString(), blogPost);
+                    UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(string.Format("{0}/{1}", ModuleRelativePath, blogTag.Id)));
+                    var result = await client.PutAsync<BlogTag, HttpStatusCode>(uriBuilder.ToString(), blogTag);
                     switch (result)
                     {
                         case HttpStatusCode.Created:
@@ -334,26 +309,26 @@ namespace Baasic.Client.Clients.CMS
         }
 
         /// <summary>
-        /// Asynchronously updates the collection of <see cref="BlogPost" /> into the system.
+        /// Asynchronously updates the collection of <see cref="BlogTag" /> into the system.
         /// </summary>
-        /// <param name="blogPost">The blog post.</param>
-        /// <returns>Collection of updated <see cref="BlogPost" /> .</returns>
-        public virtual Task<BlogPost[]> UpdateAsync(BlogPost[] blogPost)
+        /// <param name="blogTags">The blogTags.</param>
+        /// <returns>Collection of updated <see cref="BlogTag" /> .</returns>
+        public virtual Task<BlogTag[]> UpdateAsync(BlogTag[] blogTags)
         {
-            return UpdateAsync<BlogPost>(blogPost);
+            return UpdateAsync<BlogTag>(blogTags);
         }
 
         /// <summary>
-        /// Asynchronously updates the collection of <see cref="BlogPost" /> into the system.
+        /// Asynchronously updates the collection of <see cref="BlogTag" /> into the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
-        /// <param name="blogPost">The blog post.</param>
+        /// <typeparam name="T">Type of extended <see cref="BlogTag" />.</typeparam>
+        /// <param name="blogTags">The blogTags.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> UpdateAsync<T>(T[] blogPost) where T : BlogPost
+        public virtual Task<T[]> UpdateAsync<T>(T[] blogTags) where T : BlogTag
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogPost);
+                return client.PutAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogTags);
             }
         }
 
