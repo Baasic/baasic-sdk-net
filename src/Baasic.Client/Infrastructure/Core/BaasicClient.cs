@@ -4,6 +4,7 @@ using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
 using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -255,6 +256,50 @@ namespace Baasic.Client.Core
         }
 
         /// <summary>
+        /// Asynchronously gets the response as byte array from the system.
+        /// </summary>
+        /// <param name="requestUri">Request URI.</param>
+        /// <returns>Response as byte array.</returns>
+        public virtual Task<Stream> GetAsync(string requestUri)
+        {
+            return GetAsync(requestUri, new CancellationToken());
+        }
+
+        /// <summary>
+        /// Asynchronously gets the response as byte array from the system.
+        /// </summary>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Response as byte array.</returns>
+        public virtual async Task<Stream> GetAsync(string requestUri, CancellationToken cancellationToken)
+        {
+            HttpClient client = Client;
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+                InitializeClientAuthorization(request);
+
+                var response = await client.SendAsync(request, cancellationToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.NotFound:
+                            return default(Stream);
+
+                        default:
+                            break;
+                    }
+                    await ThrowExceptionAsync(requestUri, response);
+                }
+
+                this.ProlongSlidingToken();
+
+                return await ReadContentAsync(response);
+            }
+        }
+
+        /// <summary>
         /// Gets the secure API URL.
         /// </summary>
         /// <param name="relativeUrl">The relative URL.</param>
@@ -399,6 +444,57 @@ namespace Baasic.Client.Core
         }
 
         /// <summary>
+        /// Asynchronously insert the <typeparamref name="T" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Resource type.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="file">The file that needs to be uploaded.</param>
+        /// <param name="fileName">The name of a file.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        public virtual Task<T> PostFileAsync<T>(string requestUri, byte[] file, string fileName)
+        {
+            return PostFileAsync<T>(requestUri, file, fileName, new CancellationToken());
+        }
+
+        /// <summary>
+        /// Asynchronously insert the <typeparamref name="T" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Resource type.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="file">The file that needs to be uploaded.</param>
+        /// <param name="fileName">The name of a file.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        public virtual async Task<T> PostFileAsync<T>(string requestUri, byte[] file, string fileName, CancellationToken cancellationToken)
+        {
+            HttpClient client = Client;
+            {
+                using (var multiContent = new MultipartFormDataContent())
+                using (ByteArrayContent bytes = new ByteArrayContent(file))
+                {
+                    bytes.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = fileName };
+                    multiContent.Add(bytes, "file");
+                    var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
+                    {
+                        Content = multiContent
+                    };
+                    InitializeClientAuthorization(request);
+
+                    var response = await client.SendAsync(request, cancellationToken);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        await ThrowExceptionAsync(new { Uri = requestUri, Content = multiContent }, response);
+                    }
+
+                    this.ProlongSlidingToken();
+
+                    return await ReadContentAsync<T>(response);
+                }
+            }
+        }
+
+        /// <summary>
         /// Asynchronously update the <typeparamref name="T" /> in the system.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>
@@ -501,6 +597,23 @@ namespace Baasic.Client.Core
             else
             {
                 return default(T);
+            }
+        }
+
+        /// <summary>
+        /// Returns byte array content from response.
+        /// </summary>
+        /// <param name="response">HTTP response.</param>
+        /// <returns>Byte array Resource.</returns>
+        public virtual Task<Stream> ReadContentAsync(HttpResponseMessage response)
+        {
+            if (response.Content != null && response.Content.Headers.ContentLength > 0)
+            {
+                return response.Content.ReadAsStreamAsync();
+            }
+            else
+            {
+                return Task.FromResult(default(Stream));
             }
         }
 

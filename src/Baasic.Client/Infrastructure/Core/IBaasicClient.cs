@@ -1,5 +1,6 @@
 ﻿using Baasic.Client.Common.Configuration;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -89,6 +90,21 @@ namespace Baasic.Client.Core
         Task<T> GetAsync<T>(string requestUri, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Asynchronously gets the response as byte array from the system.
+        /// </summary>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Response as byte array.</returns>
+        Task<Stream> GetAsync(string requestUri, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Asynchronously gets the response as byte array from the system.
+        /// </summary>
+        /// <param name="requestUri">Request URI.</param>
+        /// <returns>Response as byte array.</returns>
+        Task<Stream> GetAsync(string requestUri);
+
+        /// <summary>
         /// Gets the secure API URL.
         /// </summary>
         /// <param name="relativeUrl">The relative URL.</param>
@@ -156,6 +172,27 @@ namespace Baasic.Client.Core
         Task<TOut> PostAsync<TIn, TOut>(string requestUri, TIn content, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Asynchronously insert the <typeparamref name="T" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Resource type.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="file">The file that needs to be uploaded.</param>
+        /// <param name="fileName">The name of a file.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        Task<T> PostFileAsync<T>(string requestUri, byte[] file, string fileName);
+
+        /// <summary>
+        /// Asynchronously insert the <typeparamref name="T" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Resource type.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="file">The file that needs to be uploaded.</param>
+        /// <param name="fileName">The name of a file.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        Task<T> PostFileAsync<T>(string requestUri, byte[] file, string fileName, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Asynchronously update the <typeparamref name="TIn" /> in the system.
         /// </summary>
         /// <typeparam name="TIn">The type of the in resource.</typeparam>
@@ -194,6 +231,13 @@ namespace Baasic.Client.Core
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Updated <typeparamref name="T" /> .</returns>
         Task<T> PutAsync<T>(string requestUri, T content, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns byte array content from response.
+        /// </summary>
+        /// <param name="response">HTTP response.</param>
+        /// <returns>Byte array Resource.</returns>
+        Task<Stream> ReadContentAsync(HttpResponseMessage response);
 
         /// <summary>
         /// Returns deserialized content from response.

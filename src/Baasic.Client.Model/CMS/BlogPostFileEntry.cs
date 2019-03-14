@@ -46,11 +46,6 @@ namespace Baasic.Client.Model.CMS
         public int? Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the json.
-        /// </summary>
-        public string Json { get; set; }
-
-        /// <summary>
         /// Gets or sets the meta data.
         /// </summary>
         public object MetaData { get; set; }
