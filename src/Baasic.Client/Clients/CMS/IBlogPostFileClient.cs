@@ -24,14 +24,14 @@ namespace Baasic.Client.Clients.CMS
         /// Asynchronously find <see cref="BlogPostFile" /> s.
         /// </summary>
         /// <param name="searchQuery">Search query.</param>
-        /// <param name="blogPost">BlogPost number.</param>
+        /// <param name="page">The page number.</param>
         /// <param name="rpp">Records per blogPost limit.</param>
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="BlogPostFile" /> s.</returns>
         Task<CollectionModelBase<BlogPostFile>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
-            int blogPost = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
@@ -41,15 +41,16 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The from date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
-        /// <param name="blogPost">BlogPost number.</param>
+        /// <param name="blogPostIds">The blog post ids.</param>
+        /// <param name="page">The page number.</param>
         /// <param name="rpp">Records per blogPost limit.</param>
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="BlogPostFile" /> s.</returns>
         Task<CollectionModelBase<BlogPostFile>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
-            int blogPost = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            DateTime? from = null, DateTime? to = null, string ids = null, string blogPostIds = null,
+            int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
         /// <summary>
@@ -60,16 +61,16 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
-        /// <param name="tags">The article tags.</param>
-        /// <param name="blogPost">BlogPost number.</param>
+        /// <param name="blogPostIds">The blog post ids.</param>
+        /// <param name="page">The page number.</param>
         /// <param name="rpp">Records per blogPost limit.</param>
         /// <param name="sort">Sort by field.</param>
         /// <param name="embed">Embed related resources.</param>
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
-            int blogPost = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
+            DateTime? from = null, DateTime? to = null, string ids = null, string blogPostIds = null,
+            int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
             where T : BlogPostFile;
 
