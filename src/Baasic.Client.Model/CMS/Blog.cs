@@ -1,4 +1,5 @@
 ﻿using Baasic.Client.Common;
+using Baasic.Client.Model.Profile;
 
 namespace Baasic.Client.Model.CMS
 {
@@ -21,6 +22,12 @@ namespace Baasic.Client.Model.CMS
         /// </summary>
         /// <value>The description.</value>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the language.
+        /// </summary>
+        /// <value>The language.</value>
+        public Language Language { get; set; }
 
         /// <summary>
         /// Gets or sets the language identifier.
