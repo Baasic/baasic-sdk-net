@@ -124,7 +124,7 @@ namespace Baasic.Client.Clients.CMS
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync(searchQuery, null, null, null, null, null, null, null, null, null, page, rpp, sort, embed, fields);
+            return FindAsync(searchQuery, null, null, null, null, null, null, null, null, null, null, null, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -140,6 +140,8 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="template">The template.</param>
         /// <param name="blogPostStatusIds">The blog status ids.</param>
         /// <param name="languageIds">The language ids.</param>
+        /// <param name="blogSlugs">The blog slugs.</param>
+        /// <param name="tagSlugs">The tag slugs.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -149,10 +151,11 @@ namespace Baasic.Client.Clients.CMS
         public virtual Task<CollectionModelBase<BlogPost>> FindAsync(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null,
             string ids = null, string url = null, string template = null, string blogPostStatusIds = null, string languageIds = null,
+            string blogSlugs = null, string tagSlugs = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync<BlogPost>(searchQuery, from, to, publishedFrom, publishedTo, ids, url, template, blogPostStatusIds, languageIds, page, rpp, sort, embed, fields);
+            return FindAsync<BlogPost>(searchQuery, from, to, publishedFrom, publishedTo, ids, url, template, blogPostStatusIds, languageIds, blogSlugs, tagSlugs, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -169,6 +172,8 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="template">The template.</param>
         /// <param name="blogPostStatusIds">The blog post status ids.</param>
         /// <param name="languageIds">The language ids.</param>
+        /// <param name="blogSlugs">The blog slugs.</param>
+        /// <param name="tagSlugs">The tag slugs.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -178,6 +183,7 @@ namespace Baasic.Client.Clients.CMS
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string ids = null,
             string url = null, string template = null, string blogPostStatusIds = null, string languageIds = null,
+            string blogSlugs = null, string tagSlugs = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
             where T : BlogPost
@@ -195,6 +201,8 @@ namespace Baasic.Client.Clients.CMS
                 InitializeQueryStringPair(uriBuilder, "template", template);
                 InitializeQueryStringPair(uriBuilder, "blogPostStatusIds", blogPostStatusIds);
                 InitializeQueryStringPair(uriBuilder, "languageIds", languageIds);
+                InitializeQueryStringPair(uriBuilder, "blogSlugs", blogSlugs);
+                InitializeQueryStringPair(uriBuilder, "tagSlugs", tagSlugs);
                 var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {
