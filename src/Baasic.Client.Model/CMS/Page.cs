@@ -42,12 +42,6 @@ namespace Baasic.Client.Model.CMS
         public SGuid LanguageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the layout.
-        /// </summary>
-        /// <value>The layout.</value>
-        public string Layout { get; set; }
-
-        /// <summary>
         /// The Name property of the Page.
         /// </summary>
         public string Name { get; set; }
