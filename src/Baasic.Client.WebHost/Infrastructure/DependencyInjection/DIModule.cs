@@ -24,6 +24,7 @@ namespace Baasic.Client.WebHost.Infrastructure.DependencyInjection
 
             //dependencyResolver.Register<ITokenHandler, WebSessionTokenHandler>();
             dependencyResolver.Register<ITokenHandler, CookieTokenHandler>();
+            dependencyResolver.Register<IPlatformTokenHandler, PlatformCookieTokenHandler>();
 
             #endregion Security
         }

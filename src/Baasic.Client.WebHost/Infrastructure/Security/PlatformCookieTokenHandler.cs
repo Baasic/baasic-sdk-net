@@ -16,14 +16,14 @@ namespace Baasic.Client.Infrastructure.Security
     /// <summary>
     /// Web Cookie token handler.
     /// </summary>
-    public class PlatformCookieTokenHandler : IPlatformTokenHandler
+    public class CookieTokenHandler : ITokenHandler
     {
         #region Fields
 
         /// <summary>
         /// The Baasic authorization header key.
         /// </summary>
-        public const string HeaderKey = "Baasic_Platform_Authorization";
+        public const string HeaderKey = "Baasic_Authorization";
 
         private static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
 
