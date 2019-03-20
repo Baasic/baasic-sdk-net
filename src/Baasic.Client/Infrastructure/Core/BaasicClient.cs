@@ -2,6 +2,7 @@
 using Baasic.Client.Common.Configuration;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
+using Baasic.Client.Model;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -722,8 +723,9 @@ namespace Baasic.Client.Core
                     requestInfo = JsonConvert.SerializeObject(content);
                 }
             }
+            var responseObject = await ReadContentAsync<BaasicErrorResponse>(response);
 
-            throw new BaasicClientException((int)response.StatusCode, $"{response.ReasonPhrase}. Request:\"{requestInfo}\" Response:\"{await response.Content.ReadAsStringAsync()}\"");
+            throw new BaasicClientException((int)response.StatusCode, $"{response.ReasonPhrase}. Request:\"{requestInfo}\" Response:\"{await response.Content.ReadAsStringAsync()}\"", responseObject.Error, responseObject.ErrorCode);
         }
 
         #endregion Methods
