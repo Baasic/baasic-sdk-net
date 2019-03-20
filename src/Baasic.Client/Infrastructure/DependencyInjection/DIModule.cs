@@ -38,8 +38,10 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IJsonFormatter, JsonFormatter>();
 
             dependencyResolver.Register<ITokenHandler, DefaultTokenHandler>();
+            dependencyResolver.Register<IPlatformTokenHandler, DefaultPlatformTokenHandler>();
             dependencyResolver.Register<IAuthenticationToken, AuthenticationToken>();
             dependencyResolver.Register<ITokenClient, TokenClient>();
+            dependencyResolver.Register<IPlatformTokenClient, PlatformTokenClient>();
 
             dependencyResolver.Register<IKeyValueClient, KeyValueClient>();
             dependencyResolver.Register<IArticleSettingsClient, ArticleSettingsClient>();
