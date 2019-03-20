@@ -16,14 +16,14 @@ namespace Baasic.Client.Infrastructure.Security
     /// <summary>
     /// Web Cookie token handler.
     /// </summary>
-    public class CookieTokenHandler : ITokenHandler
+    public class PlatformCookieTokenHandler : IPlatformTokenHandler
     {
         #region Fields
 
         /// <summary>
         /// The Baasic authorization header key.
         /// </summary>
-        public const string HeaderKey = "Baasic_Authorization";
+        public const string HeaderKey = "Baasic_Platform_Authorization";
 
         private static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
 
@@ -32,7 +32,7 @@ namespace Baasic.Client.Infrastructure.Security
 #if !(NET461 || NET462)
         private readonly IHttpContextAccessor contextAccessor;
 
-        public CookieTokenHandler(IHttpContextAccessor contextAccessor)
+        public PlatformCookieTokenHandler(IHttpContextAccessor contextAccessor)
         {
             this.contextAccessor = contextAccessor;
         }
