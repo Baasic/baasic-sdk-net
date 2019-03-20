@@ -4,6 +4,7 @@ using Baasic.Client.Common.Infrastructure.Security;
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
+using Baasic.Client.Model;
 using Baasic.Client.Model.Security;
 using Baasic.Client.Utility;
 using System;
@@ -99,6 +100,7 @@ namespace Baasic.Client.Security.Token
                 {
                     var response = await client.SendAsync(request);
                     var responseContent = await response.Content.ReadAsStringAsync();
+                    var responseObject = await client.ReadContentAsync<BaasicErrorResponse>(response);
 
                     if (response.StatusCode.Equals(HttpStatusCode.OK) ||
                         response.StatusCode.Equals(HttpStatusCode.Created))
@@ -107,7 +109,7 @@ namespace Baasic.Client.Security.Token
                     }
                     else
                     {
-                        throw new BaasicClientException((long)response.StatusCode, "Unable to create new token.", new Exception(responseContent));
+                        throw new BaasicClientException((int)response.StatusCode, "Unable to create new token.", responseObject.Error, responseObject.ErrorCode, new Exception(responseContent));
                     }
                 }
                 catch (Exception ex)
