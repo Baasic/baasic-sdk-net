@@ -1,16 +1,16 @@
-﻿using Baasic.Client.Common.Configuration;
+﻿using Baasic.Client.Common;
+using Baasic.Client.Common.Configuration;
 using Baasic.Client.Common.Infrastructure.Security;
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
-using Baasic.Client.Model.Security;
-using System;
-using System.Net.Http;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Net;
 using Baasic.Client.Infrastructure.Security;
-using Baasic.Client.Common;
+using Baasic.Client.Model.Security;
 using Baasic.Client.Utility;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Baasic.Client.Security.Token
 {
@@ -23,6 +23,7 @@ namespace Baasic.Client.Security.Token
         {
             BaasicPlatformClientFactory = baasicPlatformClientFactory;
             JsonFormatter = jsonFormatter;
+            Configuration = configuration;
         }
 
         #endregion Constructors
@@ -67,7 +68,7 @@ namespace Baasic.Client.Security.Token
         {
             using (var client = BaasicPlatformClientFactory.Create(Configuration))
             {
-                if(tokenOptions == null)
+                if (tokenOptions == null)
                 {
                     tokenOptions = new TokenOptions();
                 }
@@ -164,7 +165,7 @@ namespace Baasic.Client.Security.Token
         /// <param name="embed">The embed.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<IAuthenticatedUser> GetUserAsync(string embed)
+        public virtual async Task<IAuthenticatedUser> GetUserAsync(string embed)
         {
             using (var client = this.BaasicPlatformClientFactory.Create(this.Configuration))
             {
@@ -199,7 +200,7 @@ namespace Baasic.Client.Security.Token
             }
         }
 
-        private IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
+        protected IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
         {
             var error = rawToken.Property("error");
             if (error != null)
@@ -218,7 +219,7 @@ namespace Baasic.Client.Security.Token
             return token;
         }
 
-        private bool SaveToken(IAuthenticationToken token)
+        protected bool SaveToken(IAuthenticationToken token)
         {
             if (token != null)
             {

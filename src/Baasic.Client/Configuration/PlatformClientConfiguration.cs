@@ -27,11 +27,20 @@ namespace Baasic.Client.Configuration
         /// <param name="baseAddress">The base address.</param>
         /// <param name="applicationIdentifier">The application identifier.</param>
         /// <param name="tokenHandler">The token handler.</param>
-        public PlatformClientConfiguration(string baseAddress, string applicationIdentifier, IPlatformTokenHandler tokenHandler)
+        public PlatformClientConfiguration(string baseAddress, IPlatformTokenHandler tokenHandler)
             : base(baseAddress, "platform", tokenHandler)
         {
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Platform token handler.
+        /// </summary>
+        public new IPlatformTokenHandler TokenHandler { get; private set; }
+
+        #endregion Properties
     }
 }
