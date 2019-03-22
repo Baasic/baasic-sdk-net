@@ -19,6 +19,7 @@ namespace Baasic.Client.Configuration
         public PlatformClientConfiguration(IPlatformTokenHandler tokenHandler)
             : base("platform", tokenHandler)
         {
+            TokenHandler = tokenHandler;
         }
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace Baasic.Client.Configuration
         public PlatformClientConfiguration(string baseAddress, IPlatformTokenHandler tokenHandler)
             : base(baseAddress, "platform", tokenHandler)
         {
+            TokenHandler = tokenHandler;
         }
 
         #endregion Constructors
