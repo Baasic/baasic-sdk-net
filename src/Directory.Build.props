@@ -1,13 +1,12 @@
 <Project>
   <PropertyGroup>
-    <Version>1.1.12</Version>
-    <FileVersion>1.1.12</FileVersion>
-    <AssemblyVersion>1.1.12</AssemblyVersion>
+    <Version>1.1.13</Version>
+    <FileVersion>1.1.13</FileVersion>
+    <AssemblyVersion>1.1.13</AssemblyVersion>
     <Authors>Mono Ltd.</Authors>
     <Company>Mono Ltd.</Company>
     <Description>Baasic .NET SDK Library</Description>
     <Copyright>Copyright © 2019</Copyright>
-    <AssemblyVersion>1.1.12</AssemblyVersion>
     <PackageProjectUrl>http://www.baasic.com</PackageProjectUrl>
     <PackageIconUrl>http://www.baasic.com/img/baasic-logo.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/Baasic/baasic-sdk-net/blob/master/LICENSE.txt</PackageLicenseUrl>
