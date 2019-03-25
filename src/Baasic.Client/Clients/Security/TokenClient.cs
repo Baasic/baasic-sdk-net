@@ -74,7 +74,7 @@ namespace Baasic.Client.Security.Token
         /// <param name="password">Password.</param>
         /// <param name="tokenOptions">The token options.</param>
         /// <returns>New <see cref="IAuthenticationToken" /> .</returns>
-        public async Task<IAuthenticationToken> CreateAsync(string username, string password, TokenOptions tokenOptions = null)
+        public virtual async Task<IAuthenticationToken> CreateAsync(string username, string password, TokenOptions tokenOptions = null)
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
             {
@@ -128,7 +128,7 @@ namespace Baasic.Client.Security.Token
         /// Asynchronously destroys the <see cref="IAuthenticationToken" /> .
         /// </summary>
         /// <returns>True if <see cref="IAuthenticationToken" /> is destroyed, false otherwise.</returns>
-        public async Task<bool> DestroyAsync()
+        public virtual async Task<bool> DestroyAsync()
         {
             try
             {
@@ -174,7 +174,7 @@ namespace Baasic.Client.Security.Token
         /// </summary>
         /// <param name="embed">Embed related resources.</param>
         /// <returns>New <see cref="IAuthenticationUser" /> .</returns>
-        public async Task<IAuthenticatedUser> GetUserAsync(string embed)
+        public virtual async Task<IAuthenticatedUser> GetUserAsync(string embed)
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
             {
@@ -189,7 +189,7 @@ namespace Baasic.Client.Security.Token
         /// </summary>
         /// <param name="token">Token to update.</param>
         /// <returns>New <see cref="IAuthenticationToken" /> .</returns>
-        public async Task<IAuthenticationToken> RefreshAsync()
+        public virtual async Task<IAuthenticationToken> RefreshAsync()
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
             {
@@ -209,7 +209,7 @@ namespace Baasic.Client.Security.Token
             }
         }
 
-        private IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
+        protected virtual IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
         {
             var error = rawToken.Property("error");
             if (error != null)
@@ -228,7 +228,7 @@ namespace Baasic.Client.Security.Token
             return token;
         }
 
-        private bool SaveToken(IAuthenticationToken token)
+        protected virtual bool SaveToken(IAuthenticationToken token)
         {
             if (token != null)
             {
