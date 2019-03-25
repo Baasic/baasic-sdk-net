@@ -723,9 +723,14 @@ namespace Baasic.Client.Core
                     requestInfo = JsonConvert.SerializeObject(content);
                 }
             }
-            var responseObject = await ReadContentAsync<BaasicErrorResponse>(response);
+            BaasicErrorResponse responseObject = null;
+            try
+            {
+                responseObject = await ReadContentAsync<BaasicErrorResponse>(response);
+            }
+            catch { }
 
-            throw new BaasicClientException((int)response.StatusCode, $"{response.ReasonPhrase}. Request:\"{requestInfo}\" Response:\"{await response.Content.ReadAsStringAsync()}\"", responseObject.Error, responseObject.ErrorCode);
+            throw new BaasicClientException((int)response.StatusCode, $"{response.ReasonPhrase}. Request:\"{requestInfo}\" Response:\"{await response.Content.ReadAsStringAsync()}\"", responseObject?.Error, responseObject?.ErrorCode ?? 0);
         }
 
         #endregion Methods
