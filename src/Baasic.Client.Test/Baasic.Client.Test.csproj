@@ -3,19 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net461;net462;net47;net471;net472;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2</TargetFrameworks>
     <AssemblyName>Baasic.Client.Tests</AssemblyName>
-    <RootNamespace>Baasic.Client.Tests</RootNamespace>
-    <Authors>Mono Ltd.</Authors>
-    <Company>Mono Ltd.</Company>
-    <Product>Baasic .NET SDK</Product>
-    <AssemblyVersion>1.1.11</AssemblyVersion>
-    <Description>Baasic .NET SDK Library</Description>
-    <Copyright>Copyright © 2019</Copyright>
-    <FileVersion>1.1.10</FileVersion>
-    <Version>1.1.11</Version>
-    <PackageProjectUrl>http://www.baasic.com</PackageProjectUrl>
-    <PackageIconUrl>http://www.baasic.com/img/baasic-logo.png</PackageIconUrl>
-    <PackageLicenseUrl>https://github.com/Baasic/baasic-sdk-net/blob/master/LICENSE.txt</PackageLicenseUrl>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RootNamespace>Baasic.Client.Tests</RootNamespace>    
     <PackageTags>Baasic;.NET;Portable;Clients;Tests</PackageTags>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

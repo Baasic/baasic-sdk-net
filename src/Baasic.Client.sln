@@ -3,19 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client", "Baasic.Client\Baasic.Client.csproj", "{DAB61A64-FD9D-4575-BA22-46F86ED61768}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baasic.Client", "Baasic.Client\Baasic.Client.csproj", "{DAB61A64-FD9D-4575-BA22-46F86ED61768}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.AutoFac", "Baasic.Client.AutoFac\Baasic.Client.AutoFac.csproj", "{9A3CA349-A0C9-4BDA-BEFC-E924D20243C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baasic.Client.AutoFac", "Baasic.Client.AutoFac\Baasic.Client.AutoFac.csproj", "{9A3CA349-A0C9-4BDA-BEFC-E924D20243C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.Common", "Baasic.Client.Common\Baasic.Client.Common.csproj", "{EB532BAF-5D6A-43D3-8EA0-331D934C993F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baasic.Client.Common", "Baasic.Client.Common\Baasic.Client.Common.csproj", "{EB532BAF-5D6A-43D3-8EA0-331D934C993F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.Model", "Baasic.Client.Model\Baasic.Client.Model.csproj", "{797426D1-F402-486B-A713-EB9F027A9C19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baasic.Client.Model", "Baasic.Client.Model\Baasic.Client.Model.csproj", "{797426D1-F402-486B-A713-EB9F027A9C19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.Ninject", "Baasic.Client.Ninject\Baasic.Client.Ninject.csproj", "{D1D87074-88CF-4D38-8FFA-62FD6CA18810}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baasic.Client.Ninject", "Baasic.Client.Ninject\Baasic.Client.Ninject.csproj", "{D1D87074-88CF-4D38-8FFA-62FD6CA18810}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.Test", "Baasic.Client.Test\Baasic.Client.Test.csproj", "{BD46E08E-267D-4CF4-A976-3C49F8A26959}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baasic.Client.Test", "Baasic.Client.Test\Baasic.Client.Test.csproj", "{BD46E08E-267D-4CF4-A976-3C49F8A26959}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baasic.Client.WebHost", "Baasic.Client.WebHost\Baasic.Client.WebHost.csproj", "{A09774DA-719F-424B-B834-E25E89F9EEAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baasic.Client.WebHost", "Baasic.Client.WebHost\Baasic.Client.WebHost.csproj", "{A09774DA-719F-424B-B834-E25E89F9EEAC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{05F4940F-B00B-47FC-B398-73BCF40E43A5}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
