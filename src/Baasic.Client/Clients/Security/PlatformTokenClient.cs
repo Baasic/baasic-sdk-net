@@ -65,7 +65,7 @@ namespace Baasic.Client.Security.Token
         /// <param name="tokenOptions">The token options.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<IAuthenticationToken> CreateAsync(string username, string password, TokenOptions tokenOptions = null)
+        public virtual async Task<IAuthenticationToken> CreateAsync(string username, string password, TokenOptions tokenOptions = null)
         {
             using (var client = BaasicPlatformClientFactory.Create(Configuration))
             {
@@ -125,7 +125,7 @@ namespace Baasic.Client.Security.Token
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<bool> DestroyAsync()
+        public virtual async Task<bool> DestroyAsync()
         {
             try
             {
@@ -187,7 +187,7 @@ namespace Baasic.Client.Security.Token
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<IAuthenticationToken> RefreshAsync()
+        public virtual async Task<IAuthenticationToken> RefreshAsync()
         {
             using (var client = this.BaasicPlatformClientFactory.Create(this.Configuration))
             {
@@ -207,7 +207,7 @@ namespace Baasic.Client.Security.Token
             }
         }
 
-        protected IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
+        protected virtual IAuthenticationToken ReadToken(Newtonsoft.Json.Linq.JObject rawToken)
         {
             var error = rawToken.Property("error");
             if (error != null)
@@ -226,7 +226,7 @@ namespace Baasic.Client.Security.Token
             return token;
         }
 
-        protected bool SaveToken(IAuthenticationToken token)
+        protected virtual bool SaveToken(IAuthenticationToken token)
         {
             if (token != null)
             {
