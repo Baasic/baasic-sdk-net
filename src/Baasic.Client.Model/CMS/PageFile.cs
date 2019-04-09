@@ -16,11 +16,6 @@ namespace Baasic.Client.Model.CMS
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the JSON object.
-        /// </summary>
-        public string Json { get; set; }
-
-        /// <summary>
         /// Gets or sets the Page file entry.
         /// </summary>
         /// <value>The Page file entry.</value>

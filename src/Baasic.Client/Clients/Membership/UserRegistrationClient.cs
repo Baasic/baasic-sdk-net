@@ -1,4 +1,5 @@
-﻿using Baasic.Client.Configuration;
+﻿using Baasic.Client.Common.Configuration;
+using Baasic.Client.Common.Infrastructure.Security;
 using Baasic.Client.Core;
 using Baasic.Client.Formatters;
 using Baasic.Client.Infrastructure.Security;
@@ -7,8 +8,6 @@ using Baasic.Client.Model.Security;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Baasic.Client.Common.Infrastructure.Security;
-using Baasic.Client.Common.Configuration;
 
 namespace Baasic.Client.Membership
 {
@@ -118,7 +117,7 @@ namespace Baasic.Client.Membership
         {
             using (var client = this.BaasicClientFactory.Create(this.Configuration))
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, this.ModuleRelativePath))
+                var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(this.ModuleRelativePath))
                 {
                     Content = JsonFormatter.SerializeToHttpContent(options)
                 };

@@ -1,4 +1,6 @@
+using Baasic.Client.Clients.Blogs;
 using Baasic.Client.Clients.CMS;
+using Baasic.Client.Clients.MediaVault;
 using Baasic.Client.Clients.Profile;
 using Baasic.Client.Common.Infrastructure.DependencyInjection;
 using Baasic.Client.Common.Infrastructure.Security;
@@ -64,6 +66,7 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IPageClient, PageClient>();
             dependencyResolver.Register<IPageStatusClient, PageStatusClient>();
             dependencyResolver.Register<IPageFileClient, PageFileClient>();
+            dependencyResolver.Register<IPageFileStreamClient, PageFileStreamClient>();
             dependencyResolver.Register<IMenuClient, MenuClient>();
             dependencyResolver.Register<INavigationClient, NavigationClient>();
 
@@ -73,6 +76,9 @@ namespace Baasic.Client.Infrastructure.DependencyInjection
             dependencyResolver.Register<IBlogPostFileClient, BlogPostFileClient>();
             dependencyResolver.Register<IBlogTagClient, BlogTagClient>();
             dependencyResolver.Register<IBlogPostFileStreamClient, BlogPostFileStreamClient>();
+
+            dependencyResolver.Register<IFileClient, FileClient>();
+            dependencyResolver.Register<IFileStreamClient, FileStreamClient>();
         }
 
         #endregion Methods

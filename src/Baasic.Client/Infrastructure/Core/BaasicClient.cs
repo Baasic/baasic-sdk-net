@@ -580,6 +580,57 @@ namespace Baasic.Client.Core
         }
 
         /// <summary>
+        /// Asynchronously updates the <typeparamref name="T" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Resource type.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="file">The file that needs to be uploaded.</param>
+        /// <param name="fileName">The name of a file.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        public virtual Task<T> PutFileAsync<T>(string requestUri, byte[] file, string fileName)
+        {
+            return PutFileAsync<T>(requestUri, file, fileName, new CancellationToken());
+        }
+
+        /// <summary>
+        /// Asynchronously updates the <typeparamref name="T" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Resource type.</typeparam>
+        /// <param name="requestUri">Request URI.</param>
+        /// <param name="file">The file that needs to be uploaded.</param>
+        /// <param name="fileName">The name of a file.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Newly created <typeparamref name="T" /> .</returns>
+        public virtual async Task<T> PutFileAsync<T>(string requestUri, byte[] file, string fileName, CancellationToken cancellationToken)
+        {
+            HttpClient client = Client;
+            {
+                using (var multiContent = new MultipartFormDataContent())
+                using (ByteArrayContent bytes = new ByteArrayContent(file))
+                {
+                    bytes.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = fileName };
+                    multiContent.Add(bytes, "file");
+                    var request = new HttpRequestMessage(HttpMethod.Put, requestUri)
+                    {
+                        Content = multiContent
+                    };
+                    InitializeClientAuthorization(request);
+
+                    var response = await client.SendAsync(request, cancellationToken);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        await ThrowExceptionAsync(new { Uri = requestUri, Content = multiContent }, response);
+                    }
+
+                    this.ProlongSlidingToken();
+
+                    return await ReadContentAsync<T>(response);
+                }
+            }
+        }
+
+        /// <summary>
         /// Returns deserialized content from response.
         /// </summary>
         /// <typeparam name="T">Resource type.</typeparam>

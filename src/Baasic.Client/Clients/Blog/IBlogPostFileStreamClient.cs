@@ -1,9 +1,9 @@
 ﻿using Baasic.Client.Common;
-using Baasic.Client.Model.CMS;
+using Baasic.Client.Model.Blogs;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.Clients.CMS
+namespace Baasic.Client.Clients.Blogs
 {
     /// <summary>
     /// The blog post file stream client contract.
@@ -38,6 +38,14 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="blogPostFile">Resource instance.</param>
         /// <returns>Newly created <see cref="BlogPostFile" /> .</returns>
         Task<BlogPostFile> InsertAsync(string fileName, byte[] file, SGuid blogPostId);
+
+        /// <summary>
+        /// Asynchronously updates the <see cref="BlogPostFile" /> into the system.
+        /// </summary>
+        /// <param name="id">The unique identifier.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="file">The file.</param>
+        Task<bool> UpdateAsync(object id, string fileName, byte[] file);
 
         #endregion Methods
     }

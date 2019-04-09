@@ -1,24 +1,19 @@
 ﻿using Baasic.Client.Common;
 
-namespace Baasic.Client.Model.CMS
+namespace Baasic.Client.Model.MediaVault
 {
     /// <summary>
-    /// The blog post file entry class.
+    /// File entry model.
     /// </summary>
-    public class BlogPostFileEntry : BuiltInModelBase
+    /// <seealso cref="Baasic.Client.Model.BuiltInModelBase" />
+    public class FileEntry : BuiltInModelBase
     {
         #region Properties
 
         /// <summary>
-        /// Gets or sets the BlogPost identifier.
-        /// </summary>
-        /// <value>The BlogPost identifier.</value>
-        public SGuid BlogPostId { get; set; }
-
-        /// <summary>
         /// Gets or sets the file derived entries.
         /// </summary>
-        public DerivedBlogPostFileEntry[] DerivedEntries { get; set; }
+        public DerivedEntry[] DerivedEntries { get; set; }
 
         /// <summary>
         /// Gets or sets the resource description.
@@ -53,7 +48,7 @@ namespace Baasic.Client.Model.CMS
         /// <summary>
         /// Gets or sets the owner user.
         /// </summary>
-        public BlogPostFileOwner OwnerUser { get; set; }
+        public FileOwner OwnerUser { get; set; }
 
         /// <summary>
         /// Gets or sets the owner user id.
@@ -61,15 +56,14 @@ namespace Baasic.Client.Model.CMS
         public SGuid? OwnerUserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the parent identifier.
-        /// </summary>
-        /// <value>The parent identifier.</value>
-        public SGuid ParentId { get; set; }
-
-        /// <summary>
         /// Gets or sets the path.
         /// </summary>
-        public virtual string Path { get; set; }
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Gets or sets the policies.
+        /// </summary>
+        public FilePolicy[] Policies { get; set; }
 
         /// <summary>
         /// Gets or sets the width.

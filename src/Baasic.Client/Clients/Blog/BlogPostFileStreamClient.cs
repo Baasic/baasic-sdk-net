@@ -1,13 +1,14 @@
 ﻿using Baasic.Client.Common;
 using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
-using Baasic.Client.Model.CMS;
+using Baasic.Client.Model.Blogs;
 using Baasic.Client.Utility;
 using System;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.Clients.CMS
+namespace Baasic.Client.Clients.Blogs
 {
     /// <summary>
     /// The blog post file stream client class. <seealso cref="ClientBase" /><seealso cref="IBlogPostFileStreamClient" />
@@ -101,6 +102,31 @@ namespace Baasic.Client.Clients.CMS
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, fileName)));
                 InitializeQueryStringPair(uriBuilder, "blogPostId", blogPostId);
                 return client.PostFileAsync<BlogPostFile>(uriBuilder.ToString(), file, fileName);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously updates the <see cref="BlogPostFile" /> into the system.
+        /// </summary>
+        /// <param name="id">The unique identifier.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="file">The file.</param>
+        public virtual async Task<bool> UpdateAsync(object id, string fileName, byte[] file)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, id)));
+                var result = await client.PutFileAsync<HttpStatusCode>(uriBuilder.ToString(), file, fileName);
+                switch (result)
+                {
+                    case HttpStatusCode.Created:
+                    case HttpStatusCode.NoContent:
+                    case HttpStatusCode.OK:
+                        return true;
+
+                    default:
+                        return false;
+                }
             }
         }
 
