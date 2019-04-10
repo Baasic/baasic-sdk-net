@@ -36,7 +36,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// </summary>
         /// <param name="fileName">The file name.</param>
         /// <param name="file">The file.</param>
-        Task<FileEntry> InsertAsync(string fileName, byte[] file);
+        Task<FileEntry> InsertAsync(string fileName, Stream file);
 
         /// <summary>
         /// Asynchronously updates the <see cref="FileEntry" /> into the system.
@@ -44,7 +44,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// <param name="id">The unique identifier.</param>
         /// <param name="fileName">The file name.</param>
         /// <param name="file">The file.</param>
-        Task<bool> UpdateAsync(object id, string fileName, byte[] file);
+        Task<bool> UpdateAsync(object id, string fileName, Stream file);
 
         #endregion Methods
     }

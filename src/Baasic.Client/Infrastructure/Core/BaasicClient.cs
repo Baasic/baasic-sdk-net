@@ -452,7 +452,7 @@ namespace Baasic.Client.Core
         /// <param name="file">The file that needs to be uploaded.</param>
         /// <param name="fileName">The name of a file.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T> PostFileAsync<T>(string requestUri, byte[] file, string fileName)
+        public virtual Task<T> PostFileAsync<T>(string requestUri, Stream file, string fileName)
         {
             return PostFileAsync<T>(requestUri, file, fileName, new CancellationToken());
         }
@@ -466,15 +466,16 @@ namespace Baasic.Client.Core
         /// <param name="fileName">The name of a file.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        public virtual async Task<T> PostFileAsync<T>(string requestUri, byte[] file, string fileName, CancellationToken cancellationToken)
+        public virtual async Task<T> PostFileAsync<T>(string requestUri, Stream file, string fileName, CancellationToken cancellationToken)
         {
             HttpClient client = Client;
             {
+                file.Position = 0;
                 using (var multiContent = new MultipartFormDataContent())
-                using (ByteArrayContent bytes = new ByteArrayContent(file))
+                using (var streamContent = new StreamContent(file))
                 {
-                    bytes.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = fileName };
-                    multiContent.Add(bytes, "file");
+                    streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { FileName = fileName };
+                    multiContent.Add(streamContent, "file");
                     var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
                     {
                         Content = multiContent
@@ -485,7 +486,7 @@ namespace Baasic.Client.Core
 
                     if (!response.IsSuccessStatusCode)
                     {
-                        await ThrowExceptionAsync(new { Uri = requestUri, Content = multiContent }, response);
+                        await ThrowExceptionAsync(new { Uri = requestUri }, response);
                     }
 
                     this.ProlongSlidingToken();
@@ -587,7 +588,7 @@ namespace Baasic.Client.Core
         /// <param name="file">The file that needs to be uploaded.</param>
         /// <param name="fileName">The name of a file.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T> PutFileAsync<T>(string requestUri, byte[] file, string fileName)
+        public virtual Task<T> PutFileAsync<T>(string requestUri, Stream file, string fileName)
         {
             return PutFileAsync<T>(requestUri, file, fileName, new CancellationToken());
         }
@@ -601,15 +602,16 @@ namespace Baasic.Client.Core
         /// <param name="fileName">The name of a file.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        public virtual async Task<T> PutFileAsync<T>(string requestUri, byte[] file, string fileName, CancellationToken cancellationToken)
+        public virtual async Task<T> PutFileAsync<T>(string requestUri, Stream file, string fileName, CancellationToken cancellationToken)
         {
             HttpClient client = Client;
             {
+                file.Position = 0;
                 using (var multiContent = new MultipartFormDataContent())
-                using (ByteArrayContent bytes = new ByteArrayContent(file))
+                using (StreamContent streamContent = new StreamContent(file))
                 {
-                    bytes.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = fileName };
-                    multiContent.Add(bytes, "file");
+                    streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { FileName = fileName };
+                    multiContent.Add(streamContent, "file");
                     var request = new HttpRequestMessage(HttpMethod.Put, requestUri)
                     {
                         Content = multiContent

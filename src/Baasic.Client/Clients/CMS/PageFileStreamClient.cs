@@ -95,7 +95,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pageId">Resource instance.</param>
         /// <returns>Newly created <see cref="PageFile" /> .</returns>
-        public virtual Task<PageFile> InsertAsync(string fileName, byte[] file, SGuid pageId)
+        public virtual Task<PageFile> InsertAsync(string fileName, Stream file, SGuid pageId)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
@@ -111,7 +111,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="id">The unique identifier.</param>
         /// <param name="fileName">The file name.</param>
         /// <param name="file">The file.</param>
-        public virtual async Task<bool> UpdateAsync(object id, string fileName, byte[] file)
+        public virtual async Task<bool> UpdateAsync(object id, string fileName, Stream file)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {

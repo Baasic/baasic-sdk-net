@@ -125,7 +125,7 @@ namespace Baasic.Client.Clients.MediaVault
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync(searchQuery, null, null, null, null, null, null, page, rpp, sort, embed, fields);
+            return FindAsync(searchQuery, null, null, null, null, null, null, null, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -138,6 +138,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// <param name="ids">The file ids.</param>
         /// <param name="minFileSize">The min file size.</param>
         /// <param name="maxFileSize">The max file size.</param>
+        /// <param name="fileExtensions">The file extensions.</param>
         /// <param name="page">The page number.</param>
         /// <param name="rpp">Records per blogPost limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -147,10 +148,10 @@ namespace Baasic.Client.Clients.MediaVault
         public virtual Task<CollectionModelBase<FileEntry>> FindAsync(string searchQuery = DefaultSearchQuery,
             string fileName = null,
             DateTime? from = null, DateTime? to = null, string ids = null, int? minFileSize = null, int? maxFileSize = null,
-            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string fileExtensions = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync<FileEntry>(searchQuery, fileName, from, to, ids, minFileSize, maxFileSize, page, rpp, sort, embed, fields);
+            return FindAsync<FileEntry>(searchQuery, fileName, from, to, ids, minFileSize, maxFileSize, fileExtensions, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -164,6 +165,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// <param name="ids">The file ids.</param>
         /// <param name="maxFileSize">The max file size.</param>
         /// <param name="minFileSize">The min file size.</param>
+        /// <param name="fileExtensions">The file extensions.</param>
         /// <param name="page">The page number.</param>
         /// <param name="rpp">Records per blogPost limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -173,7 +175,7 @@ namespace Baasic.Client.Clients.MediaVault
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
             string fileName = null,
             DateTime? from = null, DateTime? to = null, string ids = null, int? minFileSize = null, int? maxFileSize = null,
-            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string fileExtensions = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
             where T : FileEntry
         {
@@ -187,6 +189,7 @@ namespace Baasic.Client.Clients.MediaVault
                 InitializeQueryStringPair(uriBuilder, "ids", ids);
                 InitializeQueryStringPair(uriBuilder, "minFileSize", minFileSize);
                 InitializeQueryStringPair(uriBuilder, "maxFileSize", maxFileSize);
+                InitializeQueryStringPair(uriBuilder, "fileExtensions", fileExtensions);
                 var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {

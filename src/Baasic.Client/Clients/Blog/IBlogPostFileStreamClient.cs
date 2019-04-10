@@ -37,7 +37,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogPostFile">Resource instance.</param>
         /// <returns>Newly created <see cref="BlogPostFile" /> .</returns>
-        Task<BlogPostFile> InsertAsync(string fileName, byte[] file, SGuid blogPostId);
+        Task<BlogPostFile> InsertAsync(string fileName, Stream file, SGuid blogPostId);
 
         /// <summary>
         /// Asynchronously updates the <see cref="BlogPostFile" /> into the system.
@@ -45,7 +45,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="id">The unique identifier.</param>
         /// <param name="fileName">The file name.</param>
         /// <param name="file">The file.</param>
-        Task<bool> UpdateAsync(object id, string fileName, byte[] file);
+        Task<bool> UpdateAsync(object id, string fileName, Stream file);
 
         #endregion Methods
     }

@@ -94,7 +94,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// </summary>
         /// <param name="fileName">The file name.</param>
         /// <param name="file">The file.</param>
-        public virtual Task<FileEntry> InsertAsync(string fileName, byte[] file)
+        public virtual Task<FileEntry> InsertAsync(string fileName, Stream file)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
@@ -109,7 +109,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// <param name="id">The unique identifier.</param>
         /// <param name="fileName">The file name.</param>
         /// <param name="file">The file.</param>
-        public virtual async Task<bool> UpdateAsync(object id, string fileName, byte[] file)
+        public virtual async Task<bool> UpdateAsync(object id, string fileName, Stream file)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {

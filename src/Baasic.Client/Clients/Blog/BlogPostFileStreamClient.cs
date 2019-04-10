@@ -95,7 +95,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogPostFile">Resource instance.</param>
         /// <returns>Newly created <see cref="BlogPostFile" /> .</returns>
-        public virtual Task<BlogPostFile> InsertAsync(string fileName, byte[] file, SGuid blogPostId)
+        public virtual Task<BlogPostFile> InsertAsync(string fileName, Stream file, SGuid blogPostId)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
@@ -111,7 +111,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="id">The unique identifier.</param>
         /// <param name="fileName">The file name.</param>
         /// <param name="file">The file.</param>
-        public virtual async Task<bool> UpdateAsync(object id, string fileName, byte[] file)
+        public virtual async Task<bool> UpdateAsync(object id, string fileName, Stream file)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {

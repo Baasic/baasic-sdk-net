@@ -179,7 +179,7 @@ namespace Baasic.Client.Core
         /// <param name="file">The file that needs to be uploaded.</param>
         /// <param name="fileName">The name of a file.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        Task<T> PostFileAsync<T>(string requestUri, byte[] file, string fileName);
+        Task<T> PostFileAsync<T>(string requestUri, Stream file, string fileName);
 
         /// <summary>
         /// Asynchronously insert the <typeparamref name="T" /> into the system.
@@ -190,7 +190,7 @@ namespace Baasic.Client.Core
         /// <param name="fileName">The name of a file.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        Task<T> PostFileAsync<T>(string requestUri, byte[] file, string fileName, CancellationToken cancellationToken);
+        Task<T> PostFileAsync<T>(string requestUri, Stream file, string fileName, CancellationToken cancellationToken);
 
         /// <summary>
         /// Asynchronously update the <typeparamref name="TIn" /> in the system.
@@ -240,7 +240,7 @@ namespace Baasic.Client.Core
         /// <param name="file">The file that needs to be uploaded.</param>
         /// <param name="fileName">The name of a file.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        Task<T> PutFileAsync<T>(string requestUri, byte[] file, string fileName);
+        Task<T> PutFileAsync<T>(string requestUri, Stream file, string fileName);
 
         /// <summary>
         /// Asynchronously updates the <typeparamref name="T" /> into the system.
@@ -251,7 +251,7 @@ namespace Baasic.Client.Core
         /// <param name="fileName">The name of a file.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Newly created <typeparamref name="T" /> .</returns>
-        Task<T> PutFileAsync<T>(string requestUri, byte[] file, string fileName, CancellationToken cancellationToken);
+        Task<T> PutFileAsync<T>(string requestUri, Stream file, string fileName, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns byte array content from response.

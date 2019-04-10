@@ -37,7 +37,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pageId">Resource instance.</param>
         /// <returns>Newly created <see cref="PageFile" /> .</returns>
-        Task<PageFile> InsertAsync(string fileName, byte[] file, SGuid pageId);
+        Task<PageFile> InsertAsync(string fileName, Stream file, SGuid pageId);
 
         /// <summary>
         /// Asynchronously updates the <see cref="PageFile" /> into the system.
@@ -45,7 +45,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="id">The unique identifier.</param>
         /// <param name="fileName">The file name.</param>
         /// <param name="file">The file.</param>
-        Task<bool> UpdateAsync(object id, string fileName, byte[] file);
+        Task<bool> UpdateAsync(object id, string fileName, Stream file);
 
         #endregion Methods
     }
