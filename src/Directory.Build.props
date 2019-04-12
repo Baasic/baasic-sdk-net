@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Version>1.1.15-alpha20</Version>
+    <Version>1.1.15-alpha22</Version>
     <FileVersion>1.1.15</FileVersion>
     <AssemblyVersion>1.1.15</AssemblyVersion>
     <Authors>Mono Ltd.</Authors>

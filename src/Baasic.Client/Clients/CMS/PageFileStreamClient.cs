@@ -60,6 +60,25 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="width">The file width.</param>
         /// <param name="height">The file height.</param>
         /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        public virtual Task<Stream> GetFileAsync(object id, string fileName, int? width = null, int? height = null)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{1}/{2}", ModuleRelativePath, id, fileName)));
+                InitializeQueryStringPair(uriBuilder, "width", width);
+                InitializeQueryStringPair(uriBuilder, "height", height);
+                return client.GetAsync(uriBuilder.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously gets the <see cref="PageFile" /> from the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="PageFile" />.</typeparam>
+        /// <param name="id">The identifier.</param>
+        /// <param name="width">The file width.</param>
+        /// <param name="height">The file height.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
         public virtual Task<Stream> GetFileAsync(object id, int? width = null, int? height = null)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))

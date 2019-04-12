@@ -20,6 +20,16 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="width">The file width.</param>
         /// <param name="height">The file height.</param>
         /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        Task<Stream> GetFileAsync(object id, string fileName, int? width = null, int? height = null);
+
+        /// <summary>
+        /// Asynchronously gets the <see cref="PageFile" /> from the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="PageFile" />.</typeparam>
+        /// <param name="id">The identifier.</param>
+        /// <param name="width">The file width.</param>
+        /// <param name="height">The file height.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
         Task<Stream> GetFileAsync(object id, int? width = null, int? height = null);
 
         /// <summary>
