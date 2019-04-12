@@ -1,4 +1,4 @@
-﻿namespace Baasic.Client.Model.CMS
+﻿namespace Baasic.Client.Model.Blogs
 {
     public class BlogPostStatus : BuiltInModelBase
     {

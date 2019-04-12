@@ -1,10 +1,10 @@
 ﻿using Baasic.Client.Core;
 using Baasic.Client.Model;
-using Baasic.Client.Model.CMS;
+using Baasic.Client.Model.Blogs;
 using System;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.Clients.CMS
+namespace Baasic.Client.Clients.Blogs
 {
     /// <summary>
     /// The blog post status client contract.

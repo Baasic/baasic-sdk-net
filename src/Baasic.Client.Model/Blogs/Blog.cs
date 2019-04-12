@@ -1,7 +1,7 @@
 ﻿using Baasic.Client.Common;
 using Baasic.Client.Model.Profile;
 
-namespace Baasic.Client.Model.CMS
+namespace Baasic.Client.Model.Blogs
 {
     /// <summary>
     /// Blog model.

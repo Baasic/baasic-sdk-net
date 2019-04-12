@@ -1,6 +1,6 @@
 ﻿using Baasic.Client.Common;
 
-namespace Baasic.Client.Model.CMS
+namespace Baasic.Client.Model.Blogs
 {
     /// <summary>
     /// The page file class.
