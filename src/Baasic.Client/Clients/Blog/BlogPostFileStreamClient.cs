@@ -1,13 +1,14 @@
 ﻿using Baasic.Client.Common;
 using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
-using Baasic.Client.Model.CMS;
+using Baasic.Client.Model.Blogs;
 using Baasic.Client.Utility;
 using System;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.Clients.CMS
+namespace Baasic.Client.Clients.Blogs
 {
     /// <summary>
     /// The blog post file stream client class. <seealso cref="ClientBase" /><seealso cref="IBlogPostFileStreamClient" />
@@ -59,11 +60,30 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="width">The file width.</param>
         /// <param name="height">The file height.</param>
         /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
+        public virtual Task<Stream> GetFileAsync(object id, string fileName, int? width = null, int? height = null)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{1}/{2}", ModuleRelativePath, id, fileName)));
+                InitializeQueryStringPair(uriBuilder, "width", width);
+                InitializeQueryStringPair(uriBuilder, "height", height);
+                return client.GetAsync(uriBuilder.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously gets the <see cref="BlogPostFile" /> from the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="BlogPostFile" />.</typeparam>
+        /// <param name="id">The identifier.</param>
+        /// <param name="width">The file width.</param>
+        /// <param name="height">The file height.</param>
+        /// <returns>If found <typeparamref name="T" /> is returned, otherwise null.</returns>
         public virtual Task<Stream> GetFileAsync(object id, int? width = null, int? height = null)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, id)));
                 InitializeQueryStringPair(uriBuilder, "width", width);
                 InitializeQueryStringPair(uriBuilder, "height", height);
                 return client.GetAsync(uriBuilder.ToString());
@@ -82,7 +102,7 @@ namespace Baasic.Client.Clients.CMS
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{{0}}", ModuleRelativePath), id));
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, id)));
                 InitializeQueryStringPair(uriBuilder, "width", width);
                 InitializeQueryStringPair(uriBuilder, "height", height);
                 return Task.FromResult(uriBuilder.ToString());
@@ -94,13 +114,38 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="blogPostFile">Resource instance.</param>
         /// <returns>Newly created <see cref="BlogPostFile" /> .</returns>
-        public virtual Task<BlogPostFile> InsertAsync(string fileName, byte[] file, SGuid blogPostId)
+        public virtual Task<BlogPostFile> InsertAsync(string fileName, Stream file, SGuid blogPostId)
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
                 UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, fileName)));
                 InitializeQueryStringPair(uriBuilder, "blogPostId", blogPostId);
                 return client.PostFileAsync<BlogPostFile>(uriBuilder.ToString(), file, fileName);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously updates the <see cref="BlogPostFile" /> into the system.
+        /// </summary>
+        /// <param name="id">The unique identifier.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="file">The file.</param>
+        public virtual async Task<bool> UpdateAsync(object id, string fileName, Stream file)
+        {
+            using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+            {
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/{1}", ModuleRelativePath, id)));
+                var result = await client.PutFileAsync<HttpStatusCode>(uriBuilder.ToString(), file, fileName);
+                switch (result)
+                {
+                    case HttpStatusCode.Created:
+                    case HttpStatusCode.NoContent:
+                    case HttpStatusCode.OK:
+                        return true;
+
+                    default:
+                        return false;
+                }
             }
         }
 

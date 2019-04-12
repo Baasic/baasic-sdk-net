@@ -2,13 +2,13 @@
 using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
-using Baasic.Client.Model.CMS;
+using Baasic.Client.Model.Blogs;
 using Baasic.Client.Utility;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.Clients.CMS
+namespace Baasic.Client.Clients.Blogs
 {
     /// <summary>
     /// The blogPost file client class.
@@ -53,6 +53,34 @@ namespace Baasic.Client.Clients.CMS
         #region Methods
 
         /// <summary>
+        /// Asynchronously deletes the collection <see cref="BlogPostFile" /> from the system.
+        /// </summary>
+        /// <param name="ids">The collection of identifiers.</param>
+        /// <returns>True if the collection <see cref="BlogPostFile" /> is deleted, false otherwise.</returns>
+        public virtual Task<bool> BulkDeleteAsync(object ids)
+        {
+            try
+            {
+                using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
+                {
+                    return client.DeleteAsync(client.GetApiUrl(string.Format("{0}/batch/unlink", ModuleRelativePath)), ids);
+                }
+            }
+            catch (BaasicClientException ex)
+            {
+                if (ex.ErrorCode == (int)HttpStatusCode.NotFound)
+                {
+                    return Task.FromResult(false);
+                }
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Asynchronously deletes the <see cref="BlogPostFile" /> from the system.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -94,7 +122,7 @@ namespace Baasic.Client.Clients.CMS
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync(searchQuery, null, null, null, null, page, rpp, sort, embed, fields);
+            return FindAsync(searchQuery, null, null, null, null, null, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -105,6 +133,7 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
         /// <param name="blogPostIds">The blog post ids.</param>
+        /// <param name="fileIds">The file ids.</param>
         /// <param name="page">The page number.</param>
         /// <param name="rpp">Records per blogPost limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -113,10 +142,10 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>List of <see cref="BlogPostFile" /> s.</returns>
         public virtual Task<CollectionModelBase<BlogPostFile>> FindAsync(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null, string blogPostIds = null,
-            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string fileIds = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync<BlogPostFile>(searchQuery, from, to, ids, blogPostIds, page, rpp, sort, embed, fields);
+            return FindAsync<BlogPostFile>(searchQuery, from, to, ids, blogPostIds, fileIds, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -127,6 +156,8 @@ namespace Baasic.Client.Clients.CMS
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="blogPostIds">The blog post ids.</param>
+        /// <param name="fileIds">The file ids.</param>
         /// <param name="page">The page number.</param>
         /// <param name="rpp">Records per blogPost limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -135,7 +166,7 @@ namespace Baasic.Client.Clients.CMS
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
             DateTime? from = null, DateTime? to = null, string ids = null, string blogPostIds = null,
-            int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
+            string fileIds = null, int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
             where T : BlogPostFile
         {
@@ -147,6 +178,8 @@ namespace Baasic.Client.Clients.CMS
                 InitializeQueryStringPair(uriBuilder, "to", to);
                 InitializeQueryStringPair(uriBuilder, "ids", ids);
                 InitializeQueryStringPair(uriBuilder, "blogPostIds", blogPostIds);
+                InitializeQueryStringPair(uriBuilder, "fileIds", fileIds);
+
                 var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {

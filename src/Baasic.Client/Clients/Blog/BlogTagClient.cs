@@ -2,13 +2,13 @@
 using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
-using Baasic.Client.Model.CMS;
+using Baasic.Client.Model.Blogs;
 using Baasic.Client.Utility;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.Clients.CMS
+namespace Baasic.Client.Clients.Blogs
 {
     public class BlogTagClient : ClientBase, IBlogTagClient
     {

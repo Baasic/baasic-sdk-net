@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Baasic.Client.Model.CMS
+namespace Baasic.Client.Model.Blogs
 {
     /// <summary>
     /// Blog post model.
@@ -16,7 +16,7 @@ namespace Baasic.Client.Model.CMS
         /// Gets or sets the post author.
         /// </summary>
         /// <value>The post author.</value>
-        public PageAuthor Author { get; set; }
+        public BlogPostAuthor Author { get; set; }
 
         /// <summary>
         /// Gets or sets the author identifier.

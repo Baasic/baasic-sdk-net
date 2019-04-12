@@ -1,10 +1,9 @@
-﻿namespace Baasic.Client.Model.CMS
+﻿namespace Baasic.Client.Model.Blogs
 {
     /// <summary>
-    /// Blog owner.
+    /// Blog post author used to transfer data from and to controller.
     /// </summary>
-    /// <seealso cref="Baasic.Client.Model.ModelBase" />
-    public class BlogOwner : ModelBase
+    public class BlogPostAuthor : ModelBase
     {
         #region Properties
 

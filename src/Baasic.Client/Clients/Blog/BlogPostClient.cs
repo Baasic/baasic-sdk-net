@@ -2,19 +2,19 @@
 using Baasic.Client.Common.Configuration;
 using Baasic.Client.Core;
 using Baasic.Client.Model;
-using Baasic.Client.Model.CMS;
+using Baasic.Client.Model.Blogs;
 using Baasic.Client.Utility;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Baasic.Client.Clients.CMS
+namespace Baasic.Client.Clients.Blogs
 {
     /// <summary>
     /// Blogpost client.
     /// </summary>
     /// <seealso cref="Baasic.Client.Core.ClientBase" />
-    /// <seealso cref="Baasic.Client.Clients.CMS.IBlogPostClient" />
+    /// <seealso cref="Baasic.Client.Clients.Blog.IBlogPostClient" />
     public class BlogPostClient : ClientBase, IBlogPostClient
     {
         #region Constructors

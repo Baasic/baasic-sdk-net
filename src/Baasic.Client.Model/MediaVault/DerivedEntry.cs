@@ -1,19 +1,14 @@
 ﻿using Baasic.Client.Common;
 
-namespace Baasic.Client.Model.CMS
+namespace Baasic.Client.Model.MediaVault
 {
     /// <summary>
-    /// The derived page file entry class.
+    /// Derived entry model.
     /// </summary>
-    public class DerivedBlogPostFileEntry : BuiltInModelBase
+    /// <seealso cref="Baasic.Client.Model.BuiltInModelBase" />
+    public class DerivedEntry : BuiltInModelBase
     {
         #region Properties
-
-        /// <summary>
-        /// Gets or sets the BlogPost identifier.
-        /// </summary>
-        /// <value>The BlogPost identifier.</value>
-        public SGuid BlogPostId { get; set; }
 
         /// <summary>
         /// Gets or sets the media vault entry identifier.
@@ -34,12 +29,6 @@ namespace Baasic.Client.Model.CMS
         /// Gets or sets the meta data.
         /// </summary>
         public object MetaData { get; set; }
-
-        /// <summary>
-        /// Gets or sets the parent identifier.
-        /// </summary>
-        /// <value>The parent identifier.</value>
-        public SGuid ParentId { get; set; }
 
         /// <summary>
         /// Gets or sets the width.
