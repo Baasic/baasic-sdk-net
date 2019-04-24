@@ -109,7 +109,7 @@ namespace Baasic.Client.Security.Token
                     }
                     else
                     {
-                        throw new BaasicClientException((int)response.StatusCode, "Unable to create new token.", responseObject.Error, responseObject.ErrorCode, new Exception(responseContent));
+                        throw new BaasicClientException((int)response.StatusCode, "Unable to create new token.", responseObject?.Error, responseObject.ErrorCode, new Exception(responseContent));
                     }
                 }
                 catch (Exception ex)

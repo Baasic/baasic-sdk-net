@@ -15,7 +15,7 @@
         /// <summary>
         /// Gets or sets error.
         /// </summary>
-        public string Error { get; set; }
+        public object Error { get; set; }
 
         /// <summary>
         /// Gets or sets error code.
