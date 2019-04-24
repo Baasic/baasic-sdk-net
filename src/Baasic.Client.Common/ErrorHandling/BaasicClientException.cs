@@ -47,7 +47,7 @@ namespace Baasic.Client.Common
         /// <param name="message">The message.</param>
         /// <param name="error">The error:</param>
         /// <param name="errorCode">The error code.</param>
-        public BaasicClientException(int statusCode, string message, string error, long errorCode) : base(message)
+        public BaasicClientException(int statusCode, string message, object error, long errorCode) : base(message)
         {
             StatusCode = statusCode;
             ErrorCode = errorCode;
@@ -62,7 +62,7 @@ namespace Baasic.Client.Common
         /// <param name="error">The error.</param>
         /// <param name="errorCode">The error code.</param>
         /// <param name="innerException">The inner exception.</param>
-        public BaasicClientException(int statusCode, string message, string error, long errorCode, Exception innerException) : base(message, innerException)
+        public BaasicClientException(int statusCode, string message, object error, long errorCode, Exception innerException) : base(message, innerException)
         {
             StatusCode = statusCode;
             ErrorCode = errorCode;
@@ -76,7 +76,7 @@ namespace Baasic.Client.Common
         /// <summary>
         /// Gets or sets error.
         /// </summary>
-        public string Error { get; set; }
+        public object Error { get; set; }
 
         /// <summary>
         /// Gets or sets the error code.
