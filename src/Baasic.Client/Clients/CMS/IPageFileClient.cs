@@ -16,9 +16,9 @@ namespace Baasic.Client.Clients.CMS
         /// <summary>
         /// Asynchronously deletes the collection <see cref="PageFile" /> from the system.
         /// </summary>
-        /// <param name="ids">The collection of identifiers.</param>
+        /// <param name="deleteRequests">The collection of delete requests.</param>
         /// <returns>True if the collection <see cref="PageFile" /> is deleted, false otherwise.</returns>
-        Task<bool> BulkDeleteAsync(object ids);
+        Task<bool> BulkDeleteAsync(FileEntryDeleteRequest[] deleteRequests);
 
         /// <summary>
         /// Asynchronously deletes the <see cref="PageFile" /> from the system.
