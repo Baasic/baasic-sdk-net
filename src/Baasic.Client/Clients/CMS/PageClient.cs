@@ -260,7 +260,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="Page" /> .</returns>
-        public virtual Task<Page[]> InsertAsync(Page[] pages)
+        public virtual Task<BatchResult<Page>[]> InsertAsync(Page[] pages)
         {
             return InsertAsync<Page>(pages);
         }
@@ -271,11 +271,11 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Page" />.</typeparam>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] pages) where T : Page
+        public virtual Task<BatchResult<T>[]> InsertAsync<T>(T[] pages) where T : Page
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), pages);
+                return client.PostAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), pages);
             }
         }
 
@@ -364,7 +364,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of updated <see cref="Page" /> .</returns>
-        public virtual Task<Page[]> UpdateAsync(Page[] pages)
+        public virtual Task<BatchResult<Page>[]> UpdateAsync(Page[] pages)
         {
             return UpdateAsync<Page>(pages);
         }
@@ -375,11 +375,11 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Page" />.</typeparam>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> UpdateAsync<T>(T[] pages) where T : Page
+        public virtual Task<BatchResult<T>[]> UpdateAsync<T>(T[] pages) where T : Page
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), pages);
+                return client.PutAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), pages);
             }
         }
 

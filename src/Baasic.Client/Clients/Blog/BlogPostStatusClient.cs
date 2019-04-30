@@ -213,7 +213,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogPosts">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="BlogPostStatus" /> .</returns>
-        public virtual Task<BlogPostStatus[]> InsertAsync(BlogPostStatus[] blogPosts)
+        public virtual Task<BatchResult<BlogPostStatus>[]> InsertAsync(BlogPostStatus[] blogPosts)
         {
             return InsertAsync<BlogPostStatus>(blogPosts);
         }
@@ -224,11 +224,11 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="BlogPostStatus" />.</typeparam>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] pages) where T : BlogPostStatus
+        public virtual Task<BatchResult<T>[]> InsertAsync<T>(T[] pages) where T : BlogPostStatus
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), pages);
+                return client.PostAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), pages);
             }
         }
 
@@ -286,7 +286,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of updated <see cref="BlogPostStatus" /> .</returns>
-        public virtual Task<BlogPostStatus[]> UpdateAsync(BlogPostStatus[] blogPostStatuses)
+        public virtual Task<BatchResult<BlogPostStatus>[]> UpdateAsync(BlogPostStatus[] blogPostStatuses)
         {
             return UpdateAsync<BlogPostStatus>(blogPostStatuses);
         }
@@ -297,11 +297,11 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="BlogPostStatus" />.</typeparam>
         /// <param name="blogPostStatuses">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> UpdateAsync<T>(T[] blogPostStatuses) where T : BlogPostStatus
+        public virtual Task<BatchResult<T>[]> UpdateAsync<T>(T[] blogPostStatuses) where T : BlogPostStatus
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), blogPostStatuses);
+                return client.PutAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), blogPostStatuses);
             }
         }
 

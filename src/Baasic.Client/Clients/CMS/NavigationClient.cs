@@ -353,7 +353,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="navigations">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="Navigation" /> .</returns>
-        public virtual Task<Navigation[]> InsertAsync(Navigation[] navigations)
+        public virtual Task<BatchResult<Navigation>[]> InsertAsync(Navigation[] navigations)
         {
             return InsertAsync<Navigation>(navigations);
         }
@@ -364,11 +364,11 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
         /// <param name="navigations">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] navigations) where T : Navigation
+        public virtual Task<BatchResult<T>[]> InsertAsync<T>(T[] navigations) where T : Navigation
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), navigations);
+                return client.PostAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), navigations);
             }
         }
 
@@ -426,7 +426,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="navigations">Resource instance.</param>
         /// <returns>Collection of updated <see cref="Navigation" /> .</returns>
-        public virtual Task<Navigation[]> UpdateAsync(Navigation[] navigations)
+        public virtual Task<BatchResult<Navigation>[]> UpdateAsync(Navigation[] navigations)
         {
             return UpdateAsync<Navigation>(navigations);
         }
@@ -437,11 +437,11 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
         /// <param name="navigations">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> UpdateAsync<T>(T[] navigations) where T : Navigation
+        public virtual Task<BatchResult<T>[]> UpdateAsync<T>(T[] navigations) where T : Navigation
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), navigations);
+                return client.PutAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), navigations);
             }
         }
 

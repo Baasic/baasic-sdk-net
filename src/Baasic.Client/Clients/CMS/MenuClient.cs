@@ -247,10 +247,11 @@ namespace Baasic.Client.Clients.CMS
         /// Asynchronously insert the collection of <see cref="Menu" /> into the system.
         /// </summary>
         /// <param name="menus">Resource instance.</param>
+        /// <param name="forcePositionsUpdate">True if menu needs to be saved on position no matter of existing menus.</param>
         /// <returns>Collection of newly created <see cref="Menu" /> .</returns>
-        public virtual Task<Menu[]> InsertAsync(Menu[] menus)
+        public virtual Task<BatchResult<Menu>[]> InsertAsync(Menu[] menus, bool? forcePositionsUpdate = null)
         {
-            return InsertAsync<Menu>(menus);
+            return InsertAsync<Menu>(menus, forcePositionsUpdate);
         }
 
         /// <summary>
@@ -258,12 +259,15 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <typeparam name="T">Type of extended <see cref="Menu" />.</typeparam>
         /// <param name="menus">Resource instance.</param>
+        /// <param name="forcePositionsUpdate">True if menu needs to be saved on position no matter of existing menus.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] menus) where T : Menu
+        public virtual Task<BatchResult<T>[]> InsertAsync<T>(T[] menus, bool? forcePositionsUpdate = null) where T : Menu
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), menus);
+                UrlBuilder uriBuilder = new UrlBuilder(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)));
+                InitializeQueryStringPair(uriBuilder, "forcePositionsUpdate", forcePositionsUpdate);
+                return client.PostAsync<T[], BatchResult<T>[]>(uriBuilder.ToString(), menus);
             }
         }
 
@@ -325,7 +329,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="menus">Resource instance.</param>
         /// <returns>Collection of updated <see cref="Menu" /> .</returns>
-        public virtual Task<Menu[]> UpdateAsync(Menu[] menus)
+        public virtual Task<BatchResult<Menu>[]> UpdateAsync(Menu[] menus)
         {
             return UpdateAsync<Menu>(menus);
         }
@@ -336,11 +340,11 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Menu" />.</typeparam>
         /// <param name="menus">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> UpdateAsync<T>(T[] menus) where T : Menu
+        public virtual Task<BatchResult<T>[]> UpdateAsync<T>(T[] menus) where T : Menu
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), menus);
+                return client.PutAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), menus);
             }
         }
 

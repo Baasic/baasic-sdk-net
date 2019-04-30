@@ -132,7 +132,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="Page" /> .</returns>
-        Task<Page[]> InsertAsync(Page[] pages);
+        Task<BatchResult<Page>[]> InsertAsync(Page[] pages);
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="Page" /> into the system.
@@ -140,7 +140,7 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Page" />.</typeparam>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] pages) where T : Page;
+        Task<BatchResult<T>[]> InsertAsync<T>(T[] pages) where T : Page;
 
         /// <summary>
         /// Asynchronously checks the URL uniqness.
@@ -169,7 +169,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of updated <see cref="Page" /> .</returns>
-        Task<Page[]> UpdateAsync(Page[] pages);
+        Task<BatchResult<Page>[]> UpdateAsync(Page[] pages);
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="Page" /> into the system.
@@ -177,7 +177,7 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Page" />.</typeparam>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        Task<T[]> UpdateAsync<T>(T[] pages) where T : Page;
+        Task<BatchResult<T>[]> UpdateAsync<T>(T[] pages) where T : Page;
 
         #endregion Methods
     }

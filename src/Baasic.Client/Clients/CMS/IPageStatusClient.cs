@@ -112,7 +112,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pageStatuses">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="PageStatus" /> .</returns>
-        Task<PageStatus[]> InsertAsync(PageStatus[] pageStatuses);
+        Task<BatchResult<PageStatus>[]> InsertAsync(PageStatus[] pageStatuses);
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="PageStatus" /> into the system.
@@ -120,7 +120,7 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="PageStatus" />.</typeparam>
         /// <param name="pageStatuses">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] pageStatuses) where T : PageStatus;
+        Task<BatchResult<T>[]> InsertAsync<T>(T[] pageStatuses) where T : PageStatus;
 
         /// <summary>
         /// Asynchronously update the <see cref="PageStatus" /> in the system.
@@ -142,7 +142,15 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pageStatuses">Resource instance.</param>
         /// <returns>Collection of updated <see cref="PageStatus" /> .</returns>
-        Task<PageStatus[]> UpdateAsync(PageStatus[] pageStatuses);
+        Task<BatchResult<PageStatus>[]> UpdateAsync(PageStatus[] pageStatuses);
+
+        /// <summary>
+        /// Asynchronously updates the collection of <see cref="PageStatus" /> into the system.
+        /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="PageStatus" />.</typeparam>
+        /// <param name="pageStatuses">Resource instance.</param>
+        /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
+        Task<BatchResult<T>[]> UpdateAsync<T>(T[] pageStatuses) where T : PageStatus;
 
         #endregion Methods
     }

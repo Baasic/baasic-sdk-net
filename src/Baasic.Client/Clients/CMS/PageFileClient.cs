@@ -247,7 +247,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pageFiles">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="PageFile" /> .</returns>
-        public virtual Task<PageFile[]> InsertAsync(PageFile[] pageFiles)
+        public virtual Task<BatchResult<PageFile>[]> InsertAsync(PageFile[] pageFiles)
         {
             return InsertAsync<PageFile>(pageFiles);
         }
@@ -258,11 +258,11 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="PageFile" />.</typeparam>
         /// <param name="pageFiles">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] pageFiles) where T : PageFile
+        public virtual Task<BatchResult<T>[]> InsertAsync<T>(T[] pageFiles) where T : PageFile
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch/link", ModuleRelativePath)), pageFiles);
+                return client.PostAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch/link", ModuleRelativePath)), pageFiles);
             }
         }
 

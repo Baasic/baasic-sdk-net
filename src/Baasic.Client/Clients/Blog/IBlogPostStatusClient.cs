@@ -112,7 +112,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="BlogPostStatus" /> .</returns>
-        Task<BlogPostStatus[]> InsertAsync(BlogPostStatus[] pages);
+        Task<BatchResult<BlogPostStatus>[]> InsertAsync(BlogPostStatus[] pages);
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="BlogPostStatus" /> into the system.
@@ -120,7 +120,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="BlogPostStatus" />.</typeparam>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] pages) where T : BlogPostStatus;
+        Task<BatchResult<T>[]> InsertAsync<T>(T[] pages) where T : BlogPostStatus;
 
         /// <summary>
         /// Asynchronously update the <see cref="BlogPostStatus" /> in the system.
@@ -142,7 +142,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="pages">Resource instance.</param>
         /// <returns>Collection of updated <see cref="BlogPostStatus" /> .</returns>
-        Task<BlogPostStatus[]> UpdateAsync(BlogPostStatus[] pages);
+        Task<BatchResult<BlogPostStatus>[]> UpdateAsync(BlogPostStatus[] pages);
 
         #endregion Methods
     }

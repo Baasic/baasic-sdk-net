@@ -272,7 +272,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogPost">The blog post.</param>
         /// <returns>Collection of newly created <see cref="BlogPost" /> .</returns>
-        public virtual Task<BlogPost[]> InsertAsync(BlogPost[] blogPost)
+        public virtual Task<BatchResult<BlogPost>[]> InsertAsync(BlogPost[] blogPost)
         {
             return InsertAsync<BlogPost>(blogPost);
         }
@@ -283,11 +283,11 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
         /// <param name="blogPost">The blog post.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] blogPost) where T : BlogPost
+        public virtual Task<BatchResult<T>[]> InsertAsync<T>(T[] blogPost) where T : BlogPost
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogPost);
+                return client.PostAsync<T[], BatchResult<T>[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogPost);
             }
         }
 
@@ -346,7 +346,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogPost">The blog post.</param>
         /// <returns>Collection of updated <see cref="BlogPost" /> .</returns>
-        public virtual Task<BlogPost[]> UpdateAsync(BlogPost[] blogPost)
+        public virtual Task<BatchResult<BlogPost>[]> UpdateAsync(BlogPost[] blogPost)
         {
             return UpdateAsync<BlogPost>(blogPost);
         }
@@ -357,11 +357,11 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="BlogPost" />.</typeparam>
         /// <param name="blogPost">The blog post.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> UpdateAsync<T>(T[] blogPost) where T : BlogPost
+        public virtual Task<BatchResult<T>[]> UpdateAsync<T>(T[] blogPost) where T : BlogPost
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogPost);
+                return client.PutAsync<T[], BatchResult<T>[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogPost);
             }
         }
 
