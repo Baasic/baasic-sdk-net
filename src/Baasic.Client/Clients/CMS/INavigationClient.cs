@@ -173,7 +173,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="navigations">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="Navigation" /> .</returns>
-        Task<Navigation[]> InsertAsync(Navigation[] navigations);
+        Task<BatchResult<Navigation>[]> InsertAsync(Navigation[] navigations);
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="Navigation" /> into the system.
@@ -181,7 +181,7 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
         /// <param name="navigations">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] navigations) where T : Navigation;
+        Task<BatchResult<T>[]> InsertAsync<T>(T[] navigations) where T : Navigation;
 
         /// <summary>
         /// Asynchronously update the <see cref="Navigation" /> in the system.
@@ -203,7 +203,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="navigations">Resource instance.</param>
         /// <returns>Collection of updated <see cref="Navigation" /> .</returns>
-        Task<Navigation[]> UpdateAsync(Navigation[] navigations);
+        Task<BatchResult<Navigation>[]> UpdateAsync(Navigation[] navigations);
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="Navigation" /> into the system.
@@ -211,7 +211,7 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Navigation" />.</typeparam>
         /// <param name="navigations">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        Task<T[]> UpdateAsync<T>(T[] navigations) where T : Navigation;
+        Task<BatchResult<T>[]> UpdateAsync<T>(T[] navigations) where T : Navigation;
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="Navigation" /> into the system.

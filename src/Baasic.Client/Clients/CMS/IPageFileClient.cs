@@ -123,7 +123,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="pageFiles">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="PageFile" /> .</returns>
-        Task<PageFile[]> InsertAsync(PageFile[] pageFiles);
+        Task<BatchResult<PageFile>[]> InsertAsync(PageFile[] pageFiles);
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="PageFile" /> into the system.
@@ -131,7 +131,7 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="PageFile" />.</typeparam>
         /// <param name="pageFiles">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] pageFiles) where T : PageFile;
+        Task<BatchResult<T>[]> InsertAsync<T>(T[] pageFiles) where T : PageFile;
 
         /// <summary>
         /// Asynchronously update the <see cref="PageFile" /> in the system.

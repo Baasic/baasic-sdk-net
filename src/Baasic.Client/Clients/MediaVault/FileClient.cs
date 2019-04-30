@@ -258,7 +258,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// </summary>
         /// <param name="fileEntries">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="FileEntry" /> .</returns>
-        public virtual Task<FileEntry[]> InsertAsync(FileEntry[] fileEntries)
+        public virtual Task<BatchResult<FileEntry>[]> InsertAsync(FileEntry[] fileEntries)
         {
             return InsertAsync<FileEntry>(fileEntries);
         }
@@ -269,11 +269,11 @@ namespace Baasic.Client.Clients.MediaVault
         /// <typeparam name="T">Type of extended <see cref="FileEntry" />.</typeparam>
         /// <param name="fileEntries">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] fileEntries) where T : FileEntry
+        public virtual Task<BatchResult<T>[]> InsertAsync<T>(T[] fileEntries) where T : FileEntry
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch/link", ModuleRelativePath)), fileEntries);
+                return client.PostAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch/link", ModuleRelativePath)), fileEntries);
             }
         }
 
@@ -331,7 +331,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// </summary>
         /// <param name="fileEntries">Resource instance.</param>
         /// <returns>Collection of updated <see cref="FileEntry" /> .</returns>
-        public virtual Task<FileEntry[]> UpdateAsync(FileEntry[] fileEntries)
+        public virtual Task<BatchResult<FileEntry>[]> UpdateAsync(FileEntry[] fileEntries)
         {
             return UpdateAsync<FileEntry>(fileEntries);
         }
@@ -342,11 +342,11 @@ namespace Baasic.Client.Clients.MediaVault
         /// <typeparam name="T">Type of extended <see cref="FileEntry" />.</typeparam>
         /// <param name="fileEntries">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> UpdateAsync<T>(T[] fileEntries) where T : FileEntry
+        public virtual Task<BatchResult<T>[]> UpdateAsync<T>(T[] fileEntries) where T : FileEntry
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), fileEntries);
+                return client.PutAsync<T[], BatchResult<T>[]>(client.GetApiUrl(String.Format("{0}/batch", ModuleRelativePath)), fileEntries);
             }
         }
 

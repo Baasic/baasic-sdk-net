@@ -250,7 +250,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogs">The blogs.</param>
         /// <returns>Collection of newly created <see cref="Blog" /> .</returns>
-        public virtual Task<Blog[]> InsertAsync(Blog[] blogs)
+        public virtual Task<BatchResult<Blog>[]> InsertAsync(Blog[] blogs)
         {
             return InsertAsync<Blog>(blogs);
         }
@@ -261,11 +261,11 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="Blog" />.</typeparam>
         /// <param name="blogs">The blogs.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> InsertAsync<T>(T[] blogs) where T : Blog
+        public virtual Task<BatchResult<T>[]> InsertAsync<T>(T[] blogs) where T : Blog
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PostAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogs);
+                return client.PostAsync<T[], BatchResult<T>[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogs);
             }
         }
 
@@ -324,7 +324,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogs">The blogs.</param>
         /// <returns>Collection of updated <see cref="Blog" /> .</returns>
-        public virtual Task<Blog[]> UpdateAsync(Blog[] blogs)
+        public virtual Task<BatchResult<Blog>[]> UpdateAsync(Blog[] blogs)
         {
             return UpdateAsync<Blog>(blogs);
         }
@@ -335,11 +335,11 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="Blog" />.</typeparam>
         /// <param name="blogs">The blogs.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        public virtual Task<T[]> UpdateAsync<T>(T[] blogs) where T : Blog
+        public virtual Task<BatchResult<T>[]> UpdateAsync<T>(T[] blogs) where T : Blog
         {
             using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
             {
-                return client.PutAsync<T[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogs);
+                return client.PutAsync<T[], BatchResult<T>[]>(client.GetApiUrl(string.Format("{0}/batch", ModuleRelativePath)), blogs);
             }
         }
 

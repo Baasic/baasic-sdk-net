@@ -117,7 +117,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogTags">The blog tags.</param>
         /// <returns>Collection of newly created <see cref="BlogTag" /> .</returns>
-        Task<BlogTag[]> InsertAsync(BlogTag[] blogTags);
+        Task<BatchResult<BlogTag>[]> InsertAsync(BlogTag[] blogTags);
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="BlogTag" /> into the system.
@@ -125,7 +125,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="BlogTag" />.</typeparam>
         /// <param name="blogTags">The blog tags.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] blogTags) where T : BlogTag;
+        Task<BatchResult<T>[]> InsertAsync<T>(T[] blogTags) where T : BlogTag;
 
         /// <summary>
         /// Asynchronously update the <see cref="BlogTag" /> in the system.
@@ -147,7 +147,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogTags">The blog tags.</param>
         /// <returns>Collection of updated <see cref="BlogTag" /> .</returns>
-        Task<BlogTag[]> UpdateAsync(BlogTag[] blogTags);
+        Task<BatchResult<BlogTag>[]> UpdateAsync(BlogTag[] blogTags);
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="BlogTag" /> into the system.
@@ -155,7 +155,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="BlogTag" />.</typeparam>
         /// <param name="blogTags">The blog tags.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        Task<T[]> UpdateAsync<T>(T[] blogTags) where T : BlogTag;
+        Task<BatchResult<T>[]> UpdateAsync<T>(T[] blogTags) where T : BlogTag;
 
         #endregion Methods
     }

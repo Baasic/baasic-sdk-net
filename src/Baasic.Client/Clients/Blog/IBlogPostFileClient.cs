@@ -122,7 +122,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogPostFiles">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="BlogPostFile" /> .</returns>
-        Task<BlogPostFile[]> InsertAsync(BlogPostFile[] blogPostFiles);
+        Task<BatchResult<BlogPostFile>[]> InsertAsync(BlogPostFile[] blogPostFiles);
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="BlogPostFile" /> into the system.
@@ -130,7 +130,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="BlogPostFile" />.</typeparam>
         /// <param name="blogPostFiles">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] blogPostFiles) where T : BlogPostFile;
+        Task<BatchResult<T>[]> InsertAsync<T>(T[] blogPostFiles) where T : BlogPostFile;
 
         /// <summary>
         /// Asynchronously update the <see cref="BlogPostFile" /> in the system.
@@ -152,7 +152,7 @@ namespace Baasic.Client.Clients.Blogs
         /// </summary>
         /// <param name="blogPostFiles">Resource instance.</param>
         /// <returns>Collection of updated <see cref="BlogPostFile" /> .</returns>
-        Task<BlogPostFile[]> UpdateAsync(BlogPostFile[] blogPostFiles);
+        Task<BatchResult<BlogPostFile>[]> UpdateAsync(BlogPostFile[] blogPostFiles);
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="BlogPostFile" /> into the system.
@@ -160,7 +160,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <typeparam name="T">Type of extended <see cref="BlogPostFile" />.</typeparam>
         /// <param name="blogPostFiles">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        Task<T[]> UpdateAsync<T>(T[] blogPostFiles) where T : BlogPostFile;
+        Task<BatchResult<T>[]> UpdateAsync<T>(T[] blogPostFiles) where T : BlogPostFile;
 
         #endregion Methods
     }

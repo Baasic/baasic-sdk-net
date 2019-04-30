@@ -123,17 +123,19 @@ namespace Baasic.Client.Clients.CMS
         /// <summary>
         /// Asynchronously insert the collection of <see cref="Menu" /> into the system.
         /// </summary>
+        /// <typeparam name="T">Type of extended <see cref="Menu" />.</typeparam>
         /// <param name="menus">Resource instance.</param>
-        /// <returns>Collection of newly created <see cref="Menu" /> .</returns>
-        Task<Menu[]> InsertAsync(Menu[] menus);
+        /// <param name="forcePositionsUpdate">True if menu needs to be saved on position no matter of existing menus.</param>
+        /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
+        Task<BatchResult<T>[]> InsertAsync<T>(T[] menus, bool? forcePositionsUpdate = null) where T : Menu;
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="Menu" /> into the system.
         /// </summary>
-        /// <typeparam name="T">Type of extended <see cref="Menu" />.</typeparam>
         /// <param name="menus">Resource instance.</param>
-        /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] menus) where T : Menu;
+        /// <param name="forcePositionsUpdate">True if menu needs to be saved on position no matter of existing menus.</param>
+        /// <returns>Collection of newly created <see cref="Menu" /> .</returns>
+        Task<BatchResult<Menu>[]> InsertAsync(Menu[] menus, bool? forcePositionsUpdate = null);
 
         /// <summary>
         /// Asynchronously update the <see cref="Menu" /> in the system.
@@ -157,7 +159,7 @@ namespace Baasic.Client.Clients.CMS
         /// </summary>
         /// <param name="menus">Resource instance.</param>
         /// <returns>Collection of updated <see cref="Menu" /> .</returns>
-        Task<Menu[]> UpdateAsync(Menu[] menus);
+        Task<BatchResult<Menu>[]> UpdateAsync(Menu[] menus);
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="Menu" /> into the system.
@@ -165,7 +167,7 @@ namespace Baasic.Client.Clients.CMS
         /// <typeparam name="T">Type of extended <see cref="Menu" />.</typeparam>
         /// <param name="menus">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        Task<T[]> UpdateAsync<T>(T[] menus) where T : Menu;
+        Task<BatchResult<T>[]> UpdateAsync<T>(T[] menus) where T : Menu;
 
         #endregion Methods
     }

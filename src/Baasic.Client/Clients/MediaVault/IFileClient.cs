@@ -129,7 +129,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// </summary>
         /// <param name="fileEntries">Resource instance.</param>
         /// <returns>Collection of newly created <see cref="FileEntry" /> .</returns>
-        Task<FileEntry[]> InsertAsync(FileEntry[] fileEntries);
+        Task<BatchResult<FileEntry>[]> InsertAsync(FileEntry[] fileEntries);
 
         /// <summary>
         /// Asynchronously insert the collection of <see cref="FileEntry" /> into the system.
@@ -137,7 +137,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// <typeparam name="T">Type of extended <see cref="FileEntry" />.</typeparam>
         /// <param name="fileEntries">Resource instance.</param>
         /// <returns>Collection of newly created <typeparamref name="T" /> .</returns>
-        Task<T[]> InsertAsync<T>(T[] fileEntries) where T : FileEntry;
+        Task<BatchResult<T>[]> InsertAsync<T>(T[] fileEntries) where T : FileEntry;
 
         /// <summary>
         /// Asynchronously update the <see cref="FileEntry" /> in the system.
@@ -159,7 +159,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// </summary>
         /// <param name="fileEntries">Resource instance.</param>
         /// <returns>Collection of updated <see cref="FileEntry" /> .</returns>
-        Task<FileEntry[]> UpdateAsync(FileEntry[] fileEntries);
+        Task<BatchResult<FileEntry>[]> UpdateAsync(FileEntry[] fileEntries);
 
         /// <summary>
         /// Asynchronously updates the collection of <see cref="FileEntry" /> into the system.
@@ -167,7 +167,7 @@ namespace Baasic.Client.Clients.MediaVault
         /// <typeparam name="T">Type of extended <see cref="FileEntry" />.</typeparam>
         /// <param name="fileEntries">Resource instance.</param>
         /// <returns>Collection of updated <typeparamref name="T" /> .</returns>
-        Task<T[]> UpdateAsync<T>(T[] fileEntries) where T : FileEntry;
+        Task<BatchResult<T>[]> UpdateAsync<T>(T[] fileEntries) where T : FileEntry;
 
         #endregion Methods
     }
