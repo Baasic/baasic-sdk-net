@@ -45,6 +45,8 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="from">The from date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="blogIds">The blog ids.</param>
+        /// <param name="blogSlugs">The blog slugs.</param>
         /// <param name="languageIds">The language ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
@@ -53,7 +55,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="BlogTag" /> s.</returns>
         Task<CollectionModelBase<BlogTag>> FindAsync(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
+            DateTime? from = null, DateTime? to = null, string ids = null, string blogIds = null, string blogSlugs = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields);
 
@@ -65,6 +67,8 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="blogIds">The blog ids.</param>
+        /// <param name="blogSlugs">The blog slugs.</param>
         /// <param name="languageIds">The language ids.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
@@ -73,7 +77,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = ClientBase.DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
+            DateTime? from = null, DateTime? to = null, string ids = null, string blogIds = null, string blogSlugs = null,
             int page = ClientBase.DefaultPage, int rpp = ClientBase.DefaultMaxNumberOfResults,
             string sort = ClientBase.DefaultSorting, string embed = ClientBase.DefaultEmbed, string fields = ClientBase.DefaultFields)
             where T : BlogTag;
