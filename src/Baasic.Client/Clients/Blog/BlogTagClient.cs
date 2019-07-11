@@ -119,7 +119,7 @@ namespace Baasic.Client.Clients.Blogs
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync(searchQuery, null, null, null, page, rpp, sort, embed, fields);
+            return FindAsync(searchQuery, null, null, null, null, null, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -129,6 +129,8 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="from">The from date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="blogIds">The blog ids.</param>
+        /// <param name="blogSlugs">The blog slugs.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -136,11 +138,11 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>List of <see cref="BlogTag" /> s.</returns>
         public virtual Task<CollectionModelBase<BlogTag>> FindAsync(string searchQuery = DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
+            DateTime? from = null, DateTime? to = null, string ids = null, string blogIds = null, string blogSlugs = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
         {
-            return FindAsync<BlogTag>(searchQuery, from, to, ids, page, rpp, sort, embed, fields);
+            return FindAsync<BlogTag>(searchQuery, from, to, ids, blogIds, blogSlugs, page, rpp, sort, embed, fields);
         }
 
         /// <summary>
@@ -151,6 +153,8 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="from">The form date.</param>
         /// <param name="to">The to date.</param>
         /// <param name="ids">The file ids.</param>
+        /// <param name="blogIds">The blog ids.</param>
+        /// <param name="blogSlugs">The blog slugs.</param>
         /// <param name="page">Page number.</param>
         /// <param name="rpp">Records per page limit.</param>
         /// <param name="sort">Sort by field.</param>
@@ -158,7 +162,7 @@ namespace Baasic.Client.Clients.Blogs
         /// <param name="fields">The fields to include in response.</param>
         /// <returns>Collection of <typeparamref name="T" /> s.</returns>
         public virtual async Task<CollectionModelBase<T>> FindAsync<T>(string searchQuery = DefaultSearchQuery,
-            DateTime? from = null, DateTime? to = null, string ids = null,
+            DateTime? from = null, DateTime? to = null, string ids = null, string blogIds = null, string blogSlugs = null,
             int page = DefaultPage, int rpp = DefaultMaxNumberOfResults,
             string sort = DefaultSorting, string embed = DefaultEmbed, string fields = DefaultFields)
             where T : BlogTag
@@ -170,6 +174,8 @@ namespace Baasic.Client.Clients.Blogs
                 InitializeQueryStringPair(uriBuilder, "from", from);
                 InitializeQueryStringPair(uriBuilder, "to", to);
                 InitializeQueryStringPair(uriBuilder, "ids", ids);
+                InitializeQueryStringPair(uriBuilder, "blogIds", blogIds);
+                InitializeQueryStringPair(uriBuilder, "blogSlugs", blogSlugs);
                 var result = await client.GetAsync<CollectionModelBase<T>>(uriBuilder.ToString());
                 if (result == null)
                 {

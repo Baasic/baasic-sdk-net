@@ -75,7 +75,7 @@ namespace Baasic.Client.Membership
             {
                 using (var client = this.BaasicClientFactory.Create(this.Configuration))
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(true, this.ModuleRelativePath))
+                    var request = new HttpRequestMessage(HttpMethod.Put, client.GetApiUrl(this.ModuleRelativePath))
                     {
                         Content = JsonFormatter.SerializeToHttpContent(options)
                     };
@@ -110,7 +110,7 @@ namespace Baasic.Client.Membership
             {
                 using (var client = this.BaasicClientFactory.Create(this.Configuration))
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(true, this.ModuleRelativePath))
+                    var request = new HttpRequestMessage(HttpMethod.Post, client.GetApiUrl(this.ModuleRelativePath))
                     {
                         Content = JsonFormatter.SerializeToHttpContent(options)
                     };
