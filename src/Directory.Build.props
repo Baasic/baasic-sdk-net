@@ -1,8 +1,8 @@
 <Project>
   <PropertyGroup>
-    <Version>1.1.20</Version>
-    <FileVersion>1.1.20</FileVersion>
-    <AssemblyVersion>1.1.20</AssemblyVersion>
+    <Version>1.1.21</Version>
+    <FileVersion>1.1.21</FileVersion>
+    <AssemblyVersion>1.1.21</AssemblyVersion>
     <Authors>Mono Ltd.</Authors>
     <Company>Mono Ltd.</Company>
     <Description>Baasic .NET SDK Library</Description>

@@ -224,14 +224,16 @@ namespace Baasic.Client.Infrastructure.Security
             {
                 foreach (var header in headers)
                 {
-                    var startIndex = header.LastIndexOf(cookieName);
-                    if (startIndex != -1)
+                    if (header.StartsWith(cookieName))
                     {
-                        var cookie = header.Substring(startIndex);
                         var p1 = header.IndexOf('=');
                         var p2 = header.IndexOf(';');
 
-                        return header.Substring(p1 + 1, p2 - p1 - 1);
+                        var cookie = header.Substring(p1 + 1, p2 - p1 - 1);
+                        if (!string.IsNullOrWhiteSpace(cookie))
+                        {
+                            return System.Net.WebUtility.UrlDecode(cookie);
+                        }
                     }
                 }
             }
