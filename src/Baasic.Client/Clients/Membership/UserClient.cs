@@ -54,15 +54,15 @@ namespace Baasic.Client.Membership
         /// <summary>
         /// Asynchronously approves the <see cref="User" /> in the system.
         /// </summary>
-        /// <param name="userName">Name of the user.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="User" /> is approved, false otherwise.</returns>
-        public virtual async Task<bool> ApproveUserAsync(string userName)
+        public virtual async Task<bool> ApproveUserAsync(object id)
         {
             try
             {
                 using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/approve/{{0}}", ModuleRelativePath), userName));
+                    return await client.PutAsync<object, bool>(client.GetApiUrl(String.Format("{0}/{{0}}/approve", ModuleRelativePath), id), new { });
                 }
             }
             catch (BaasicClientException ex)
@@ -110,15 +110,15 @@ namespace Baasic.Client.Membership
         /// <summary>
         /// Asynchronously disapproves the <see cref="User" /> in the system.
         /// </summary>
-        /// <param name="userName">Name of the user.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="User" /> is disapproved, false otherwise.</returns>
-        public virtual async Task<bool> DisapproveUserAsync(string userName)
+        public virtual async Task<bool> DisapproveUserAsync(object id)
         {
             try
             {
                 using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/disapprove/{{0}}", ModuleRelativePath), userName));
+                    return await client.PutAsync<object, bool>(client.GetApiUrl(String.Format("{0}/{{0}}/disapprove", ModuleRelativePath), id), new { });
                 }
             }
             catch (BaasicClientException ex)
@@ -264,15 +264,15 @@ namespace Baasic.Client.Membership
         /// <summary>
         /// Asynchronously locks the <see cref="User" /> in the system.
         /// </summary>
-        /// <param name="userName">Name of the user.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="User" /> is locked, false otherwise.</returns>
-        public virtual async Task<bool> LockUserAsync(string userName)
+        public virtual async Task<bool> LockUserAsync(object id)
         {
             try
             {
                 using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/lock", ModuleRelativePath), userName));
+                    return await client.PutAsync<object, bool>(client.GetApiUrl(String.Format("{0}/{{0}}/lock", ModuleRelativePath), id), new { });
                 }
             }
             catch (BaasicClientException ex)
@@ -292,15 +292,15 @@ namespace Baasic.Client.Membership
         /// <summary>
         /// Asynchronously unlocks the <see cref="User" /> in the system.
         /// </summary>
-        /// <param name="userName">Name of the user.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="User" /> is unlocked, false otherwise.</returns>
-        public virtual async Task<bool> UnlockUserAsync(string userName)
+        public virtual async Task<bool> UnlockUserAsync(object id)
         {
             try
             {
                 using (IBaasicClient client = BaasicClientFactory.Create(Configuration))
                 {
-                    return await client.DeleteAsync(client.GetApiUrl(String.Format("{0}/{{0}}/unlock", ModuleRelativePath), userName));
+                    return await client.PutAsync<object, bool>(client.GetApiUrl(String.Format("{0}/{{0}}/unlock", ModuleRelativePath), id), new { });
                 }
             }
             catch (BaasicClientException ex)
