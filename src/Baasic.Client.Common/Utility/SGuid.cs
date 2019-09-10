@@ -177,7 +177,7 @@ namespace Baasic.Client.Common
         /// <returns></returns>
         public static implicit operator SGuid(string shortGuid)
         {
-            if (shortGuid.IndexOf('-') > -1)
+            if (!string.IsNullOrWhiteSpace(shortGuid) && shortGuid.IndexOf('-') > -1)
             {
                 Guid result;
                 if (Guid.TryParse(shortGuid, out result))
