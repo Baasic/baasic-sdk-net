@@ -1,7 +1,6 @@
 ﻿using Baasic.Client.Core;
 using Baasic.Client.Model;
 using Baasic.Client.Model.Membership;
-using System;
 using System.Threading.Tasks;
 
 namespace Baasic.Client.Membership
@@ -16,9 +15,9 @@ namespace Baasic.Client.Membership
         /// <summary>
         /// Asynchronously approves the <see cref="User" /> in the system.
         /// </summary>
-        /// <param name="userName">Name of the user.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="User" /> is approved, false otherwise.</returns>
-        Task<bool> ApproveUserAsync(string userName);
+        Task<bool> ApproveUserAsync(object id);
 
         /// <summary>
         /// Asynchronously deletes the <see cref="User" /> from the system.
@@ -30,9 +29,9 @@ namespace Baasic.Client.Membership
         /// <summary>
         /// Asynchronously disapproves the <see cref="User" /> in the system.
         /// </summary>
-        /// <param name="userName">Name of the user.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="User" /> is disapproved, false otherwise.</returns>
-        Task<bool> DisapproveUserAsync(string userName);
+        Task<bool> DisapproveUserAsync(object id);
 
         /// <summary>
         /// Asynchronously disconnects social login provider from the <see cref="User" /> in the system.
@@ -104,16 +103,16 @@ namespace Baasic.Client.Membership
         /// <summary>
         /// Asynchronously locks the <see cref="User" /> in the system.
         /// </summary>
-        /// <param name="userName">Name of the user.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="User" /> is locked, false otherwise.</returns>
-        Task<bool> LockUserAsync(string userName);
+        Task<bool> LockUserAsync(object id);
 
         /// <summary>
         /// Asynchronously unlocks the <see cref="User" /> in the system.
         /// </summary>
-        /// <param name="userName">Name of the user.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>True if <see cref="User" /> is unlocked, false otherwise.</returns>
-        Task<bool> UnlockUserAsync(string userName);
+        Task<bool> UnlockUserAsync(object id);
 
         /// <summary>
         /// Asynchronously update the <see cref="User" /> in the system.
